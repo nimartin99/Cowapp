@@ -6,5 +6,7 @@ if [ -n "${TEST}" ]; then
   exit 0
 fi
 
+
+echo "FAIL - incorrect text"
 exit 1
 
