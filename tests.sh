@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TEST=`grep "With group packages starting for teams of four all the way up to 30, no other travel provider gets your group the distance" 'Teams In Space.html'`
+TEST=`grep "With group packages starting for teams of four all the way up to 20, no other travel provider gets your group the distance" 'Teams In Space.html'`
 
 if [ -n "${TEST}" ]; then
   exit 0
