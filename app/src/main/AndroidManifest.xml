@@ -9,6 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".PushNotificationActivity"></activity>
+        <activity android:name=".ThankYouActivity" />
+        <activity android:name=".SuspicionActivity" />
+        <activity android:name=".ReportInfectionActivity" />
+        <activity android:name=".InfoActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".LogActivity" />
+        <activity android:name=".DataProtectionActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
