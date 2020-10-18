@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import java.util.HashMap;
-
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.RetrofitService;
 import retrofit2.Call;
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Request the key-counter value from MongoDb
+     * Request a new key from the server
      */
     private void requestKey() {
         Call<Key> call = retrofitService.requestKey();
@@ -43,12 +41,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Key> call, Response<Key> response) {
                 if (response.code() == 200) {
                     Key key = response.body();
-                    key.increase();
-                    sendKey(key.getKey());
-
                     Toast.makeText(MainActivity.this, "Key: " + key.getKey(),
                             Toast.LENGTH_LONG).show();
-
                 } else if (response.code() == 404) {
                     Toast.makeText(MainActivity.this, "Key doesn't exist",
                             Toast.LENGTH_LONG).show();
@@ -57,34 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Key> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    /**
-     * Send new key to the server
-     * @param key current key for this device.
-     */
-    private void sendKey(String key) {
-        HashMap<String, String> keyMap = new HashMap<>();
-        keyMap.put("key", key);
-
-        Call<Void> call = retrofitService.sendKey(keyMap);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 200) {
-                    Toast.makeText(MainActivity.this,
-                            "Key successfully sent", Toast.LENGTH_LONG).show();
-                } else if (response.code() == 404) {
-                    Toast.makeText(MainActivity.this, "Key doesn't exist",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

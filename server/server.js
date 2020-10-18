@@ -3,7 +3,7 @@
  *
  * @author Mergim Miftari
  * @author Philipp Alessandrini
- * @version 2020-10-17
+ * @version 2020-10-18
  */
 
 // init web framework
@@ -22,33 +22,28 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
     } else {
         const cowappDb = db.db('CoWAppDB');
         const keyCollection = cowappDb.collection('key');
-        // request key from mongodb
+        // request a key from mongodb
         app.get('/request_key', (req, res) => {
             keyCollection.findOne({}, (err, result) => {
                 if (result != null) {
-                    const requestedKey = { key: result.key };
-                    // send key to the client
-                    res.status(200).send(JSON.stringify(requestedKey));
-                } else {
-                    // object not found
-                    res.status(404).send();
-                }
-            });
-        });
-        // send key to mongodb
-        app.post('/send_key', (req, res) => {
-            keyCollection.findOne({}, (err, result) => {
-                if (result != null) {
-                    const sentKey = { $set: {key: req.body.key} };
-                    // replace it with new one
-                    keyCollection.updateOne({}, sentKey, (err, result) => {
-                        res.status(200).send();
+                    // get current key value from mongodb
+                    const oldKey = parseInt(result.key);
+                    // calculate a new key
+                    const newKey = (oldKey + 1).toString();
+                    // send new key to mongodb
+                    const sendKey = { $set: {key : newKey} };
+                    // update new key in mongodb
+                    keyCollection.updateOne({}, sendKey, (err, result) => {
+                        if (err) throw err;
+                        // send key to the client
+                        const requestedKey = { key: newKey };
+                        res.status(200).send(JSON.stringify(requestedKey));
                     })
                 } else {
                     // object not found
                     res.status(404).send();
                 }
-            })
+            });
         });
     }
 });
