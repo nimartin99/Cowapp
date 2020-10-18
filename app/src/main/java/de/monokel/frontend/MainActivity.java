@@ -17,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     private RetrofitService retrofitService;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
 
+    private Key key;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Key> call, Response<Key> response) {
                 if (response.code() == 200) {
-                    Key key = response.body();
+                    key = response.body();
                     Toast.makeText(MainActivity.this, "Key: " + key.getKey(),
                             Toast.LENGTH_LONG).show();
                 } else if (response.code() == 404) {
