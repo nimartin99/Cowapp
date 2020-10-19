@@ -12,7 +12,7 @@
         android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
         tools:targetApi="m">
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -20,7 +20,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>activity>
+        </activity>
         <activity android:name=".TestMenuActivity"/>
         <activity android:name=".PushNotificationActivity" />
         <activity android:name=".ThankYouActivity" />
