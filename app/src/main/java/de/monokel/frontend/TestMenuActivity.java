@@ -8,26 +8,26 @@ import android.view.View;
 import android.widget.ImageButton;
 
 /**
- * Settings menu for CoWApp
+ * Developer menu to test functions for the CoWApp development
  *
  * @author Tabea leibl
  * @version 2020-10-18
  */
-public class SettingsActivity extends AppCompatActivity {
+public class TestMenuActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        setContentView(R.layout.activity_test_menu);
 
         //Back button listener
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButtonSettings);
+        ImageButton backButton = (ImageButton)findViewById(R.id.backButtonTest);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //Go to main screen
-                Intent nextActivity = new Intent(SettingsActivity.this,MainActivity.class);
+                Intent nextActivity = new Intent(TestMenuActivity.this,MainActivity.class);
                 startActivity(nextActivity);
             }
         });

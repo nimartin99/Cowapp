@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".PushNotificationActivity"></activity>
+        <activity android:name=".TestMenuActivity"></activity>
+        <activity android:name=".PushNotificationActivity" />
         <activity android:name=".ThankYouActivity" />
         <activity android:name=".SuspicionActivity" />
         <activity android:name=".ReportInfectionActivity" />
