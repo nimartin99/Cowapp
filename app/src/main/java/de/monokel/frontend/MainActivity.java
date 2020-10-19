@@ -8,6 +8,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import de.monokel.frontend.provider.Key;
+import de.monokel.frontend.provider.RetrofitService;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Main screen for CoWApp
@@ -17,12 +26,28 @@ import android.widget.ImageButton;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private Retrofit retrofit;
+    private RetrofitService retrofitService;
+    private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
+
+    private Key key;
+
     String prefDataProtection = "ausstehend";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+        // init retrofit
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofitService = retrofit.create(RetrofitService.class);
+        // request a key
+        requestKey();
+
+        //If the app is opened for the first time the user has to accept the data protection regulations
         if(firstAppStart()){
             Intent nextActivity = new Intent(MainActivity.this,DataProtectionActivity.class);
             startActivity(nextActivity);
@@ -102,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * At first start of the app the user has to accept the data protection regulations before he can
+     * use the app
+     */
     public boolean firstAppStart(){
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         if(preferences.getBoolean(prefDataProtection, true)){
@@ -112,5 +141,30 @@ public class MainActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+
+    /**
+     * Request a new key from the server
+     */
+    private void requestKey() {
+        Call<Key> call = retrofitService.requestKey();
+        call.enqueue(new Callback<Key>() {
+            @Override
+            public void onResponse(Call<Key> call, Response<Key> response) {
+                if (response.code() == 200) {
+                    key = response.body();
+                    Toast.makeText(MainActivity.this, "Key: " + key.getKey(),
+                            Toast.LENGTH_LONG).show();
+                } else if (response.code() == 404) {
+                    Toast.makeText(MainActivity.this, "Key doesn't exist",
+                            Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Key> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
