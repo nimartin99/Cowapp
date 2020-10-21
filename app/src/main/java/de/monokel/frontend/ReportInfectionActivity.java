@@ -1,20 +1,22 @@
 package de.monokel.frontend;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import de.monokel.frontend.exceptions.KeyNotRequestedException;
 
 /**
  * Report infection screen for CoWApp
  *
  * @author Tabea leibl
- * @version 2020-10-18
+ * @author Philipp Alessandrini
+ * @version 2020-10-21
  */
-public class ReportInfectionActivity extends AppCompatActivity {
+public class ReportInfectionActivity extends MainActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,13 @@ public class ReportInfectionActivity extends AppCompatActivity {
         yesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // send infected key to the server
+                try {
+                    reportInfection();
+                } catch (KeyNotRequestedException e) {
+                    Toast.makeText(ReportInfectionActivity.this, e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                }
                 //Go to screen to thank the user and inform about what to do now
                 Intent nextActivity = new Intent(ReportInfectionActivity.this,ThankYouActivity.class);
                 startActivity(nextActivity);
