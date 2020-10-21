@@ -1,7 +1,12 @@
 package de.monokel.frontend;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import java.io.PushbackInputStream;
 
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.RetrofitService;
@@ -125,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     /**
@@ -166,5 +174,26 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    public void pushNotification(View view)
+    {
+        addNotification();
+    }
+
+    private void addNotification()
+    {
+        NotificationCompat.Builder builder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.message)
+                        .setContentTitle("Mögliches Gesundheitsrisiko")   //title of notification
+                        .setColor(101)
+                        .setContentText("Hier klicken für weitere Information.");   //message showed in notification
+        Intent intent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
     }
 }
