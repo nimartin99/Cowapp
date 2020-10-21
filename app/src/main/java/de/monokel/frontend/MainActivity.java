@@ -10,7 +10,12 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.HashMap;
+
+import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Key;
+import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,15 +27,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Main screen for CoWApp
  *
  * @author Tabea leibl
- * @version 2020-10-18
+ * @author Philipp Alessandrini
+ * @version 2020-10-21
  */
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitService retrofitService;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
-
-    private Key key;
 
     String prefDataProtection = "ausstehend";
 
@@ -44,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
-        // request a key
-        requestKey();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if(firstAppStart()){
@@ -95,6 +97,8 @@ public class MainActivity extends AppCompatActivity {
             testMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // request a key
+                    requestKey();
                     //Go to test menu screen
                     Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
                     startActivity(nextActivity);
@@ -144,16 +148,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Request a new key from the server
+     * Request a new key from the server.
      */
-    private void requestKey() {
-        Call<Key> call = retrofitService.requestKey();
-        call.enqueue(new Callback<Key>() {
+    public void requestKey() {
+        Call<RequestedObject> call = retrofitService.requestKey();
+        call.enqueue(new Callback<RequestedObject>() {
             @Override
-            public void onResponse(Call<Key> call, Response<Key> response) {
+            public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
                 if (response.code() == 200) {
-                    key = response.body();
-                    Toast.makeText(MainActivity.this, "Key: " + key.getKey(),
+                    RequestedObject requestedKey = response.body();
+                    // set the key
+                    Key.setKey(requestedKey.getKey());
+                    Toast.makeText(MainActivity.this, "Key: " + Key.getKey(),
                             Toast.LENGTH_LONG).show();
                 } else if (response.code() == 404) {
                     Toast.makeText(MainActivity.this, "Key doesn't exist",
@@ -162,9 +168,44 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Key> call, Throwable t) {
+            public void onFailure(Call<RequestedObject> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /**
+     * Report an infection by sending the current key to the server.
+     *
+     * @throws KeyNotRequestedException if this method is called before a key is requested
+     */
+    public void reportInfection() throws KeyNotRequestedException {
+        if (Key.getKey() == null) {
+            throw new KeyNotRequestedException("A key needs to be requested first");
+        } else {
+            HashMap<String, String> keyMap = new HashMap<>();
+            keyMap.put("date", Calendar.getInstance().getTime().toString());
+            keyMap.put("key", Key.getKey());
+
+            Call<Void> call = retrofitService.reportInfection(keyMap);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.code() == 200) {
+                        Toast.makeText(MainActivity.this,
+                                "Infection reported successfully", Toast.LENGTH_LONG).show();
+                    } else if (response.code() == 400) {
+                        Toast.makeText(MainActivity.this,
+                                "Infection already reported", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG)
+                            .show();
+                }
+            });
+        }
     }
 }
