@@ -4,6 +4,8 @@
     package="de.monokel.frontend">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -30,6 +32,11 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".LogActivity" />
         <activity android:name=".DataProtectionActivity" />
+
+        <service android:name="org.altbeacon.beacon.service.BeaconService"
+            tools:node="replace">
+            <meta-data android:name="longScanForcingEnabled" android:value="true"/>
+        </service>
     </application>
 
 </manifest>
