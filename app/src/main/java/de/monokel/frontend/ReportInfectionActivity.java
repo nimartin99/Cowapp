@@ -2,10 +2,12 @@ package de.monokel.frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
+
+import java.util.Objects;
 
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
 
@@ -17,6 +19,8 @@ import de.monokel.frontend.exceptions.KeyNotRequestedException;
  * @version 2020-10-21
  */
 public class ReportInfectionActivity extends MainActivity {
+    // tag class name for logging
+    private static final String TAG = "ReportInfectionActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +49,7 @@ public class ReportInfectionActivity extends MainActivity {
                 try {
                     reportInfection();
                 } catch (KeyNotRequestedException e) {
-                    Toast.makeText(ReportInfectionActivity.this, e.getMessage(),
-                            Toast.LENGTH_LONG).show();
+                    Log.w(TAG, Objects.requireNonNull(e.getMessage()));
                 }
                 //Go to screen to thank the user and inform about what to do now
                 Intent nextActivity = new Intent(ReportInfectionActivity.this,ThankYouActivity.class);
