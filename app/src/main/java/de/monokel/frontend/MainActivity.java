@@ -18,12 +18,14 @@ import android.widget.ImageButton;
 
 import org.altbeacon.beacon.BeaconManager;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Key;
+import de.monokel.frontend.provider.LocalKeySafer;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
 import retrofit2.Call;
