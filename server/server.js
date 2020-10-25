@@ -3,7 +3,7 @@
  *
  * @author Mergim Miftari
  * @author Philipp Alessandrini
- * @version 2020-10-21
+ * @version 2020-10-22
  */
 
 // init web framework
@@ -57,9 +57,11 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
         });
         // send infected key to mongodb
         app.post('/report_infection', (req, res) => {
+            // delete reported key after 14 days
+            infectedCollection.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 14*24*60*60 });
             // get key from user
             const userReport = {
-                date: req.body.date,
+                "createdAt": new Date(),
                 key: req.body.key
             };
             const searchKey = { key: userReport.key };
