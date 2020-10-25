@@ -15,19 +15,23 @@ import java.util.List;
  */
 public class LocalKeySafer {
     /**
-     * safes the given key and the time of the method-call.
+     * safes the given key and the time of the method-call. If the parameter is null, the method deleteOldKeyPairs() is called.
      * @param contactKey The Key of the contact
      */
     public synchronized static void addKeyPairToSavedKeyPairs(String contactKey) {
-        String alreadySavedKeyPairs = readKeyPairsDataFile();
-        String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey + "----" + new Date().toString();
-        try {
-            FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappkeys.txt",
-                    Context.MODE_PRIVATE);
-            data.write(allKeyPairsToSafe.getBytes());
-            data.close();
-        } catch(IOException ex) {
-            System.out.println("Some Mistakes happened at addKeyPairToSavedKeyPairs(...)");
+        if (contactKey == null) {
+            deleteOldKeyPairs();
+        } else {
+            String alreadySavedKeyPairs = readKeyPairsDataFile();
+            String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey + "----" + new Date().toString();
+            try {
+                FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappkeys.txt",
+                        Context.MODE_PRIVATE);
+                data.write(allKeyPairsToSafe.getBytes());
+                data.close();
+            } catch (IOException ex) {
+                System.out.println("Some Mistakes happened at addKeyPairToSavedKeyPairs(...)");
+            }
         }
     }
 

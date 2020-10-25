@@ -4,9 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -38,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Main screen for CoWApp
  *
  * @author Tabea leibl
- * @author Philipp Alessandrini
+ * @author Philipp Alessandrini, Mergim Miftari
  * @version 2020-10-22
  */
 public class MainActivity extends AppCompatActivity {
@@ -53,6 +58,13 @@ public class MainActivity extends AppCompatActivity {
     //Expected Permission Values
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
+
+    //For the once-a-day-alarm-clock for deleting keys that are older than 3 weeks
+    private PendingIntent myPendingIntent;
+    private AlarmManager alarmManager;
+    private BroadcastReceiver myBroadcastReceiver;
+    private Calendar firingCal;
+
 
     String prefDataProtection = "ausstehend";
 
@@ -153,6 +165,32 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        //Register AlarmManager Broadcast receive. (For the once-a-day-alarm-clock for deleting keys older then 3 weeks.
+        firingCal= Calendar.getInstance();
+        firingCal.set(Calendar.HOUR, 8); // alarm hour
+        firingCal.set(Calendar.MINUTE, 0); // alarm minute 
+        firingCal.set(Calendar.SECOND, 0); // and alarm second
+        long intendedTime = firingCal.getTimeInMillis();
+
+        registerMyAlarmBroadcast();
+        alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , AlarmManager.INTERVAL_DAY , myPendingIntent );
+    }
+
+    private void registerMyAlarmBroadcast()
+    {
+        //This is the call back function(BroadcastReceiver) which will be call when your
+        //alarm time will reached.
+        myBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LocalKeySafer.addKeyPairToSavedKeyPairs(null);
+            }
+        };
+
+        registerReceiver(myBroadcastReceiver, new IntentFilter("com.alarm.example") );
+        myPendingIntent = PendingIntent.getBroadcast( this, 0, new Intent("com.alarm.example"),0 );
+        alarmManager = (AlarmManager)(this.getSystemService( Context.ALARM_SERVICE ));
     }
 
     /**
