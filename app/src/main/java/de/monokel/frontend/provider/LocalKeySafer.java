@@ -91,4 +91,78 @@ public class LocalKeySafer {
         keyPairs = keyPairs.substring(4);
         return keyPairs.split("-<>-");
     }
+
+    /**
+     * All Keys older than 3 weeks are going to be deleted.
+     */
+    public static void deleteOldKeyPairs() {
+        String[] keyPairs = getKeyPairs();
+        String result = "";
+
+        if (keyPairs != null) {
+            for (String string : keyPairs) {
+                String[] strings = string.split("----");
+                Date dateOfKey = new Date(strings[1]);
+                if (!dateIsOld(dateOfKey)) {
+                    result = result + "-<>-" + string;
+                }
+            }
+
+            try {
+                FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappkeys.txt",
+                        Context.MODE_PRIVATE);
+                data.write(result.getBytes());
+                data.close();
+            } catch (IOException ex) {
+                System.out.println("Some Mistakes happened at deleteOldKeyPairs(...)");
+            }
+        }
+    }
+
+    /**
+     * Returns true if the date is older than 3 weeks.
+     * @param date
+     * @return
+     */
+    private static boolean dateIsOld(Date date) {
+        boolean result = false;
+        Date currentDate = new Date();
+
+        int currentMonth = currentDate.getMonth();
+        int currentDay = currentDate.getDay();
+        int oldMonth = date.getMonth();
+        int oldDay = date.getDay();
+
+        if (currentMonth != oldMonth) {
+            int days = 0;
+
+            switch (oldMonth) {
+                case 1:
+                case 7:
+                case 3:
+                case 5:
+                case 8:
+                case 10:
+                case 12:
+                    days = 31;
+                    break;
+
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    days = 30;
+                    break;
+
+                case 2:
+                    days = 28;
+                    break;
+            }
+
+            if (((days - oldDay) + currentDay) > 21) {
+                result = true;
+            }
+        }
+        return result;
+    }
 }
