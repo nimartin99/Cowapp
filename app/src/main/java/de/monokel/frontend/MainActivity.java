@@ -177,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
         alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , AlarmManager.INTERVAL_DAY , myPendingIntent );
     }
 
+    /**
+     * This method supports the once-a-day-alarm-clock for deleting keys older then 3 weeks.
+     */
     private void registerMyAlarmBroadcast()
     {
         //This is the call back function(BroadcastReceiver) which will be call when your
