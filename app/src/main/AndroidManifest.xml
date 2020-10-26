@@ -25,9 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TestMenuActivity"/>
-        <activity android:name=".PushNotificationActivity"
-                  android:taskAffinity=" "
-                  android:excludeFromRecents="true"/>
+        <activity android:name=".PushNotificationActivity"/>
         <activity android:name=".ThankYouActivity" />
         <activity android:name=".SuspicionActivity" />
         <activity android:name=".ReportInfectionActivity" />

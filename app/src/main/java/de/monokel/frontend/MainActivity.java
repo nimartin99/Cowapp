@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -15,9 +16,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,6 +61,13 @@ public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
 
+    //field with channel ID for push notification
+    private static final String CHANNEL_ID = "pushNotifications";
+    //unique ID of push notification
+    private static final int notificationId = 1;
+    //Manager for push notification
+    private NotificationManagerCompat notificationManager;
+
     private Retrofit retrofit;
     private RetrofitService retrofitService;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
@@ -91,6 +101,11 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
+
+        //Create channel for push up notifications
+        createNotificationChannel();
+        //visibility of the push notification
+        notificationManager = NotificationManagerCompat.from(this);
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
@@ -434,24 +449,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void pushNotification(View view)
-    {
-        addNotification();
+    //create channel for the notification to be delivered as heads-up notification
+    private void createNotificationChannel() {
+        // Create the NotificationChannel (only on API 26+ because
+        // the NotificationChannel class is new and not in the support library)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH; //high priority for heads-up notifications for android 8.0 and higher
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
-    private void addNotification()
-    {
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.message)
-                        .setContentTitle("Mögliches Gesundheitsrisiko")   //title of notification
-                        .setColor(101)
-                        .setContentText("Hier klicken für weitere Information.");   //message showed in notification
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(contentIntent);
-        // Add as notification
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        manager.notify(0, builder.build());
+        // Creates an explicit intent for the push activity screen of the CoWApp (activity is called when tapping the notification)
+        Intent intent = new Intent(this, PushNotificationActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        //build push notification itself
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.notification_icon)
+            .setContentTitle("Mögliches Gesundheitsrisiko") //title of notification
+            .setContentText("Hier klicken für weitere Informationen.") //message shown in the notification
+            .setContentIntent(pendingIntent) //sets the intent to react on a tap on the notification
+            .setAutoCancel(true) //automatically removes the notification when tapped on
+            .setPriority(NotificationCompat.PRIORITY_HIGH); //high priority for heads-up notification for android < 8.0
+
+
+    //TODO if-Abfrage für Kontakt mit Infektionen
+    //method to send the push notification
+    public void sendPushNotification(View v){
+        notificationManager.notify(notificationId, builder.build());
     }
 }
