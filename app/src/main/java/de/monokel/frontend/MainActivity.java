@@ -61,16 +61,9 @@ public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
 
-    //field with channel ID for push notification
-    private static final String CHANNEL_ID = "pushNotifications";
-    //unique ID of push notification
-    private static final int notificationId = 1;
-    //For push notification function
-    private NotificationManagerCompat notificationManagerCom;
+    //For push notification
+    public static final String CHANNEL_ID = "pushNotifications";
     private NotificationManager notificationManager;
-    private Intent pushIntent;
-    PendingIntent pushPendingIntent;
-    NotificationCompat.Builder builder;
 
     private Retrofit retrofit;
     private RetrofitService retrofitService;
@@ -108,21 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         //Create channel for push up notifications
         createNotificationChannel();
-        //visibility of the push notification
-        notificationManagerCom = NotificationManagerCompat.from(this);
-
-        // Creates an explicit intent for the push activity screen of the CoWApp (activity is called when tapping the notification)
-        pushIntent = new Intent(this, PushNotificationActivity.class);
-        pushPendingIntent = PendingIntent.getActivity(this, 0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        //build push notification itself
-        builder = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle("Mögliches Gesundheitsrisiko") //title of notification
-                .setContentText("Hier klicken für weitere Informationen.") //message shown in the notification
-                .setContentIntent(pushPendingIntent) //sets the intent to react on a tap on the notification
-                .setAutoCancel(true) //automatically removes the notification when tapped on
-                .setPriority(NotificationCompat.PRIORITY_HIGH); //high priority for heads-up notification for android < 8.0
 
 
         //If the app is opened for the first time the user has to accept the data protection regulations
@@ -481,14 +459,6 @@ public class MainActivity extends AppCompatActivity {
             // or other notification behaviors after this
             notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-
-    //method to call if somebody had contact to an infected person to send the push notification
-    public void sendPushNotification(){
-        if (notificationManager != null) {
-            notificationManager.notify(notificationId, builder.build());
         }
     }
 

@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import de.monokel.frontend.provider.NotificationService;
+
 /**
  * Developer menu to test functions for the CoWApp development
  *
@@ -42,8 +44,8 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //trigger push notification to test its functionality
-                Intent pushActivity = new Intent(TestMenuActivity.this,MainActivity.class);
-                startService(pushActivity);
+                Intent pushNotificationActivity = new Intent(TestMenuActivity.this, NotificationService.class);
+                startService(pushNotificationActivity);
             }
         });
     }
