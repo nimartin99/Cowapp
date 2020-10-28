@@ -37,13 +37,13 @@ public class TestMenuActivity extends AppCompatActivity {
 
         //Push notification test button listener
         Button pushTestButton = (Button)findViewById(R.id.Test1);
-
+        //TODO Button-Funktion noch hinbekommen
         pushTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //trigger push notification to test its functionality
-                //Intent pushActivity = activity.intent;
-                //startActivity(pushActivity);
+                Intent pushActivity = new Intent(TestMenuActivity.this,MainActivity.class);
+                startService(pushActivity);
             }
         });
     }
@@ -51,7 +51,7 @@ public class TestMenuActivity extends AppCompatActivity {
     /* //TODO wie Push auf Testbutton bekommen?
     * Method to be called if push notification test button is pressed
      */
-    public void sendPushNotification(View view) {
-       //activity.sendPushNotification(view);
+    public void sendPushNotification() {
+       //activity.sendPushNotification();
     }
 }
