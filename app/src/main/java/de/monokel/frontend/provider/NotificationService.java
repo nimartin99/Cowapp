@@ -13,6 +13,12 @@ import de.monokel.frontend.MainActivity;
 import de.monokel.frontend.PushNotificationActivity;
 import de.monokel.frontend.R;
 
+/**
+ * Notification service for heads-up notifications if there is a health risk.
+ *
+ * @author Tabea leibl
+ * @version 2020-10-28
+ */
 public class NotificationService extends Service {
 
     final int notificationId = 1;
@@ -24,7 +30,6 @@ public class NotificationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

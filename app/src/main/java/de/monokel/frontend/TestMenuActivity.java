@@ -14,7 +14,7 @@ import de.monokel.frontend.provider.NotificationService;
  * Developer menu to test functions for the CoWApp development
  *
  * @author Tabea leibl
- * @version 2020-10-26
+ * @version 2020-10-28
  */
 public class TestMenuActivity extends AppCompatActivity {
 
@@ -39,7 +39,7 @@ public class TestMenuActivity extends AppCompatActivity {
 
         //Push notification test button listener
         Button pushTestButton = (Button)findViewById(R.id.Test1);
-        //TODO Button-Funktion noch hinbekommen
+
         pushTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,10 +50,4 @@ public class TestMenuActivity extends AppCompatActivity {
         });
     }
 
-    /* //TODO wie Push auf Testbutton bekommen?
-    * Method to be called if push notification test button is pressed
-     */
-    public void sendPushNotification() {
-       //activity.sendPushNotification();
-    }
 }
