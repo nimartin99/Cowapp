@@ -12,7 +12,7 @@ import android.widget.ImageButton;
  * Developer menu to test functions for the CoWApp development
  *
  * @author Tabea leibl
- * @version 2020-10-18
+ * @version 2020-10-26
  */
 public class TestMenuActivity extends AppCompatActivity {
 
@@ -42,8 +42,8 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //trigger push notification to test its functionality
-                Intent pushActivity = activity.intent;
-                startActivity(pushActivity);
+                //Intent pushActivity = activity.intent;
+                //startActivity(pushActivity);
             }
         });
     }
@@ -52,6 +52,6 @@ public class TestMenuActivity extends AppCompatActivity {
     * Method to be called if push notification test button is pressed
      */
     public void sendPushNotification(View view) {
-       activity.sendPushNotification(view);
+       //activity.sendPushNotification(view);
     }
 }

@@ -54,7 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-10-22
+ * @version 2020-10-26
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
     //unique ID of push notification
     private static final int notificationId = 1;
     //Manager for push notification
-    private NotificationManagerCompat notificationManager;
+    private NotificationManagerCompat notificationManagerCom;
+    private NotificationManager notificationManager;
 
     private Retrofit retrofit;
     private RetrofitService retrofitService;
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         //Create channel for push up notifications
         createNotificationChannel();
         //visibility of the push notification
-        notificationManager = NotificationManagerCompat.from(this);
+        notificationManagerCom = NotificationManagerCompat.from(this);
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
@@ -461,28 +462,29 @@ public class MainActivity extends AppCompatActivity {
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
     }
 
         // Creates an explicit intent for the push activity screen of the CoWApp (activity is called when tapping the notification)
-        Intent intent = new Intent(this, PushNotificationActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Intent pushIntent = new Intent(this, PushNotificationActivity.class);
+        PendingIntent pushPendingIntent = PendingIntent.getActivity(this, 0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //build push notification itself
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.notification_icon)
             .setContentTitle("Mögliches Gesundheitsrisiko") //title of notification
             .setContentText("Hier klicken für weitere Informationen.") //message shown in the notification
-            .setContentIntent(pendingIntent) //sets the intent to react on a tap on the notification
+            .setContentIntent(pushPendingIntent) //sets the intent to react on a tap on the notification
             .setAutoCancel(true) //automatically removes the notification when tapped on
             .setPriority(NotificationCompat.PRIORITY_HIGH); //high priority for heads-up notification for android < 8.0
 
 
-    //TODO if-Abfrage für Kontakt mit Infektionen
-    //method to send the push notification
+    //method to call if somebody had contact to an infected person to send the push notification
     public void sendPushNotification(View v){
         notificationManager.notify(notificationId, builder.build());
     }
+
+
 }
