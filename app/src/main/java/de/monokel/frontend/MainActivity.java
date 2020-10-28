@@ -2,17 +2,21 @@ package de.monokel.frontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +26,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import org.altbeacon.beacon.BeaconManager;
+
+import java.io.PushbackInputStream;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,12 +50,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-10-22
+ * @version 2020-10-28
  */
 public class MainActivity extends AppCompatActivity {
 
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
+
+    //For push notification
+    public static final String CHANNEL_ID = "pushNotifications";
+    private NotificationManager notificationManager;
 
     private Retrofit retrofit;
     private RetrofitService retrofitService;
@@ -84,6 +94,10 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
+
+        //Create channel for push up notifications
+        createNotificationChannel();
+
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
@@ -169,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         //Register AlarmManager Broadcast receive. (For the once-a-day-alarm-clock for deleting keys older then 3 weeks.
         firingCal= Calendar.getInstance();
         firingCal.set(Calendar.HOUR, 8); // alarm hour
-        firingCal.set(Calendar.MINUTE, 0); // alarm minute 
+        firingCal.set(Calendar.MINUTE, 0); // alarm minute
         firingCal.set(Calendar.SECOND, 0); // and alarm second
         long intendedTime = firingCal.getTimeInMillis();
 
@@ -426,4 +440,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    //create channel for the notification to be delivered as heads-up notification
+    private void createNotificationChannel() {
+        // Create the NotificationChannel (only on API 26+ because
+        // the NotificationChannel class is new and not in the support library)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH; //high priority for heads-up notifications for android 8.0 and higher
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+
 }

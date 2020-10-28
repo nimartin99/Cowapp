@@ -39,7 +39,12 @@
         android:layout_marginTop="70dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
-        android:text="Nutzungsbedingungen"
+        android:text="Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres
+        Mobilgerätes aktivieren und darüber Daten (generierte Schlüssel mit Zeitstempel und Standort
+ sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich
+damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch
+wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.\nNur so ist die Funktion der
+Corona-Warn-App gegeben."
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/AcceptButton"

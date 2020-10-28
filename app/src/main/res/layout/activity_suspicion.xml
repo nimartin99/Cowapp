@@ -23,7 +23,11 @@
         android:layout_height="465dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:text="Information was bei Verdachtsfall zu tun ist"
+        android:text="Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich
+testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region \n(Suchen Sie Ihr
+Gesundheitsamt: https://tools.rki.de/plztool/ )\nund bleiben in
+14-tägiger Quarantäne. \nIst das Testergebnis negativ, dürfen Sie die Quarantäne beenden.\nVielen Dank für Ihre Mithilfe,
+der weiteren Ausbreitung des Corona-Virus entgegenzuwirken."
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
