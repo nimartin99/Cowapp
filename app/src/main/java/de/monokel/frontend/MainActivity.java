@@ -11,14 +11,12 @@ import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,9 +25,6 @@ import android.widget.ImageButton;
 
 import org.altbeacon.beacon.BeaconManager;
 
-import java.io.PushbackInputStream;
-
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
@@ -39,6 +34,7 @@ import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
+import de.monokel.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,13 +94,11 @@ public class MainActivity extends AppCompatActivity {
         //Create channel for push up notifications
         createNotificationChannel();
 
-
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
         } else {
-
             //Info button listener
             Button infoButton = (Button) findViewById(R.id.InfoButton);
 
@@ -231,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void requestKey() {
         Call<RequestedObject> call = retrofitService.requestKey();
-        call.enqueue(new Callback<RequestedObject>() {
+        RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
             @Override
             public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
                 if (response.code() == 200) {
@@ -266,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
             keyMap.put("key", Key.getKey());
 
             Call<Void> call = retrofitService.reportInfection(keyMap);
-            call.enqueue(new Callback<Void>() {
+            RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
