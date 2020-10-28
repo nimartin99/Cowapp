@@ -23,7 +23,6 @@ import android.widget.ImageButton;
 
 import org.altbeacon.beacon.BeaconManager;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
@@ -33,6 +32,7 @@ import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
+import de.monokel.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,7 +44,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-10-22
+ * @version 2020-10-28
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void requestKey() {
         Call<RequestedObject> call = retrofitService.requestKey();
-        call.enqueue(new Callback<RequestedObject>() {
+        RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
             @Override
             public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
                 if (response.code() == 200) {
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
             keyMap.put("key", Key.getKey());
 
             Call<Void> call = retrofitService.reportInfection(keyMap);
-            call.enqueue(new Callback<Void>() {
+            RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
