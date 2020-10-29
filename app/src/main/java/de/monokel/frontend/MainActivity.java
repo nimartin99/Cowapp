@@ -463,13 +463,13 @@ public class MainActivity extends AppCompatActivity {
     //method called after risk calcutation to show the right traffic light status (for current health risk)
     private void showTrafficLightStatus(int risikowert) {
         if(risikowert <= 33) {
-            this.trafficLight.setImageResource(R.drawable.greenTrafficLight);
+            this.trafficLight.setImageResource(R.drawable.green_traffic_light);
         }
         else if(risikowert <=70) {
-            this.trafficLight.setImageResource(R.drawable.yellowTrafficLight);
+            this.trafficLight.setImageResource(R.drawable.yellow_traffic_light);
         }
         else {
-            this.trafficLight.setImageResource(R.drawable.redTrafficLight);
+            this.trafficLight.setImageResource(R.drawable.red_traffic_light);
         }
     }
 

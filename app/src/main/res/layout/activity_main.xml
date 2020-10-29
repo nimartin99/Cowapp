@@ -129,6 +129,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/greenTrafficLight" />
+        app:srcCompat="@drawable/green_traffic_light" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
