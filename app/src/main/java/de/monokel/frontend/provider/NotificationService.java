@@ -1,5 +1,6 @@
 package de.monokel.frontend.provider;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -10,13 +11,13 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import de.monokel.frontend.MainActivity;
-import de.monokel.frontend.PushNotificationActivity;
 import de.monokel.frontend.R;
 
 /**
- * Notification service for heads-up notifications if there is a health risk.
+ * Notification service for push-notifications
  *
  * @author Tabea leibl
+ * @author Philipp Alessandrini
  * @version 2020-10-28
  */
 public class NotificationService extends Service {
@@ -24,6 +25,10 @@ public class NotificationService extends Service {
     final int notificationId = 1;
     //visibility of the push notification
     private NotificationManagerCompat notificationManagerCom;
+
+    private String notificationTitle;
+    private String notificationText;
+    private Class notificationClass;
 
     public NotificationService() {
     }
@@ -34,16 +39,32 @@ public class NotificationService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId){
+        notificationTitle = intent.getStringExtra("TITLE");
+        notificationText = intent.getStringExtra("TEXT");
+        try {
+            notificationClass = (Class<Activity>)intent.getSerializableExtra("CLASS");
+        } catch (Exception e) {
+            notificationClass = null;
+        }
+
         notificationManagerCom = NotificationManagerCompat.from(this);
-        displayNotification("Mögliches Gesundheitsrisiko", "Hier klicken für weitere Informationen.");
+        displayNotification(notificationTitle, notificationText, notificationClass);
         stopSelf();
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void displayNotification(String title, String text){
-        // Creates an explicit intent for the push activity screen of the CoWApp (activity is called when tapping the notification)
-        Intent pushIntent = new Intent(this, PushNotificationActivity.class);
-        PendingIntent pushPendingIntent = PendingIntent.getActivity(this, 0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private void displayNotification(String title, String text, Class intentClass){
+        Intent pushIntent;
+        PendingIntent pushPendingIntent;
+        // check if the notification leads to another activity
+        if (intentClass != null) {
+            // Creates an explicit intent for the push activity screen of the CoWApp (activity is called when tapping the notification)
+            pushIntent = new Intent(this, intentClass);
+            pushPendingIntent = PendingIntent.getActivity(this, 0, pushIntent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+        } else {
+            pushPendingIntent = null;
+        }
 
         //build push notification itself
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, MainActivity.CHANNEL_ID)

@@ -32,6 +32,7 @@ import java.util.Objects;
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
+import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
 import de.monokel.frontend.utils.RetryCallUtil;
@@ -70,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
     private AlarmManager alarmManager;
     private BroadcastReceiver myBroadcastReceiver;
     private Calendar firingCal;
-
 
     String prefDataProtection = "ausstehend";
 
@@ -141,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
             testMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // request a key
-                    requestKey();
                     //Go to test menu screen
                     Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
                     startActivity(nextActivity);
@@ -242,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RequestedObject> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                noConnectionNotification();
             }
         });
     }
@@ -273,9 +272,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                    noConnectionNotification();
                 }
             });
         }
+    }
+
+    // standard notification if there is no connection to the server
+    private void noConnectionNotification() {
+        Intent retryRequestPushNotification = new Intent(MainActivity.this,
+                NotificationService.class);
+        retryRequestPushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
+        retryRequestPushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+        startService(retryRequestPushNotification);
     }
 
     /**
@@ -451,6 +460,4 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-
 }
