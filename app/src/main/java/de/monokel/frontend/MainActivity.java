@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
+import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
 import de.monokel.frontend.provider.RequestedObject;
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         myBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LocalKeySafer.addKeyPairToSavedKeyPairs(null);
+                Alarm.dailyBusiness();
             }
         };
 
