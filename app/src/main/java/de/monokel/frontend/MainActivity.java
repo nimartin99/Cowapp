@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import org.altbeacon.beacon.BeaconManager;
 
@@ -42,11 +43,11 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Main screen for CoWApp
+ * Main screen and settings for CoWApp
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-10-28
+ * @version 2020-10-29
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver myBroadcastReceiver;
     private Calendar firingCal;
 
+    //the traffic light
+    private ImageView trafficLight;
+
 
     String prefDataProtection = "ausstehend";
 
@@ -78,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //traffic light image view
+        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
 
         //Check bluetooth and location turned on
         verifyBluetooth();
@@ -452,5 +459,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //TODO Methode nach Risikoberechnung aufrufen
+    //method called after risk calcutation to show the right traffic light status (for current health risk)
+    private void showTrafficLightStatus(int risikowert) {
+        if(risikowert <= 33) {
+            this.trafficLight.setImageResource(R.drawable.greenTrafficLight);
+        }
+        else if(risikowert <=70) {
+            this.trafficLight.setImageResource(R.drawable.yellowTrafficLight);
+        }
+        else {
+            this.trafficLight.setImageResource(R.drawable.redTrafficLight);
+        }
+    }
 
+    //TODO Risikosatzanzeige
 }
