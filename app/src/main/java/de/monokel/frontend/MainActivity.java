@@ -481,44 +481,4 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
         return prefs.getString("ownKey", null);
     }
-
-    /**
-     * Safes the risk Level in the shared preferences.
-     * @param riskLevel risk level as int
-     */
-    public void safeRiskLevel(int riskLevel) {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor meinEditor = prefs.edit();
-        meinEditor.putInt("riskLevel", riskLevel);
-        meinEditor.apply();
-    }
-
-    /**
-     * Getter for the risk level out oh the shared prefernces.
-     * @return risk level as int.
-     */
-    public int getRiskLevel() {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getInt("riskLevel", 0);
-    }
-
-    /**
-     * Safes the daysSinceLastContact in the shared preferences.
-     * @param daysSinceLastContact days Since laste contact as int.
-     */
-    public void safeDaysSinceLastContact(int daysSinceLastContact) {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor meinEditor = prefs.edit();
-        meinEditor.putInt("daysSinceLastContact", daysSinceLastContact);
-        meinEditor.apply();
-    }
-
-    /**
-     * Getter for the daysSinceLastContact out of the shared preferences.
-     * @return the days since last Contact as int.
-     */
-    public int getDaysSinceLastContact() {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getInt("daysSinceLastContact", 0);
-    }
 }
