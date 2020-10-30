@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
 
@@ -459,13 +460,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO Methode nach Risikoberechnung aufrufen
-    //method called after risk calcutation to show the right traffic light status (for current health risk)
-    private void showTrafficLightStatus(int risikowert) {
-        if(risikowert <= 33) {
+    //TODO Methode mit Wert von Methode getRiskLevel() aufrufen
+    //method called after risk calculation to show the right traffic light status (for current health risk)
+    private void showTrafficLightStatus(int riskValue) {
+        if(riskValue <= 33) {
             this.trafficLight.setImageResource(R.drawable.green_traffic_light);
         }
-        else if(risikowert <=70) {
+        else if(riskValue <=70) {
             this.trafficLight.setImageResource(R.drawable.yellow_traffic_light);
         }
         else {
@@ -473,5 +474,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO Risikosatzanzeige
+    //TODO Methode mit Wert von Methode getRiskLevel() aufrufen
+    //method called after risk calculation to show the right health risk status
+    private void showRiskStatus(int riskValue){
+        TextView riskStatus = (TextView)findViewById(R.id.RiskView);
+        if(riskValue <= 33) {
+            riskStatus.setText(riskValue + ": Geringes Risiko");
+        }
+        else if(riskValue <=70) {
+            riskStatus.setText(riskValue + ": Moderates Risiko");
+        }
+        else {
+            riskStatus.setText(riskValue + ": Hohes Risiko");
+        }
+    }
 }
