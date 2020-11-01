@@ -2,6 +2,7 @@ package de.monokel.frontend.provider;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 /**
  * This class has the purpose to provide the Context-object of this app. Therefor there is the static methode getAppContext()

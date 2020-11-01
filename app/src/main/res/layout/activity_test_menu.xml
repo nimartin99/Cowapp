@@ -47,4 +47,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headTestMenu" />
+
+    <Button
+        android:id="@+id/Test2"
+        android:layout_width="380dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="10dp"
+        android:text="Schlüsselgenerierung Test"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headTestMenu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

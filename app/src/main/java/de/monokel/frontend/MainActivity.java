@@ -32,8 +32,10 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
+import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
+import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
 import de.monokel.frontend.utils.RetryCallUtil;
@@ -44,7 +46,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Main screen and settings for CoWApp
+ * Main screen for CoWApp
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari
@@ -203,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         myBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LocalKeySafer.addKeyPairToSavedKeyPairs(null);
+                Alarm.dailyBusiness();
             }
         };
 
@@ -250,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RequestedObject> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                noConnectionNotification();
             }
         });
     }
@@ -281,9 +284,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                    noConnectionNotification();
                 }
             });
         }
+    }
+
+    // standard notification if there is no connection to the server
+    private void noConnectionNotification() {
+        Intent retryRequestPushNotification = new Intent(MainActivity.this,
+                NotificationService.class);
+        retryRequestPushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
+        retryRequestPushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+        startService(retryRequestPushNotification);
     }
 
     /**
@@ -460,6 +473,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Safes the own key in the shared preferences.
+     * @param key the own key as String
+     */
+    public void safeOwnKey(String key) {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor meinEditor = prefs.edit();
+        meinEditor.putString("ownKey", key);
+        meinEditor.apply();
+    }
     //TODO Methode mit Wert von Methode getRiskLevel() aufrufen
     //method called after risk calculation to show the right traffic light status (for current health risk)
     private void showTrafficLightStatus(int riskValue) {
@@ -474,6 +497,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Getter for the own key out of the shared preferences
+     * @return the own key as String
+     */
+    public String getOwnKey() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getString("ownKey", null);
+    }
     //TODO Methode mit Wert von Methode getRiskLevel() aufrufen
     //method called after risk calculation to show the right health risk status
     private void showRiskStatus(int riskValue){

@@ -1,7 +1,5 @@
 package de.monokel.frontend;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,9 +12,10 @@ import de.monokel.frontend.provider.NotificationService;
  * Developer menu to test functions for the CoWApp development
  *
  * @author Tabea leibl
+ * @author Philipp Alessandrini
  * @version 2020-10-28
  */
-public class TestMenuActivity extends AppCompatActivity {
+public class TestMenuActivity extends MainActivity {
 
     private MainActivity activity;
 
@@ -45,7 +44,21 @@ public class TestMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //trigger push notification to test its functionality
                 Intent pushNotificationActivity = new Intent(TestMenuActivity.this, NotificationService.class);
+                pushNotificationActivity.putExtra("TITLE", "Mögliches Gesundheitsrisiko");
+                pushNotificationActivity.putExtra("TEXT", "Hier klicken für weitere Informationen.");
+                pushNotificationActivity.putExtra("CLASS", PushNotificationActivity.class);
                 startService(pushNotificationActivity);
+            }
+        });
+
+        // Generate key test button listener
+        Button generateKeyTestButton = (Button)findViewById(R.id.Test2);
+
+        generateKeyTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // try to generate a key if the smartphone has a connection to the server
+                requestKey();
             }
         });
     }
