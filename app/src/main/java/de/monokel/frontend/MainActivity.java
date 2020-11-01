@@ -35,6 +35,7 @@ import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
+import de.monokel.frontend.provider.LocalRiskLevelSafer;
 import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
@@ -456,7 +457,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //create channel for the notification to be delivered as heads-up notification
+    /**
+     * create channel for the notification to be delivered as heads-up notification
+     */
     private void createNotificationChannel() {
         // Create the NotificationChannel (only on API 26+ because
         // the NotificationChannel class is new and not in the support library)
@@ -483,9 +486,24 @@ public class MainActivity extends AppCompatActivity {
         meinEditor.putString("ownKey", key);
         meinEditor.apply();
     }
-    //TODO Methode mit Wert von Methode getRiskLevel() aufrufen
-    //method called after risk calculation to show the right traffic light status (for current health risk)
-    private void showTrafficLightStatus(int riskValue) {
+
+
+    /**
+     * Getter for the own key out of the shared preferences
+     * @return the own key as String
+     */
+    public String getOwnKey() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getString("ownKey", null);
+    }
+
+
+    //TODO Methode daily aufrufen
+    /**
+     * method called after risk calculation to show the right traffic light status (for current health risk)
+     */
+    private void showTrafficLightStatus() {
+        int riskValue = LocalRiskLevelSafer.getRiskLevel();
         if(riskValue <= 33) {
             this.trafficLight.setImageResource(R.drawable.green_traffic_light);
         }
@@ -497,18 +515,14 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    //TODO Methode daily aufrufen
     /**
-     * Getter for the own key out of the shared preferences
-     * @return the own key as String
+     * method called after risk calculation to show the right health risk status
      */
-    public String getOwnKey() {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getString("ownKey", null);
-    }
-    //TODO Methode mit Wert von Methode getRiskLevel() aufrufen
-    //method called after risk calculation to show the right health risk status
-    private void showRiskStatus(int riskValue){
+    private void showRiskStatus(){
         TextView riskStatus = (TextView)findViewById(R.id.RiskView);
+        int riskValue = LocalRiskLevelSafer.getRiskLevel();
         if(riskValue <= 33) {
             riskStatus.setText(riskValue + ": Geringes Risiko");
         }
@@ -519,4 +533,5 @@ public class MainActivity extends AppCompatActivity {
             riskStatus.setText(riskValue + ": Hohes Risiko");
         }
     }
+
 }
