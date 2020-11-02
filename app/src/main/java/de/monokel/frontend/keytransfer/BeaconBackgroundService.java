@@ -27,6 +27,13 @@ import java.util.Collection;
 import de.monokel.frontend.MainActivity;
 import de.monokel.frontend.R;
 
+/**
+ * BeaconBackgroundService that extends the Android Application so it starts when the Application is
+ * first launched. From then on it will continue to scan for all BLE Beacons in the Background as a
+ * foreground Service on Android 8+
+ * @author Nico Martin
+ * @version 2020-11-02
+ */
 public class BeaconBackgroundService extends Application implements BootstrapNotifier, BeaconConsumer, RangeNotifier {
 
     private static Context context;
@@ -93,10 +100,15 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         beaconManager.bind(this);
     }
 
+    /** Callback when an Beacon enters the specified region
+     *
+     * @param region the specified region
+     */
     @Override
     public void didEnterRegion(Region region) {
         Log.d(TAG, "didEnterRegion()");
         try {
+            //Start the ranging process
             beaconManager.startRangingBeaconsInRegion(region);
         }
         catch (RemoteException e) {
@@ -104,6 +116,10 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         }
     }
 
+    /**
+     * Callback when an Beacon exits the specified region
+     * @param region the specified region
+     */
     @Override
     public void didExitRegion(Region region) {
         Log.d(TAG, "didExitRegion()");
@@ -114,12 +130,23 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         }
     }
 
+    /**
+     * Callback when there is at least one beacon in the region
+     * @param state the current state 1 = INSIDE, 0 = OUTSIDE
+     * @param region the specified region
+     */
     @Override
     public void didDetermineStateForRegion(int state, Region region) {
         Log.d(TAG, "didDetermineStateForRegion()");
         Log.d(TAG,"I have just switched from seeing/not seeing beacons: " + state);
     }
 
+    /**
+     * Callback when the ranging from didEnterRegion(Region region): beaconManager.startRangingBeaconsInRegion(region);
+     * was triggered to determine data from the beacons
+     * @param beacons
+     * @param region
+     */
     @Override
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         if (beacons.size() > 0) {
@@ -132,12 +159,19 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         }
     }
 
+    /**
+     * Sets the rangeNotifier to the beaconManager when the beaconManager is online (Callback)
+     */
     @Override
     public void onBeaconServiceConnect() {
         Log.d(TAG, "onBeaconServiceConnect()");
         beaconManager.setRangeNotifier(this);
     }
 
+    /**
+     * Sends notification from background with given context for test purposes
+     * @param context the given context for the notification
+     */
     private void sendNotification(String context) {
         NotificationManager notificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
