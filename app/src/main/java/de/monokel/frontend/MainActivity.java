@@ -2,37 +2,44 @@ package de.monokel.frontend;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Build;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
+import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
+import de.monokel.frontend.provider.LocalRiskLevelSafer;
+import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
+import de.monokel.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,11 +52,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari, Nico Martin
  * @version 2020-10-22
+ * @author Philipp Alessandrini, Mergim Miftari
+ * @version 2020-11-02
  */
 public class MainActivity extends AppCompatActivity {
 
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
+
+    //For push notification
+    public static final String CHANNEL_ID = "pushNotifications";
+    private NotificationManager notificationManager;
 
     private Retrofit retrofit;
     private RetrofitService retrofitService;
@@ -65,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver myBroadcastReceiver;
     private Calendar firingCal;
 
+    //To display the current risk status
+    private static ImageView trafficLight;
+    private static TextView riskStatus;
+
 
     String prefDataProtection = "ausstehend";
 
@@ -72,6 +89,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //traffic light image view and risk status text view
+        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
+        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
 
         //Check bluetooth and location turned on
         verifyBluetooth();
@@ -85,12 +106,18 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
 
+        //Create channel for push up notifications
+        createNotificationChannel();
+
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
+
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
         } else {
-
             //Info button listener
             Button infoButton = (Button) findViewById(R.id.InfoButton);
 
@@ -169,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
         //Register AlarmManager Broadcast receive. (For the once-a-day-alarm-clock for deleting keys older then 3 weeks.
         firingCal= Calendar.getInstance();
         firingCal.set(Calendar.HOUR, 8); // alarm hour
-        firingCal.set(Calendar.MINUTE, 0); // alarm minute 
+        firingCal.set(Calendar.MINUTE, 0); // alarm minute
         firingCal.set(Calendar.SECOND, 0); // and alarm second
         long intendedTime = firingCal.getTimeInMillis();
 
@@ -187,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         myBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                LocalKeySafer.addKeyPairToSavedKeyPairs(null);
+                Alarm.dailyBusiness();
             }
         };
 
@@ -217,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void requestKey() {
         Call<RequestedObject> call = retrofitService.requestKey();
-        call.enqueue(new Callback<RequestedObject>() {
+        RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
             @Override
             public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
                 if (response.code() == 200) {
@@ -234,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RequestedObject> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                noConnectionNotification();
             }
         });
     }
@@ -252,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
             keyMap.put("key", Key.getKey());
 
             Call<Void> call = retrofitService.reportInfection(keyMap);
-            call.enqueue(new Callback<Void>() {
+            RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
@@ -265,9 +293,19 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                    noConnectionNotification();
                 }
             });
         }
+    }
+
+    // standard notification if there is no connection to the server
+    private void noConnectionNotification() {
+        Intent retryRequestPushNotification = new Intent(MainActivity.this,
+                NotificationService.class);
+        retryRequestPushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
+        retryRequestPushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+        startService(retryRequestPushNotification);
     }
 
     /**
@@ -426,4 +464,79 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+    /**
+     * create channel for the notification to be delivered as heads-up notification
+     */
+    private void createNotificationChannel() {
+        // Create the NotificationChannel (only on API 26+ because
+        // the NotificationChannel class is new and not in the support library)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH; //high priority for heads-up notifications for android 8.0 and higher
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    /**
+     * Safes the own key in the shared preferences.
+     * @param key the own key as String
+     */
+    public void safeOwnKey(String key) {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor meinEditor = prefs.edit();
+        meinEditor.putString("ownKey", key);
+        meinEditor.apply();
+    }
+
+
+    /**
+     * Getter for the own key out of the shared preferences
+     * @return the own key as String
+     */
+    public String getOwnKey() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getString("ownKey", null);
+    }
+
+
+    /**
+     * method called daily to show the right traffic light status (for current health risk)
+     */
+    public static void showTrafficLightStatus() {
+        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        if(riskValue <= 33) {
+            trafficLight.setImageResource(R.drawable.green_traffic_light);
+        }
+        else if(riskValue <=70) {
+            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
+        }
+        else {
+            trafficLight.setImageResource(R.drawable.red_traffic_light);
+        }
+    }
+
+
+    /**
+     * method called daily to show the right health risk status
+     */
+    public static void showRiskStatus(){
+        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        if(riskValue <= 33) {
+            riskStatus.setText(riskValue + ": Geringes Risiko");
+        }
+        else if(riskValue <=70) {
+            riskStatus.setText(riskValue + ": Moderates Risiko");
+        }
+        else {
+            riskStatus.setText(riskValue + ": Hohes Risiko");
+        }
+    }
+
 }
