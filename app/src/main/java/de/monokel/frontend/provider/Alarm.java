@@ -19,7 +19,7 @@ public class Alarm {
         LocalNotificationSafer.addNotificationToSavedNotifications(null);
 
         //update current risk status (traffic light and risk status title) on main screen
-        //MainActivity.showTrafficLightStatus();
-        //MainActivity.showRiskStatus();
+        MainActivity.showTrafficLightStatus();
+        MainActivity.showRiskStatus();
     }
 }
