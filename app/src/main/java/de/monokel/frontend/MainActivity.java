@@ -107,6 +107,10 @@ public class MainActivity extends AppCompatActivity {
         //Create channel for push up notifications
         createNotificationChannel();
 
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
+
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);

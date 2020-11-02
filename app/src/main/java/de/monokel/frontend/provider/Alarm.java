@@ -5,7 +5,8 @@ import de.monokel.frontend.MainActivity;
 /**
  * This class has the method which is called once a day.
  *
- * @author Miftari
+ * @author Miftari, Leibl
+ * @version 2020-11-02
  */
 public class Alarm {
 
@@ -18,7 +19,7 @@ public class Alarm {
         LocalNotificationSafer.addNotificationToSavedNotifications(null);
 
         //update current risk status (traffic light and risk status title) on main screen
-        MainActivity.showTrafficLightStatus();
-        MainActivity.showRiskStatus();
+        //MainActivity.showTrafficLightStatus();
+        //MainActivity.showRiskStatus();
     }
 }
