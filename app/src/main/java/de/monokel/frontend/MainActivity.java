@@ -43,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Main screen for CoWApp
  *
  * @author Tabea leibl
- * @author Philipp Alessandrini, Mergim Miftari
+ * @author Philipp Alessandrini, Mergim Miftari, Nico Martin
  * @version 2020-10-22
  */
 public class MainActivity extends AppCompatActivity {
