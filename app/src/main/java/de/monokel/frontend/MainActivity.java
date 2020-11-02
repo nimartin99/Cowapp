@@ -51,7 +51,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-10-29
+ * @version 2020-11-02
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -76,8 +76,9 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver myBroadcastReceiver;
     private Calendar firingCal;
 
-    //the traffic light
-    private ImageView trafficLight;
+    //To display the current risk status
+    private static ImageView trafficLight;
+    private static TextView riskStatus;
 
 
     String prefDataProtection = "ausstehend";
@@ -87,8 +88,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //traffic light image view
+        //traffic light image view and risk status text view
         this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
+        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
 
         //Check bluetooth and location turned on
         verifyBluetooth();
@@ -498,30 +500,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //TODO Methode daily aufrufen
     /**
-     * method called after risk calculation to show the right traffic light status (for current health risk)
+     * method called daily to show the right traffic light status (for current health risk)
      */
-    private void showTrafficLightStatus() {
+    public static void showTrafficLightStatus() {
         int riskValue = LocalRiskLevelSafer.getRiskLevel();
         if(riskValue <= 33) {
-            this.trafficLight.setImageResource(R.drawable.green_traffic_light);
+            trafficLight.setImageResource(R.drawable.green_traffic_light);
         }
         else if(riskValue <=70) {
-            this.trafficLight.setImageResource(R.drawable.yellow_traffic_light);
+            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
         }
         else {
-            this.trafficLight.setImageResource(R.drawable.red_traffic_light);
+            trafficLight.setImageResource(R.drawable.red_traffic_light);
         }
     }
 
 
-    //TODO Methode daily aufrufen
     /**
-     * method called after risk calculation to show the right health risk status
+     * method called daily to show the right health risk status
      */
-    private void showRiskStatus(){
-        TextView riskStatus = (TextView)findViewById(R.id.RiskView);
+    public static void showRiskStatus(){
         int riskValue = LocalRiskLevelSafer.getRiskLevel();
         if(riskValue <= 33) {
             riskStatus.setText(riskValue + ": Geringes Risiko");
