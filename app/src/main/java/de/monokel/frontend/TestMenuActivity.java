@@ -75,6 +75,17 @@ public class TestMenuActivity extends MainActivity {
                 MainActivity.showTrafficLightStatus();
             }
         });
+
+        // Reset button (for risk level test button) listener
+        Button resetButton = (Button)findViewById(R.id.resetButton);
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //reset risk level to 0
+                LocalRiskLevelSafer.safeRiskLevel(0);
+            }
+        });
     }
 
 }
