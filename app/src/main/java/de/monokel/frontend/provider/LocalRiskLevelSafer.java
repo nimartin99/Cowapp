@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.monokel.frontend.keytransfer.BeaconBackgroundService;
+
 /**
  * Safer for the Risk Level and the days since last contact
  *
@@ -20,7 +22,7 @@ public class LocalRiskLevelSafer {
      */
     public static void safeRiskLevel(int riskLevel) {
         try {
-            FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowapprisklevel.txt",
+            FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowapprisklevel.txt",
                     Context.MODE_PRIVATE);
             data.write(String.valueOf(riskLevel).getBytes());
             data.close();
@@ -35,7 +37,7 @@ public class LocalRiskLevelSafer {
      */
     public static int getRiskLevel() {
         try {
-            FileInputStream datafile = MyApplication.getAppContext().openFileInput("cowapprisklevel.txt");
+            FileInputStream datafile = BeaconBackgroundService.getAppContext().openFileInput("cowapprisklevel.txt");
             List<Byte> data = new ArrayList<Byte>();
 
             while(true) {
@@ -66,7 +68,7 @@ public class LocalRiskLevelSafer {
      */
     public static void safeDaysSinceLastContact(int daysSinceLastContact) {
         try {
-            FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappdaysslc.txt",
+            FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowappdaysslc.txt",
                     Context.MODE_PRIVATE);
             data.write(String.valueOf(daysSinceLastContact).getBytes());
             data.close();
@@ -81,7 +83,7 @@ public class LocalRiskLevelSafer {
      */
     public static int getDaysSinceLastContact() {
         try {
-            FileInputStream datafile = MyApplication.getAppContext().openFileInput("cowappdaysslc.txt");
+            FileInputStream datafile = BeaconBackgroundService.getAppContext().openFileInput("cowappdaysslc.txt");
             List<Byte> data = new ArrayList<Byte>();
 
             while(true) {

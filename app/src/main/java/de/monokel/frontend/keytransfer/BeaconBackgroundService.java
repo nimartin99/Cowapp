@@ -126,7 +126,8 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             for (Beacon b : beacons) {
                 String context = "Beacon found: id1=" + b.getId1() + ", id2=" + b.getId2() + ", id3=" + b.getId3();
                 Log.d(TAG, context);
-                sendNotification(context);
+                //Comment out to send Notification
+                //sendNotification(context);
             }
         }
     }
