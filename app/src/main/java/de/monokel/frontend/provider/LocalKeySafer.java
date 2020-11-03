@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.monokel.frontend.keytransfer.BeaconBackgroundService;
+
 /**
  * This Class has the purpose to safe, read and manage the keys of the contact-persons.
  *
@@ -25,7 +27,7 @@ public class LocalKeySafer {
             String alreadySavedKeyPairs = readKeyPairsDataFile();
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey + "----" + new Date().toString();
             try {
-                FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappkeys.txt",
+                FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowappkeys.txt",
                         Context.MODE_PRIVATE);
                 data.write(allKeyPairsToSafe.getBytes());
                 data.close();
@@ -41,7 +43,7 @@ public class LocalKeySafer {
     public static void clearKeyPairDataFile() {
         try {
             String nothing = "";
-            FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappkeys.txt",
+            FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowappkeys.txt",
                     Context.MODE_PRIVATE);
             data.write(nothing.getBytes());
             data.close();
@@ -57,7 +59,7 @@ public class LocalKeySafer {
      */
     public static String readKeyPairsDataFile() {
         try {
-            FileInputStream datafile = MyApplication.getAppContext().openFileInput("cowappkeys.txt");
+            FileInputStream datafile = BeaconBackgroundService.getAppContext().openFileInput("cowappkeys.txt");
             List<Byte> data = new ArrayList<Byte>();
 
             while(true) {
@@ -113,7 +115,7 @@ public class LocalKeySafer {
             }
 
             try {
-                FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappkeys.txt",
+                FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowappkeys.txt",
                         Context.MODE_PRIVATE);
                 data.write(result.getBytes());
                 data.close();

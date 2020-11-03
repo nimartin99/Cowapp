@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import de.monokel.frontend.keytransfer.BeaconBackgroundService;
+
 /**
  * This Class has the purpose to safe, read and manage the Notifications of the user.
  *
@@ -25,7 +27,7 @@ public class LocalNotificationSafer {
             String alreadySavedNotifications = readNotificationDataFile();
             String allNotificationsToSafe = alreadySavedNotifications + "-<>-" + notification + "----" + new Date().toString();
             try {
-                FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappnotifications.txt",
+                FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowappnotifications.txt",
                         Context.MODE_PRIVATE);
                 data.write(allNotificationsToSafe.getBytes());
                 data.close();
@@ -41,7 +43,7 @@ public class LocalNotificationSafer {
     public static void clearNotificationDataFile() {
         try {
             String nothing = "";
-            FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappnotifications.txt",
+            FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowappnotifications.txt",
                     Context.MODE_PRIVATE);
             data.write(nothing.getBytes());
             data.close();
@@ -57,7 +59,7 @@ public class LocalNotificationSafer {
      */
     public static String readNotificationDataFile() {
         try {
-            FileInputStream datafile = MyApplication.getAppContext().openFileInput("cowappnotifications.txt");
+            FileInputStream datafile = BeaconBackgroundService.getAppContext().openFileInput("cowappnotifications.txt");
             List<Byte> data = new ArrayList<Byte>();
 
             while(true) {
@@ -113,7 +115,7 @@ public class LocalNotificationSafer {
             }
 
             try {
-                FileOutputStream data = MyApplication.getAppContext().openFileOutput("cowappnotifications.txt",
+                FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput("cowappnotifications.txt",
                         Context.MODE_PRIVATE);
                 data.write(result.getBytes());
                 data.close();

@@ -22,6 +22,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
 
@@ -33,6 +35,7 @@ import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalKeySafer;
+import de.monokel.frontend.provider.LocalRiskLevelSafer;
 import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
@@ -47,8 +50,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Main screen for CoWApp
  *
  * @author Tabea leibl
+ * @author Philipp Alessandrini, Mergim Miftari, Nico Martin
+ * @version 2020-10-22
  * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-10-28
+ * @version 2020-11-02
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -73,12 +78,21 @@ public class MainActivity extends AppCompatActivity {
     private BroadcastReceiver myBroadcastReceiver;
     private Calendar firingCal;
 
+    //To display the current risk status
+    private static ImageView trafficLight;
+    private static TextView riskStatus;
+
+
     String prefDataProtection = "ausstehend";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //traffic light image view and risk status text view
+        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
+        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
 
         //Check bluetooth and location turned on
         verifyBluetooth();
@@ -94,6 +108,10 @@ public class MainActivity extends AppCompatActivity {
 
         //Create channel for push up notifications
         createNotificationChannel();
+
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
@@ -142,6 +160,8 @@ public class MainActivity extends AppCompatActivity {
             testMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // request a key
+                    requestKey();
                     //Go to test menu screen
                     Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
                     startActivity(nextActivity);
@@ -445,7 +465,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //create channel for the notification to be delivered as heads-up notification
+    /**
+     * create channel for the notification to be delivered as heads-up notification
+     */
     private void createNotificationChannel() {
         // Create the NotificationChannel (only on API 26+ because
         // the NotificationChannel class is new and not in the support library)
@@ -461,4 +483,60 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
+    /**
+     * Safes the own key in the shared preferences.
+     * @param key the own key as String
+     */
+    public void safeOwnKey(String key) {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor meinEditor = prefs.edit();
+        meinEditor.putString("ownKey", key);
+        meinEditor.apply();
+    }
+
+
+    /**
+     * Getter for the own key out of the shared preferences
+     * @return the own key as String
+     */
+    public String getOwnKey() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getString("ownKey", null);
+    }
+
+
+    /**
+     * method called daily to show the right traffic light status (for current health risk)
+     */
+    public static void showTrafficLightStatus() {
+        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        if(riskValue <= 33) {
+            trafficLight.setImageResource(R.drawable.green_traffic_light);
+        }
+        else if(riskValue <=70) {
+            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
+        }
+        else {
+            trafficLight.setImageResource(R.drawable.red_traffic_light);
+        }
+    }
+
+
+    /**
+     * method called daily to show the right health risk status
+     */
+    public static void showRiskStatus(){
+        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        if(riskValue <= 33) {
+            riskStatus.setText(riskValue + ": Geringes Risiko");
+        }
+        else if(riskValue <=70) {
+            riskStatus.setText(riskValue + ": Moderates Risiko");
+        }
+        else {
+            riskStatus.setText(riskValue + ": Hohes Risiko");
+        }
+    }
+
 }

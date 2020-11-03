@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".TestMenuActivity">
 
+    <Button
+        android:id="@+id/Test3"
+        android:layout_width="380dp"
+        android:layout_height="73dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Risikolevel Test"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Test2" />
+
     <ImageButton
         android:id="@+id/backButtonTest"
         android:layout_width="70dp"
@@ -62,4 +78,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headTestMenu" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="88dp"
+        android:layout_height="71dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:backgroundTint="#EA6262"
+        android:text="Reset Risk Level"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Test2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import de.monokel.frontend.provider.LocalRiskLevelSafer;
 import de.monokel.frontend.provider.NotificationService;
 
 /**
@@ -17,7 +18,7 @@ import de.monokel.frontend.provider.NotificationService;
  */
 public class TestMenuActivity extends MainActivity {
 
-    private MainActivity activity;
+    private static final int riskLevelTestValue = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +60,30 @@ public class TestMenuActivity extends MainActivity {
             public void onClick(View v) {
                 // try to generate a key if the smartphone has a connection to the server
                 requestKey();
+            }
+        });
+
+        // Risk level test button listener
+        Button riskLevelTestButton = (Button)findViewById(R.id.Test3);
+
+        riskLevelTestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //change risk level and update shown status
+                LocalRiskLevelSafer.safeRiskLevel(riskLevelTestValue);
+                MainActivity.showRiskStatus();
+                MainActivity.showTrafficLightStatus();
+            }
+        });
+
+        // Reset button (for risk level test button) listener
+        Button resetButton = (Button)findViewById(R.id.resetButton);
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //reset risk level to 0
+                LocalRiskLevelSafer.safeRiskLevel(0);
             }
         });
     }
