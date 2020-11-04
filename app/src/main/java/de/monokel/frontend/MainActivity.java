@@ -51,9 +51,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari, Nico Martin
- * @version 2020-10-22
- * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-11-02
+ * @version 2020-11-03
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -64,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CHANNEL_ID = "pushNotifications";
     private NotificationManager notificationManager;
 
+    // for client-server-communication
     private Retrofit retrofit;
     private RetrofitService retrofitService;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
@@ -160,8 +159,6 @@ public class MainActivity extends AppCompatActivity {
             testMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // request a key
-                    requestKey();
                     //Go to test menu screen
                     Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
                     startActivity(nextActivity);
@@ -275,10 +272,27 @@ public class MainActivity extends AppCompatActivity {
         if (Key.getKey() == null) {
             throw new KeyNotRequestedException("A key needs to be requested first");
         } else {
+            // prepare users key for report
             HashMap<String, String> keyMap = new HashMap<>();
-            keyMap.put("date", Calendar.getInstance().getTime().toString());
             keyMap.put("key", Key.getKey());
-
+            // prepare contact keys for report if user has had contact
+            if (LocalKeySafer.getKeyPairs() != null) {
+                StringBuilder contactDate = new StringBuilder();
+                StringBuilder contactKey = new StringBuilder();
+                for (int i = 0; i < LocalKeySafer.getKeyPairs().length; i++) {
+                    // don't append "|" on the fist circle
+                    if (i == 0) {
+                        contactDate.append(LocalKeySafer.getKeyPairs()[i].split("----")[1]);
+                        contactKey.append(LocalKeySafer.getKeyPairs()[i].split("----")[0]);
+                    } else {
+                        contactDate.append("|").append(LocalKeySafer.getKeyPairs()[i].split("----")[1]);
+                        contactKey.append("|").append(LocalKeySafer.getKeyPairs()[i].split("----")[0]);
+                    }
+                }
+                keyMap.put("contactDate", contactDate.toString());
+                keyMap.put("contactKey", contactKey.toString());
+            }
+            // send values to the server
             Call<Void> call = retrofitService.reportInfection(keyMap);
             RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
                 @Override
