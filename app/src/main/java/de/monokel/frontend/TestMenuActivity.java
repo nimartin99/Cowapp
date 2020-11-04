@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import de.monokel.frontend.provider.LocalRiskLevelSafer;
+import de.monokel.frontend.provider.LocalSafer;
 import de.monokel.frontend.provider.NotificationService;
 
 /**
@@ -70,7 +70,7 @@ public class TestMenuActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 //change risk level and update shown status
-                LocalRiskLevelSafer.safeRiskLevel(riskLevelTestValue);
+                LocalSafer.safeRiskLevel(riskLevelTestValue);
                 MainActivity.showRiskStatus();
                 MainActivity.showTrafficLightStatus();
             }
@@ -83,7 +83,7 @@ public class TestMenuActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 //reset risk level to 0
-                LocalRiskLevelSafer.safeRiskLevel(0);
+                LocalSafer.safeRiskLevel(0);
             }
         });
     }

@@ -34,8 +34,7 @@ import java.util.Objects;
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
-import de.monokel.frontend.provider.LocalKeySafer;
-import de.monokel.frontend.provider.LocalRiskLevelSafer;
+import de.monokel.frontend.provider.LocalSafer;
 import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
@@ -510,7 +509,7 @@ public class MainActivity extends AppCompatActivity {
      * method called daily to show the right traffic light status (for current health risk)
      */
     public static void showTrafficLightStatus() {
-        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        int riskValue = LocalSafer.getRiskLevel();
         if(riskValue <= 33) {
             trafficLight.setImageResource(R.drawable.green_traffic_light);
         }
@@ -527,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
      * method called daily to show the right health risk status
      */
     public static void showRiskStatus(){
-        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        int riskValue = LocalSafer.getRiskLevel();
         if(riskValue <= 33) {
             riskStatus.setText(riskValue + ": Geringes Risiko");
         }
