@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">frontend</string>
+    <string name="app_name">CoWApp</string>
     <string name="channel_name">NotificationChannel</string>
     <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>
 </resources>

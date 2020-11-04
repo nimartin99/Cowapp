@@ -61,13 +61,21 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         if (Constants.SCAN_AND_TRANSMIT) {
             beaconManager = org.altbeacon.beacon.BeaconManager.getInstanceForApplication(this);
 
-            beaconManager.setDebug(true);
+            // By default the AndroidBeaconLibrary will only find AltBeacons.  If you wish to make it
+            // find a different type of beacon, you must specify the byte layout for that beacon's
+            // advertisement with a line like below.  The example shows how to find a beacon with the
+            // same byte layout as AltBeacon but with a beaconTypeCode of 0xaabb.  To find the proper
+            // layout expression for other beacon types, do a web search for "setBeaconLayout"
+            // including the quotes.
+            beaconManager.getBeaconParsers().clear();
+            beaconManager.getBeaconParsers().add(new BeaconParser().
+                    setBeaconLayout("s:0-1=fd6f,p:-:-59,i:2-17,d:18-21"));
+
 
             // Uncomment the code below to use a foreground service to scan for beacons. This unlocks
             // the ability to continually scan for long periods of time in the background on Andorid 8+
             // in exchange for showing an icon at the top of the screen and a always-on notification to
             // communicate to users that your app is using resources in the background.
-
             Notification.Builder builder = new Notification.Builder(this);
             builder.setSmallIcon(R.drawable.ic_launcher);
             builder.setContentTitle("Scanning for Beacons");
@@ -109,30 +117,17 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             beaconManager.bind(this);
 
             // This code block starts beacon transmission
-            Log.d(TAG, "Transmit as Beacon with id1=" + Constants.id1 + " id2=" + Constants.id2 + " id3=" + Constants.id3);
+            Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + Constants.id1);
             Beacon beacon = new Beacon.Builder()
                     .setId1(Constants.id1)
-                    .setId2(Constants.id2)
-                    .setId3(Constants.id3)
-                    .setManufacturer(0x0118) // Radius Networks.  Change this for other beacon layouts
-                    .setTxPower(-59)
-                    .setDataFields(Arrays.asList(new Long[]{0l})) // Remove this for beacon layouts without d: fields
+                    .setDataFields(Arrays.asList(new Long[] {0l}))
                     .build();
 
             BeaconParser beaconParser = new BeaconParser()
-                    .setBeaconLayout("m:2-3=beac,i:4-19,i:20-21,i:22-23,p:24-24,d:25-25");
-            BeaconTransmitter beaconTransmitter = new BeaconTransmitter(getApplicationContext(), beaconParser);
-            beaconTransmitter.startAdvertising(beacon, new AdvertiseCallback() {
-                @Override
-                public void onStartFailure(int errorCode) {
-                    Log.e(TAG, "Advertisement start failed with code: " + errorCode);
-                }
-
-                @Override
-                public void onStartSuccess(AdvertiseSettings settingsInEffect) {
-                    Log.d(TAG, "Transmit as Beacon with id1=" + Constants.id1 + " id2=" + Constants.id2 + " id3=" + Constants.id3);
-                }
-            });
+                    .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17,d:18-21");
+            BeaconTransmitter beaconTransmitter = new
+                    BeaconTransmitter(getApplicationContext(), beaconParser);
+            beaconTransmitter.startAdvertising(beacon);
         }
     }
 
@@ -190,10 +185,13 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
     public void didRangeBeaconsInRegion(Collection<Beacon> beacons, Region region) {
         if (beacons.size() > 0) {
             for (Beacon b : beacons) {
-                String context = "Beacon found: id1=" + b.getId1() + ", id2=" + b.getId2() + ", id3=" + b.getId3();
-                Log.d(TAG, context);
-                //Comment out to send Notification
-                //sendNotification(context);
+                String beaconid1 = String.valueOf(b.getId1());
+                if(beaconid1.substring(0, 8).equals("01234567")) {
+                    String context = "Beacon found: id1=" + beaconid1;
+                    Log.d(TAG, context);
+                    //Comment out to send Notification
+                    //sendNotification(context);
+                }
             }
         }
     }
