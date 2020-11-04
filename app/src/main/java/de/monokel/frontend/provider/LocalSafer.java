@@ -24,7 +24,13 @@ public class LocalSafer {
     private static String DATAFILE04 = "cowappdaysslc.txt";
     private static String DATAFILE05 = "cowappfirstdate.txt";
 
-    protected static void safeStringAtDatafile(String datafile, String value) {
+    /**
+     * This methods saves a String under a datafileName.
+     * If there is not such datafile, it will be created, when you call this methode.
+     * @param datafile The Name of the datafile.
+     * @param value The String.
+     */
+    private static void safeStringAtDatafile(String datafile, String value) {
         try {
             FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput(datafile,
                     Context.MODE_PRIVATE);
@@ -35,7 +41,12 @@ public class LocalSafer {
         }
     }
 
-    protected static String readDataFile(String datafileName) {
+    /**
+     * Returns the value of a Datafile. If there is no such datafile, the returnvalue is an empty string.
+     * @param datafileName the name of the datafile.
+     * @return the value of the datafile.
+     */
+    private static String readDataFile(String datafileName) {
         try {
             FileInputStream datafile = BeaconBackgroundService.getAppContext().openFileInput(datafileName);
             List<Byte> data = new ArrayList<Byte>();
@@ -67,7 +78,7 @@ public class LocalSafer {
      * @param date
      * @return
      */
-    protected static boolean dateIsOld(Date date) {
+    private static boolean dateIsOld(Date date) {
         boolean result = false;
         Date currentDate = new Date();
 
@@ -115,7 +126,7 @@ public class LocalSafer {
      * value + "----" + new Date().toString()
      * @return A list of Strings. If there are no saved keys, the return-value is null.
      */
-    protected static String[] getValuesAsArray(String datafileName) {
+    private static String[] getValuesAsArray(String datafileName) {
         String values = readDataFile(datafileName);
         if (values.equals("")) {
             return null;
@@ -127,7 +138,7 @@ public class LocalSafer {
     /**
      * All Values older than 3 weeks are going to be deleted.
      */
-    protected static void deleteOldValues(String datafileName) {
+    private static void deleteOldValues(String datafileName) {
         String[] values = getValuesAsArray(datafileName);
         String result = "";
 
