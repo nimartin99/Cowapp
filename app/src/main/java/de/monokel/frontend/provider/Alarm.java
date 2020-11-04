@@ -15,8 +15,8 @@ public class Alarm {
      */
     public static void dailyBusiness() {
         //delete all keys older then 3 weeks.
-        LocalKeySafer.addKeyPairToSavedKeyPairs(null);
-        LocalNotificationSafer.addNotificationToSavedNotifications(null);
+        LocalSafer.addKeyPairToSavedKeyPairs(null);
+        LocalSafer.addNotificationToSavedNotifications(null);
 
         //update current risk status (traffic light and risk status title) on main screen
         MainActivity.showTrafficLightStatus();
