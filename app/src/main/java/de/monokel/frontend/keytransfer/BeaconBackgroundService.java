@@ -71,7 +71,6 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             beaconManager.getBeaconParsers().add(new BeaconParser().
                     setBeaconLayout("s:0-1=fd6f,p:-:-59,i:2-17,d:18-21"));
 
-
             // Uncomment the code below to use a foreground service to scan for beacons. This unlocks
             // the ability to continually scan for long periods of time in the background on Andorid 8+
             // in exchange for showing an icon at the top of the screen and a always-on notification to
@@ -98,8 +97,9 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             // For the above foreground scanning service to be useful, you need to disable
             // JobScheduler-based scans (used on Android 8+) and set a fast background scan
             // cycle that would otherwise be disallowed by the operating system.
-            //
             beaconManager.setEnableScheduledScanJobs(false);
+            beaconManager.setBackgroundBetweenScanPeriod(Constants.BACKGROUND_SCAN_PERIOD);
+            beaconManager.setForegroundBetweenScanPeriod(Constants.FOREGROUND_SCAN_PERIOD);
 
 
             Log.d(TAG, "setting up background monitoring for beacons and power saving");
@@ -107,20 +107,17 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             Region region = new Region("backgroundRegion", null, null, null);
             regionBootstrap = new RegionBootstrap(this, region);
 
+            beaconManager.bind(this);
             // simply constructing this class and holding a reference to it in your custom Application
             // class will automatically cause the BeaconLibrary to save battery whenever the application
             // is not visible.  This reduces bluetooth power usage by about 60%
             backgroundPowerSaver = new BackgroundPowerSaver(this);
 
-            beaconManager.setBackgroundBetweenScanPeriod(Constants.BACKGROUND_SCAN_PERIOD);
-            beaconManager.setForegroundBetweenScanPeriod(Constants.FOREGROUND_SCAN_PERIOD);
-            beaconManager.bind(this);
-
             // This code block starts beacon transmission
             Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + Constants.id1);
             Beacon beacon = new Beacon.Builder()
                     .setId1(Constants.id1)
-                    .setDataFields(Arrays.asList(new Long[] {0l}))
+                    .setDataFields(Arrays.asList(new Long[]{0l}))
                     .build();
 
             BeaconParser beaconParser = new BeaconParser()
@@ -186,7 +183,7 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         if (beacons.size() > 0) {
             for (Beacon b : beacons) {
                 String beaconid1 = String.valueOf(b.getId1());
-                if(beaconid1.substring(0, 8).equals("01234567")) {
+                if (beaconid1.substring(0, 8).equals("01234567")) {
                     String context = "Beacon found: id1=" + beaconid1;
                     Log.d(TAG, context);
                     //Comment out to send Notification
