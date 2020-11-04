@@ -275,17 +275,17 @@ public class MainActivity extends AppCompatActivity {
             HashMap<String, String> keyMap = new HashMap<>();
             keyMap.put("key", Key.getKey());
             // prepare contact keys for report if user has had contact
-            if (LocalKeySafer.getKeyPairs() != null) {
+            if (LocalSafer.getKeyPairs() != null) {
                 StringBuilder contactDate = new StringBuilder();
                 StringBuilder contactKey = new StringBuilder();
-                for (int i = 0; i < LocalKeySafer.getKeyPairs().length; i++) {
+                for (int i = 0; i < LocalSafer.getKeyPairs().length; i++) {
                     // don't append "|" on the fist circle
                     if (i == 0) {
-                        contactDate.append(LocalKeySafer.getKeyPairs()[i].split("----")[1]);
-                        contactKey.append(LocalKeySafer.getKeyPairs()[i].split("----")[0]);
+                        contactDate.append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                        contactKey.append(LocalSafer.getKeyPairs()[i].split("----")[0]);
                     } else {
-                        contactDate.append("|").append(LocalKeySafer.getKeyPairs()[i].split("----")[1]);
-                        contactKey.append("|").append(LocalKeySafer.getKeyPairs()[i].split("----")[0]);
+                        contactDate.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                        contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
                     }
                 }
                 keyMap.put("contactDate", contactDate.toString());
