@@ -27,14 +27,20 @@ import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
-import de.monokel.frontend.provider.LocalSafer;
+import de.monokel.frontend.provider.LocalDateSafer;
+import de.monokel.frontend.provider.LocalRiskLevelSafer;
 import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
@@ -50,6 +56,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari, Nico Martin
+ * @author Philipp Alessandrini, Mergim Miftari
+ * @author Jonas
  * @version 2020-11-03
  */
 public class MainActivity extends AppCompatActivity {
@@ -79,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     //To display the current risk status
     private static ImageView trafficLight;
     private static TextView riskStatus;
+    private static TextView daysSinceFirstUseTextview;
 
 
     String prefDataProtection = "ausstehend";
@@ -91,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         //traffic light image view and risk status text view
         this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
         this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
+        this.daysSinceFirstUseTextview = (TextView) this.findViewById(R.id.ViewDaysUse);
+
 
         //Check bluetooth and location turned on
         if(Constants.SCAN_AND_TRANSMIT) {
@@ -112,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
         //show current risk level (updated once a day)
         showTrafficLightStatus();
         showRiskStatus();
+
+        //show current Info about days since usage.
+        showDaysSinceUse();
+
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {
@@ -227,6 +242,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
+        //generate and save the Date of the first app Start, maybe this code should be relocated.
+        LocalDateSafer.safeDateOfFirstAppStart(getCurrentDate());
+
+
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(prefDataProtection, false);
@@ -500,17 +519,113 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Safes the own key in the shared preferences.
+     *
+     * @param key the own key as String
+     */
+    public void safeOwnKey(String key) {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor meinEditor = prefs.edit();
+        meinEditor.putString("ownKey", key);
+        meinEditor.apply();
+    }
+
+    /**
+     * Saves the date of the first app start in the shared preferences.
+     *
+     * @param string date
+     */
+    public void safeDateOfFirstAppStart(String string) {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor meinEditor = prefs.edit();
+        meinEditor.putString("dateOfFirstAppStart", string);
+        meinEditor.apply();
+    }
+
+    /**
+     * Getter for the date of the first app start in the shared preferences.
+     *
+     * @return
+     */
+    public String getDateOfFirstAppStart() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        String string = prefs.getString("dateOfFirstAppStart", null);
+        //Date date = new SimpleDateFormat("dd/MM/yyyy").parse(string);
+        return string;
+    }
+
+    /**
+     * Getter of the current date when this method is used
+     *
+     * @return
+     */
+
+    public static String getCurrentDate() {
+
+        Date currentDate = Calendar.getInstance().getTime();
+        String formattedDateString = DateFormat.getDateInstance().format(currentDate);
+
+        //Log.d("Jonas Log", currentDate.toString());
+        //Log.d("Jonas Log", formattedDateString);
+
+        return formattedDateString;
+    }
+
+    /**
+     * Methode berechnet den Abstand zwischen dem heutigen und dem Datum des ersten Starts der App
+     *
+     * @return
+     * @throws ParseException
+     */
+    public static long getDateDiffSinceFirstUse() {
+
+
+        Date firstAppStartDate = null;
+        try {
+            firstAppStartDate = new SimpleDateFormat("MMMM dd, yyyy").parse(LocalDateSafer.getDateOfFirstAppStart());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.d("Jonas Log", "Parse gone Wrong");
+        }
+
+        Date currentDate = new Date();
+
+        long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();
+        long dateDiffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+
+        return dateDiffInDays;
+    }
+
+    /**
+     * Getter for the own key out of the shared preferences
+     *
+     * @return the own key as String
+     */
+    public String getOwnKey() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getString("ownKey", null);
+    }
+
+    public static String generateStringDaysSince() {
+        String daysSinceText = ("Seit dem " + LocalDateSafer.getDateOfFirstAppStart() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
+        return daysSinceText;
+    }
+
+    public static void showDaysSinceUse() {
+        daysSinceFirstUseTextview.setText(generateStringDaysSince());
+
+    }
+
+    /**
      * method called daily to show the right traffic light status (for current health risk)
      */
     public static void showTrafficLightStatus() {
-        int riskValue = LocalSafer.getRiskLevel();
-        if(riskValue <= 33) {
+        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        if (riskValue <= 33) {
             trafficLight.setImageResource(R.drawable.green_traffic_light);
-        }
-        else if(riskValue <=70) {
+        } else if (riskValue <= 70) {
             trafficLight.setImageResource(R.drawable.yellow_traffic_light);
-        }
-        else {
+        } else {
             trafficLight.setImageResource(R.drawable.red_traffic_light);
         }
     }
