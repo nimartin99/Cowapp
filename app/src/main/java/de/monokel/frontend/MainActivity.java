@@ -498,28 +498,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Safes the own key in the shared preferences.
-     * @param key the own key as String
-     */
-    public void safeOwnKey(String key) {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor meinEditor = prefs.edit();
-        meinEditor.putString("ownKey", key);
-        meinEditor.apply();
-    }
-
-
-    /**
-     * Getter for the own key out of the shared preferences
-     * @return the own key as String
-     */
-    public String getOwnKey() {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getString("ownKey", null);
-    }
-
-
-    /**
      * method called daily to show the right traffic light status (for current health risk)
      */
     public static void showTrafficLightStatus() {

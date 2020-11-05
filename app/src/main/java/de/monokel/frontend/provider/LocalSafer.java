@@ -1,6 +1,7 @@
 package de.monokel.frontend.provider;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -23,6 +24,7 @@ public class LocalSafer {
     private static String DATAFILE03 = "cowapprisklevel.txt";
     private static String DATAFILE04 = "cowappdaysslc.txt";
     private static String DATAFILE05 = "cowappfirstdate.txt";
+    private static String DATAFILE06 = "cowappownkey.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -272,5 +274,22 @@ public class LocalSafer {
      */
     public static String getFirstStartDate() {
         return readDataFile(DATAFILE05);
+    }
+
+    /**
+     * Safes the own key
+     * @param key the own key as String
+     */
+    public static void safeOwnKey(String key) {
+        safeStringAtDatafile(DATAFILE06, key);
+    }
+
+
+    /**
+     * Getter for the own key
+     * @return the own key as String
+     */
+    public static String getOwnKey() {
+            return readDataFile(DATAFILE06);
     }
 }
