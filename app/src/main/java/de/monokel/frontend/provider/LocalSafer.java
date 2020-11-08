@@ -28,6 +28,7 @@ public class LocalSafer {
     private static String DATAFILE05 = "cowappfirstdate.txt";
     private static String DATAFILE06 = "cowappownkey.txt";
     private static String DATAFILE07 = "cowappownkeys.txt";
+    private static String DATAFILE08 = "cowappalarm.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -338,5 +339,21 @@ public class LocalSafer {
             result[i] = result[i].substring(8);
         }
         return result;
+    }
+
+    /**
+     * Safes the current alarm count
+     * @param count current alarm count as int.
+     */
+    public static void safeAlarmCounter(int count) {
+        safeStringAtDatafile(DATAFILE08, String.valueOf(count));
+    }
+
+    /**
+     * Getter for the current alarm count
+     * @return the current alarm count as int
+     */
+    public static int getAlarmCounter() {
+        return Integer.valueOf(readDataFile(DATAFILE08));
     }
 }
