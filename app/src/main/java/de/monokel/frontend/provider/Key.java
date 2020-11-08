@@ -44,6 +44,7 @@ public class Key {
     }
 
     private static char[] inceaseChars(char[] chars, int postion) {
+        if (postion == -1) return chars;
         char[] charot = chars;
         if (getNextChar(charot[postion]) == '0') {
             charot[postion] = '0';
