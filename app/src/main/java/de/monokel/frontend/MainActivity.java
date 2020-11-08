@@ -50,9 +50,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini, Mergim Miftari, Nico Martin
- * @version 2020-10-22
- * @author Philipp Alessandrini, Mergim Miftari
- * @version 2020-11-02
+ * @version 2020-11-03
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -63,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String CHANNEL_ID = "pushNotifications";
     private NotificationManager notificationManager;
 
+    // for client-server-communication
     private Retrofit retrofit;
     private RetrofitService retrofitService;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
@@ -161,8 +160,6 @@ public class MainActivity extends AppCompatActivity {
             testMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // request a key
-                    requestKey();
                     //Go to test menu screen
                     Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
                     startActivity(nextActivity);
@@ -276,10 +273,27 @@ public class MainActivity extends AppCompatActivity {
         if (Key.getKey() == null) {
             throw new KeyNotRequestedException("A key needs to be requested first");
         } else {
+            // prepare users key for report
             HashMap<String, String> keyMap = new HashMap<>();
-            keyMap.put("date", Calendar.getInstance().getTime().toString());
             keyMap.put("key", Key.getKey());
-
+            // prepare contact keys for report if user has had contact
+            if (LocalSafer.getKeyPairs() != null) {
+                StringBuilder contactDate = new StringBuilder();
+                StringBuilder contactKey = new StringBuilder();
+                for (int i = 0; i < LocalSafer.getKeyPairs().length; i++) {
+                    // don't append "|" on the fist circle
+                    if (i == 0) {
+                        contactDate.append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                        contactKey.append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                    } else {
+                        contactDate.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                        contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                    }
+                }
+                keyMap.put("contactDate", contactDate.toString());
+                keyMap.put("contactKey", contactKey.toString());
+            }
+            // send values to the server
             Call<Void> call = retrofitService.reportInfection(keyMap);
             RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
                 @Override
@@ -484,28 +498,6 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-    /**
-     * Safes the own key in the shared preferences.
-     * @param key the own key as String
-     */
-    public void safeOwnKey(String key) {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor meinEditor = prefs.edit();
-        meinEditor.putString("ownKey", key);
-        meinEditor.apply();
-    }
-
-
-    /**
-     * Getter for the own key out of the shared preferences
-     * @return the own key as String
-     */
-    public String getOwnKey() {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getString("ownKey", null);
-    }
-
 
     /**
      * method called daily to show the right traffic light status (for current health risk)
