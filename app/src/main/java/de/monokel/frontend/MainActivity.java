@@ -94,7 +94,9 @@ public class MainActivity extends AppCompatActivity {
         this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
 
         //Check bluetooth and location turned on
-        verifyBluetooth();
+        if(Constants.SCAN_AND_TRANSMIT) {
+            verifyBluetooth();
+        }
         //Request needed permissions
         requestPermissions();
 
