@@ -17,6 +17,11 @@ public class Key {
         key = value;
     }
 
+    /**
+     * Increases the given Key according to our conditions.
+     * @param key the current key
+     * @return the increased key
+     */
     public static String increaseKey(String key) {
         String newKey = key.replace("-", "");   //removes the -
         char[] chars = newKey.toCharArray();
