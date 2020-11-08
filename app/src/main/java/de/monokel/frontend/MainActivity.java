@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
         long intendedTime = firingCal.getTimeInMillis();
 
         registerMyAlarmBroadcast();
-        alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , AlarmManager.INTERVAL_DAY , myPendingIntent );
+        alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , AlarmManager.INTERVAL_FIFTEEN_MINUTES , myPendingIntent );
     }
 
     /**
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         myBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                Alarm.dailyBusiness();
+                Alarm.ring();
             }
         };
 
