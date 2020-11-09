@@ -39,8 +39,7 @@ import java.util.concurrent.TimeUnit;
 import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
-import de.monokel.frontend.provider.LocalDateSafer;
-import de.monokel.frontend.provider.LocalRiskLevelSafer;
+import de.monokel.frontend.provider.LocalSafer;
 import de.monokel.frontend.provider.NotificationService;
 import de.monokel.frontend.provider.RequestedObject;
 import de.monokel.frontend.provider.RetrofitService;
@@ -243,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalDateSafer.safeDateOfFirstAppStart(getCurrentDate());
+        LocalSafer.safeFirstStartDate(getCurrentDate());
 
 
         if (preferences.getBoolean(prefDataProtection, true)) {
@@ -582,7 +581,7 @@ public class MainActivity extends AppCompatActivity {
 
         Date firstAppStartDate = null;
         try {
-            firstAppStartDate = new SimpleDateFormat("MMMM dd, yyyy").parse(LocalDateSafer.getDateOfFirstAppStart());
+            firstAppStartDate = new SimpleDateFormat("MMMM dd, yyyy").parse(LocalSafer.getFirstStartDate());
         } catch (ParseException e) {
             e.printStackTrace();
             Log.d("Jonas Log", "Parse gone Wrong");
@@ -607,7 +606,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String generateStringDaysSince() {
-        String daysSinceText = ("Seit dem " + LocalDateSafer.getDateOfFirstAppStart() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
+        String daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
         return daysSinceText;
     }
 
@@ -620,7 +619,7 @@ public class MainActivity extends AppCompatActivity {
      * method called daily to show the right traffic light status (for current health risk)
      */
     public static void showTrafficLightStatus() {
-        int riskValue = LocalRiskLevelSafer.getRiskLevel();
+        int riskValue = LocalSafer.getRiskLevel();
         if (riskValue <= 33) {
             trafficLight.setImageResource(R.drawable.green_traffic_light);
         } else if (riskValue <= 70) {
