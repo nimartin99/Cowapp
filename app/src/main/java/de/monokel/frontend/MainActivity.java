@@ -18,7 +18,6 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Check bluetooth and location turned on
-        if (SyncStateContract.Constants.SCAN_AND_TRANSMIT) {
+        if(Constants.SCAN_AND_TRANSMIT) {
             verifyBluetooth();
         }
         //Request needed permissions
@@ -174,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
             testMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // request a key
+                    requestKey();
                     //Go to test menu screen
                     Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
                     startActivity(nextActivity);
@@ -206,14 +207,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //Register AlarmManager Broadcast receive. (For the once-a-day-alarm-clock for deleting keys older then 3 weeks.
-        firingCal= Calendar.getInstance();
+        firingCal = Calendar.getInstance();
         firingCal.set(Calendar.HOUR, 8); // alarm hour
         firingCal.set(Calendar.MINUTE, 0); // alarm minute
         firingCal.set(Calendar.SECOND, 0); // and alarm second
         long intendedTime = firingCal.getTimeInMillis();
 
         registerMyAlarmBroadcast();
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, myPendingIntent);
+
         alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , AlarmManager.INTERVAL_FIFTEEN_MINUTES , myPendingIntent );
+
     }
 
     /**
@@ -432,6 +437,7 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Permission dialog result catch to follow further steps if not granted
+     *
      * @param requestCode
      * @param permissions
      * @param grantResults
@@ -500,6 +506,71 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+
+    /**
+     * Getter of the current date when this method is used
+     *
+     * @return
+     */
+
+    public static String getCurrentDate() {
+
+        Date currentDate = Calendar.getInstance().getTime();
+        String formattedDateString = DateFormat.getDateInstance().format(currentDate);
+
+        //Log.d("Jonas Log", currentDate.toString());
+        //Log.d("Jonas Log", formattedDateString);
+
+        return formattedDateString;
+    }
+
+    /**
+     * Methode berechnet den Abstand zwischen dem heutigen und dem Datum des ersten Starts der App
+     *
+     * @return
+     * @throws ParseException
+     */
+    public static long getDateDiffSinceFirstUse() {
+
+
+        Date firstAppStartDate = null;
+        try {
+            firstAppStartDate = new SimpleDateFormat("MMMM dd, yyyy").parse(LocalSafer.getFirstStartDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            Log.d("Jonas Log", "Parse gone Wrong");
+        }
+
+        Date currentDate = new Date();
+
+        long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();
+        long dateDiffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+
+        return dateDiffInDays;
+    }
+
+    /**
+     * Getter for the own key out of the shared preferences
+     * @return the own key as String
+     */
+    public String getOwnKey() {
+        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
+        return prefs.getString("ownKey", null);
+    }
+
+    public static String generateStringDaysSince() {
+        String daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
+        return daysSinceText;
+    }
+
+    public static void showDaysSinceUse() {
+        daysSinceFirstUseTextview.setText(generateStringDaysSince());
+
+    }
+
     /**
      * method called daily to show the right traffic light status (for current health risk)
      */
@@ -515,7 +586,6 @@ public class MainActivity extends AppCompatActivity {
             trafficLight.setImageResource(R.drawable.red_traffic_light);
         }
     }
-
 
     /**
      * method called daily to show the right health risk status
