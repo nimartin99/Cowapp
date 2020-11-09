@@ -33,4 +33,22 @@ public class Alarm {
 
 
     }
+
+    /**
+     * This method is called all fifteen Minutes.
+     */
+    public static void fifteenMinutesBusiness() {
+    }
+
+    public static void ring() {
+        fifteenMinutesBusiness();
+
+        int i = LocalSafer.getAlarmCounter();
+        i++;
+        if (i == 96) {
+            dailyBusiness();
+            i = 0;
+        }
+        LocalSafer.safeAlarmCounter(i);
+    }
 }
