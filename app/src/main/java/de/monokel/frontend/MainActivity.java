@@ -219,8 +219,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method supports the once-a-day-alarm-clock for deleting keys older then 3 weeks.
      */
-    private void registerMyAlarmBroadcast()
-    {
+    private void registerMyAlarmBroadcast() {
         //This is the call back function(BroadcastReceiver) which will be call when your
         //alarm time will reached.
         myBroadcastReceiver = new BroadcastReceiver() {
@@ -230,9 +229,9 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        registerReceiver(myBroadcastReceiver, new IntentFilter("com.alarm.example") );
-        myPendingIntent = PendingIntent.getBroadcast( this, 0, new Intent("com.alarm.example"),0 );
-        alarmManager = (AlarmManager)(this.getSystemService( Context.ALARM_SERVICE ));
+        registerReceiver(myBroadcastReceiver, new IntentFilter("com.alarm.example"));
+        myPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), 0);
+        alarmManager = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
     }
 
     /**
@@ -519,7 +518,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Safes the own key in the shared preferences.
-     *
      * @param key the own key as String
      */
     public void safeOwnKey(String key) {
@@ -597,7 +595,6 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Getter for the own key out of the shared preferences
-     *
      * @return the own key as String
      */
     public String getOwnKey() {

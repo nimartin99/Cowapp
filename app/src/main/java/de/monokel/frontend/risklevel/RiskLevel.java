@@ -1,11 +1,6 @@
 package de.monokel.frontend.risklevel;
 
-
-import java.util.Collections;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import de.monokel.frontend.provider.LocalRiskLevelSafer;
+import de.monokel.frontend.provider.LocalSafer;
 
 /**
  * Klasse mit allen Operationen welche das Risikolevel betreffen.
@@ -32,18 +27,18 @@ public class RiskLevel {
         if (newRiskLevel < 0 || newRiskLevel > 100) {
             throw new IllegalArgumentException("Illegal Risk Level: must be an int value between 0 and 100!");
 
-        } else if (LocalRiskLevelSafer.getRiskLevel() > newRiskLevel || isDailyUpdate) {
+        } else if (LocalSafer.getRiskLevel() > newRiskLevel || isDailyUpdate) {
 
             increaseDaysSinceLastContact();
 
-        } else if (LocalRiskLevelSafer.getRiskLevel() > newRiskLevel || !isDailyUpdate) {
+        } else if (LocalSafer.getRiskLevel() > newRiskLevel || !isDailyUpdate) {
 
-        } else if (LocalRiskLevelSafer.getRiskLevel() < newRiskLevel || isDailyUpdate) {
+        } else if (LocalSafer.getRiskLevel() < newRiskLevel || isDailyUpdate) {
             setRiskLevel(newRiskLevel);
             resetDaysSinceLastContact();
 
 
-        } else if (LocalRiskLevelSafer.getRiskLevel() < newRiskLevel || !isDailyUpdate) {
+        } else if (LocalSafer.getRiskLevel() < newRiskLevel || !isDailyUpdate) {
             setRiskLevel(newRiskLevel);
             resetDaysSinceLastContact();
         }
@@ -114,30 +109,30 @@ public class RiskLevel {
     }
 
     public static void setRiskLevel(int newRiskLevel) {
-        LocalRiskLevelSafer.safeRiskLevel(newRiskLevel);
+        LocalSafer.safeRiskLevel(newRiskLevel);
 
     }
 
     public static void setDaysSinceLastUpdate(int newDaysSinceLastUpdate) {
-        LocalRiskLevelSafer.safeDaysSinceLastContact(newDaysSinceLastUpdate);
+        LocalSafer.safeDaysSinceLastContact(newDaysSinceLastUpdate);
     }
 
     public static void increaseDaysSinceLastContact() {
-        int i = LocalRiskLevelSafer.getDaysSinceLastContact();
+        int i = LocalSafer.getDaysSinceLastContact();
         i = i + 1;
-        LocalRiskLevelSafer.safeDaysSinceLastContact(i);
+        LocalSafer.safeDaysSinceLastContact(i);
     }
 
 
     public static void resetDaysSinceLastContact() {
-        LocalRiskLevelSafer.safeDaysSinceLastContact(0);
+        LocalSafer.safeDaysSinceLastContact(0);
     }
 
     public static void checkDaysSinceLastContact() {
-        int daysSinceLastUpdate = LocalRiskLevelSafer.getDaysSinceLastContact();
+        int daysSinceLastUpdate = LocalSafer.getDaysSinceLastContact();
 
         if (daysSinceLastUpdate > 14) {
-            LocalRiskLevelSafer.safeRiskLevel(0);
+            LocalSafer.safeRiskLevel(0);
 
         }
     }
