@@ -18,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Check bluetooth and location turned on
-        if(Constants.SCAN_AND_TRANSMIT) {
+        if (SyncStateContract.Constants.SCAN_AND_TRANSMIT) {
             verifyBluetooth();
         }
         //Request needed permissions
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalDateSafer.safeDateOfFirstAppStart(getCurrentDate());
+        LocalSafer.safeFirstStartDate(getCurrentDate());
 
 
         if (preferences.getBoolean(prefDataProtection, true)) {

@@ -3,7 +3,7 @@
  *
  * @author Mergim Miftari
  * @author Philipp Alessandrini
- * @version 2020-11-04
+ * @version 2020-10-22
  */
 
 // init web framework
@@ -24,7 +24,6 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
         const cowappDb = db.db('CoWAppDB');
         const keyCollection = cowappDb.collection('key');
         const infectedCollection = cowappDb.collection('infected');
-        const keyPairsCollection = cowappDb.collection('key_pairs');
         // request a key from mongodb
         app.get('/request_key', (req, res) => {
             keyCollection.findOne({}, (err, result) => {
@@ -35,7 +34,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                     const newKey = (oldKey + 1).toString();
                     // send new key to mongodb
                     const sendKey = { $set: {key: newKey} };
-                    // check if current key is infected
+                    // check if current key is infected and update infected key
                     infectedCollection.findOne({key: oldKey.toString()}, function (err, result) {
                         if (err) throw err;
                         if (result != null) {
@@ -43,24 +42,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                             infectedCollection.updateOne(result, sendKey);
                         }
                     });
-                    // check if current key has had contacts
-                    keyPairsCollection.findOne({key: oldKey.toString()}, function (err, result) {
-                        if (err) throw err;
-                        if (result != null) {
-                            // update new key
-                            keyPairsCollection.updateOne(result, sendKey);
-                        }
-                        // also check if current key is a contact
-                        keyPairsCollection.findOne({contactKey: oldKey.toString()}, function (err, result) {
-                            if (err) throw err;
-                            if (result != null) {
-                                // update new key
-                                keyPairsCollection.updateOne({contactKey: oldKey.toString()},
-                                    { $set: {'contactKey.$': newKey} });
-                            }
-                        });
-                    });
-                    // also update new unique key in mongodb
+                    // update new key in mongodb
                     keyCollection.updateOne({}, sendKey, (err, result) => {
                         if (err) throw err;
                         // send key to the client
@@ -77,32 +59,17 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
         app.post('/report_infection', (req, res) => {
             // delete reported key after 14 days
             infectedCollection.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 14*24*60*60 });
-            // delete key pairs after 21 days
-            keyPairsCollection.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 21*24*60*60 });
-            // pack a userReport const which will be sent to mongodb
+            // get key from user
             const userReport = {
                 "createdAt": new Date(),
                 key: req.body.key
             };
             const searchKey = { key: userReport.key };
-            // search in the db if userKey is already existing
+            // search in the db if key is already existing
             infectedCollection.findOne(searchKey, (err, result) => {
-                // add infected key if it's not already reported
+                // add infected key if its not existing
                 if (result == null) {
                     infectedCollection.insertOne(userReport, (err, result) => {
-                        if (err) throw err;
-                        // check if user also has had contacts and add contacts
-                        if (typeof req.body.contactDate !== 'undefined') {
-                            const contactReport = {
-                                "createdAt": new Date(),
-                                key: req.body.key,
-                                contactDate: req.body.contactDate.split("|"),
-                                contactKey: req.body.contactKey.split("|")
-                            }
-                            keyPairsCollection.insertOne(contactReport, (err, result) => {
-                                if (err) throw err;
-                            });
-                        }
                         res.status(200).send();
                     });
                 } else {
