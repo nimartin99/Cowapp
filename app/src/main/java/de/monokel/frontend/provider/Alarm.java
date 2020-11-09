@@ -22,7 +22,7 @@ public class Alarm {
         LocalSafer.addNotificationToSavedNotifications(null);
 
         //update the information about the date of the first usage and the days since the app is used
-        MainActivity.showDaysSinceUse();
+        // MainActivity.showDaysSinceUse();
 
         //calculate and update the riskLevel
         RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.NO_CONTACT), true);

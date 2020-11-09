@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         showRiskStatus();
 
         //show current Info about days since usage.
-        showDaysSinceUse();
+        //showDaysSinceUse();
 
 
         //If the app is opened for the first time the user has to accept the data protection regulations
@@ -533,6 +533,8 @@ public class MainActivity extends AppCompatActivity {
      * @return
      * @throws ParseException
      */
+
+
     public static long getDateDiffSinceFirstUse() {
 
 
@@ -552,14 +554,6 @@ public class MainActivity extends AppCompatActivity {
         return dateDiffInDays;
     }
 
-    /**
-     * Getter for the own key out of the shared preferences
-     * @return the own key as String
-     */
-    public String getOwnKey() {
-        SharedPreferences prefs = getPreferences(Context.MODE_PRIVATE);
-        return prefs.getString("ownKey", null);
-    }
 
     public static String generateStringDaysSince() {
         String daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
@@ -570,6 +564,7 @@ public class MainActivity extends AppCompatActivity {
         daysSinceFirstUseTextview.setText(generateStringDaysSince());
 
     }
+
 
     /**
      * method called daily to show the right traffic light status (for current health risk)
