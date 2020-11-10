@@ -206,10 +206,10 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        //Register AlarmManager Broadcast receive. (For the once-a-day-alarm-clock for deleting keys older then 3 weeks.
+        //Register AlarmManager Broadcast receive.
         firingCal = Calendar.getInstance();
-        firingCal.set(Calendar.HOUR, 8); // alarm hour
-        firingCal.set(Calendar.MINUTE, 0); // alarm minute
+        firingCal.set(Calendar.HOUR, 0); // alarm hour
+        firingCal.set(Calendar.MINUTE, 15); // alarm minute
         firingCal.set(Calendar.SECOND, 0); // and alarm second
         long intendedTime = firingCal.getTimeInMillis();
 
