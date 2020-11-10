@@ -2,23 +2,20 @@ package de.monokel.frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import java.util.Objects;
-
-import de.monokel.frontend.exceptions.KeyNotRequestedException;
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * Report infection screen for CoWApp
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini
- * @version 2020-10-21
+ * @version 2020-11-10
  */
-public class ReportInfectionActivity extends MainActivity {
+public class ReportInfectionActivity extends AppCompatActivity {
     // tag class name for logging
     private static final String TAG = "ReportInfectionActivity";
 
@@ -46,11 +43,7 @@ public class ReportInfectionActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 // send infected key to the server
-                try {
-                    reportInfection();
-                } catch (KeyNotRequestedException e) {
-                    Log.w(TAG, Objects.requireNonNull(e.getMessage()));
-                }
+                MainActivity.reportInfection();
                 //Go to screen to thank the user and inform about what to do now
                 Intent nextActivity = new Intent(ReportInfectionActivity.this,ThankYouActivity.class);
                 startActivity(nextActivity);

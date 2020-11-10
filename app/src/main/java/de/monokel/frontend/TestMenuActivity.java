@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import de.monokel.frontend.provider.LocalSafer;
 import de.monokel.frontend.provider.NotificationService;
 
@@ -14,9 +16,9 @@ import de.monokel.frontend.provider.NotificationService;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini
- * @version 2020-10-28
+ * @version 2020-11-10
  */
-public class TestMenuActivity extends MainActivity {
+public class TestMenuActivity extends AppCompatActivity {
 
     private static final int riskLevelTestValue = 50;
 
@@ -59,7 +61,7 @@ public class TestMenuActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 // try to generate a key if the smartphone has a connection to the server
-                requestKey();
+                MainActivity.requestKey();
             }
         });
 
