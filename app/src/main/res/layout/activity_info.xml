@@ -12,13 +12,7 @@
         android:layout_height="465dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:text="Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann,
-        das Coronavirus weiter einzudämmen.\nMit dieser kann potenzieller Kontakt zu Corona-infizierten Personen
-im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und
-eines Risikowerts von 1 bis 100 dargestellt werden.\nDes weiteren
-erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen,
-wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen.\nUnter Verdacht? - Was tun? erhalten Sie
-Informationen, was Sie bei einem Infektionsverdacht tun können."
+        android:text="@string/text_info"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,7 +27,7 @@ Informationen, was Sie bei einem Infektionsverdacht tun können."
         android:layout_marginStart="20dp"
         android:layout_marginTop="110dp"
         android:layout_marginEnd="20dp"
-        android:text="Allg. Informationen"
+        android:text="@string/head_info"
         android:textColor="#142850"
         android:textSize="36sp"
         android:textStyle="bold"
