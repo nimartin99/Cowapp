@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         //Request needed permissions
         requestPermissions();
 
+
         // init retrofit
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
