@@ -57,13 +57,16 @@ public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
 
+    // application context that allows stating android services from static methods
+    private static Context context;
+
     //For push notification
     public static final String CHANNEL_ID = "pushNotifications";
     private NotificationManager notificationManager;
 
     // for client-server-communication
     private Retrofit retrofit;
-    private RetrofitService retrofitService;
+    private static RetrofitService retrofitService;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
 
     //Expected Permission Values
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
     //To display the current risk status
     private static ImageView trafficLight;
     private static TextView riskStatus;
-
 
     String prefDataProtection = "ausstehend";
 
@@ -103,6 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
+
+        // get context for using context in static methods
+        context = this.getApplicationContext();
 
         //Create channel for push up notifications
         createNotificationChannel();
@@ -238,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Request a new key from the server.
      */
-    public void requestKey() {
+    public static void requestKey() {
         Call<RequestedObject> call = retrofitService.requestKey();
         RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
             @Override
@@ -246,11 +251,11 @@ public class MainActivity extends AppCompatActivity {
                 if (response.code() == 200) {
                     RequestedObject requestedKey = response.body();
                     // set the key
-                    Key.setKey(requestedKey.getKey());
-                    // log key
-                    Log.i(TAG, "Key: " + Key.getKey());
+                    //Key.setKey(Key.increaseKey(requestedKey.getKey()));
+                    // send new key to the db
+                    sendKey();
                 } else if (response.code() == 404) {
-                    Log.i(TAG, "Key doesn't exist");
+                    Log.d(TAG, "Key doesn't exist");
                 }
             }
 
@@ -264,42 +269,33 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Report an infection by sending the current key to the server.
-     *
-     * @throws KeyNotRequestedException if this method is called before a key is requested
      */
-    public void reportInfection() throws KeyNotRequestedException {
-        if (Key.getKey() == null) {
-            throw new KeyNotRequestedException("A key needs to be requested first");
-        } else {
-            // prepare users key for report
+    public static void reportInfection() {
+        // check if infected user has had contacts
+        if (LocalSafer.getKeyPairs() != null) {
             HashMap<String, String> keyMap = new HashMap<>();
-            keyMap.put("key", Key.getKey());
-            // prepare contact keys for report if user has had contact
-            if (LocalSafer.getKeyPairs() != null) {
-                StringBuilder contactDate = new StringBuilder();
-                StringBuilder contactKey = new StringBuilder();
-                for (int i = 0; i < LocalSafer.getKeyPairs().length; i++) {
-                    // don't append "|" on the fist circle
-                    if (i == 0) {
-                        contactDate.append(LocalSafer.getKeyPairs()[i].split("----")[1]);
-                        contactKey.append(LocalSafer.getKeyPairs()[i].split("----")[0]);
-                    } else {
-                        contactDate.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[1]);
-                        contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
-                    }
+            StringBuilder contactDate = new StringBuilder();
+            StringBuilder contactKey = new StringBuilder();
+            for (int i = 0; i < LocalSafer.getKeyPairs().length; i++) {
+                // don't append "|" on the fist circle
+                if (i == 0) {
+                    contactDate.append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                    contactKey.append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                } else {
+                    contactDate.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                    contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
                 }
-                keyMap.put("contactDate", contactDate.toString());
-                keyMap.put("contactKey", contactKey.toString());
             }
+            keyMap.put("contactDate", contactDate.toString());
+            keyMap.put("contactKey", contactKey.toString());
+
             // send values to the server
             Call<Void> call = retrofitService.reportInfection(keyMap);
             RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
-                        Log.i(TAG, "Infection reported successfully");
-                    } else if (response.code() == 400) {
-                        Log.i(TAG, "Infection already reported");
+                        Log.d(TAG, "Registered contacts are successfully reported");
                     }
                 }
 
@@ -309,16 +305,72 @@ public class MainActivity extends AppCompatActivity {
                     noConnectionNotification();
                 }
             });
+        } else {
+            Log.d(TAG, "User doesn't have contacts registered");
         }
     }
 
+    /**
+     * Request the infection status of the user from the server.
+     */
+//    public static void requestInfectionStatus() {
+//        // read own keys
+//        HashMap<String, String> ownKeysMap = new HashMap<>();
+//        // loop through getOwnKeys
+//        Call<String> call = retrofitService.requestInfectionStatus();
+//        RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
+//            @Override
+//            public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
+//                if (response.code() == 200) {
+//                    RequestedObject requestedKey = response.body();
+//                    // set the key
+//                    Key.setKey(Key.increaseKey(requestedKey.getKey()));
+//                    // send new key to the db
+//                    sendKey();
+//                } else if (response.code() == 404) {
+//                    Log.d(TAG, "Key doesn't exist");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<RequestedObject> call, Throwable t) {
+//                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+//                noConnectionNotification();
+//            }
+//        });
+//    }
+
+    // Send the key to inform the database about the new key
+    private static void sendKey() {
+        // prepare users key for report
+        HashMap<String, String> sendKeyMap = new HashMap<>();
+        sendKeyMap.put("key", Key.getKey());
+        // send values to the server
+        Call<Void> call = retrofitService.sendKey(sendKeyMap);
+        RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    // safe new key
+
+                    // log key
+                    Log.d(TAG, "Key: " + Key.getKey());
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                noConnectionNotification();
+            }
+        });
+    }
+
     // standard notification if there is no connection to the server
-    private void noConnectionNotification() {
-        Intent retryRequestPushNotification = new Intent(MainActivity.this,
-                NotificationService.class);
+    private static void noConnectionNotification() {
+        Intent retryRequestPushNotification = new Intent(context, NotificationService.class);
         retryRequestPushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
         retryRequestPushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
-        startService(retryRequestPushNotification);
+        context.startService(retryRequestPushNotification);
     }
 
     /**
@@ -552,4 +604,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public static Context getContext(){
+        return context;
+    }
 }
