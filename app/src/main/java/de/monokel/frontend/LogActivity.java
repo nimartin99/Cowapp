@@ -54,7 +54,7 @@ public class LogActivity extends AppCompatActivity {
                 TextView notification = new TextView(this);
                 notification.setText(string);
                 notification.setLayoutParams(textView.getLayoutParams());
-                notificationLayout.addView(notification);
+                notificationLayout.addView(notification, 0);
             }
         }
 
