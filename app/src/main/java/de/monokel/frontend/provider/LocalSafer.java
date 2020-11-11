@@ -354,6 +354,10 @@ public class LocalSafer {
      * @return the current alarm count as int
      */
     public static int getAlarmCounter() {
-        return Integer.valueOf(readDataFile(DATAFILE08));
+        try {
+            return Integer.valueOf(readDataFile(DATAFILE08));
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
