@@ -43,7 +43,7 @@ public class ReportInfectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // send infected key to the server
-                MainActivity.reportInfection();
+                MainActivity.reportInfection("DIRECT");
                 //Go to screen to thank the user and inform about what to do now
                 Intent nextActivity = new Intent(ReportInfectionActivity.this,ThankYouActivity.class);
                 startActivity(nextActivity);

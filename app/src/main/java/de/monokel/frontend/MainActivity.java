@@ -36,7 +36,6 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import de.monokel.frontend.exceptions.KeyNotRequestedException;
 import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalSafer;
@@ -294,9 +293,10 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Report an infection by sending the current key to the server.
      */
-    public static void reportInfection() {
+    public static void reportInfection(String contactType) {
         // check if infected user has had contacts
         if (LocalSafer.getKeyPairs() != null) {
+            // get all contact keys
             HashMap<String, String> keyMap = new HashMap<>();
             StringBuilder contactDate = new StringBuilder();
             StringBuilder contactKey = new StringBuilder();
@@ -310,16 +310,19 @@ public class MainActivity extends AppCompatActivity {
                     contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
                 }
             }
+            keyMap.put("contactType", contactType);
             keyMap.put("contactDate", contactDate.toString());
             keyMap.put("contactKey", contactKey.toString());
 
-            // send values to the server
+            // send contact keys to the server
             Call<Void> call = retrofitService.reportInfection(keyMap);
             RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.code() == 200) {
-                        Log.d(TAG, "Registered contacts are successfully reported");
+                        Log.d(TAG, "Contacts are successfully reported");
+                    } else if (response.code() == 404) {
+                        Log.w(TAG, "NO DEFINED CONTACT_TYPE");
                     }
                 }
 
@@ -337,32 +340,46 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Request the infection status of the user from the server.
      */
-//    public static void requestInfectionStatus() {
-//        // read own keys
-//        HashMap<String, String> ownKeysMap = new HashMap<>();
-//        // loop through getOwnKeys
-//        Call<String> call = retrofitService.requestInfectionStatus();
-//        RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
-//            @Override
-//            public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
-//                if (response.code() == 200) {
-//                    RequestedObject requestedKey = response.body();
-//                    // set the key
-//                    Key.setKey(Key.increaseKey(requestedKey.getKey()));
-//                    // send new key to the db
-//                    sendKey();
-//                } else if (response.code() == 404) {
-//                    Log.d(TAG, "Key doesn't exist");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RequestedObject> call, Throwable t) {
-//                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-//                noConnectionNotification();
-//            }
-//        });
-//    }
+    public static void requestInfectionStatus() {
+        if (LocalSafer.getOwnKeys() != null) {
+            // read own keys
+            HashMap<String, String> ownKeysMap = new HashMap<>();
+            for (int i = 0; i < LocalSafer.getOwnKeys().length; i++) {
+                ownKeysMap.put("userKey", LocalSafer.getOwnKeys()[i]);
+            }
+            // send user keys to the server
+            Call<String> call = retrofitService.requestInfectionStatus(ownKeysMap);
+            RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.code() == 200) {
+                        // get infection status
+                        String infectionStatus = response.body();
+                        if (infectionStatus.equals("DIRECT_CONTACT")) {
+                            Log.d(TAG, "User has had direct contact with an infected person");
+                            // send own contacts as indirect contacts to the server
+                            reportInfection("INDIRECT");
+                        } else if (infectionStatus.equals("INDIRECT_CONTACT")) {
+                            Log.d(TAG, "User has had indirect contact with an infected person");
+                        } else {
+                            Log.w(TAG, "NO DEFINED INFECTION_STATUS");
+                        }
+                    } else if (response.code() == 400) {
+                        // user has had no contact
+                        Log.d(TAG, "User has had no contact with an infected person");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                    noConnectionNotification();
+                }
+            });
+        } else {
+            Log.d(TAG, "User has no keys");
+        }
+    }
 
     // Send the key to inform the database about the new key
     private static void sendKey() {
@@ -376,8 +393,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 200) {
                     // safe new key
-
-                    // log key
+                    LocalSafer.safeOwnKey(Key.getKey());
+                    // log newest key
                     Log.d(TAG, "Key: " + Key.getKey());
                 }
             }
