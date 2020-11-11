@@ -54,6 +54,7 @@ public class NotificationService extends Service {
     }
 
     private void displayNotification(String title, String text, Class intentClass){
+        LocalSafer.addNotificationToSavedNotifications(title + " - " + text);
         Intent pushIntent;
         PendingIntent pushPendingIntent;
         // check if the notification leads to another activity
