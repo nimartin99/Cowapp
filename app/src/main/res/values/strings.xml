@@ -18,6 +18,7 @@
     <string name="text_info">The CoWApp (Corona Warning App) is an application that anyone can use to further contain the spread of the coronavirus.     With it potential contact with corona-infected people can be determined in everyday life and an infection risk can be calculated. It is and     displayed by the traffic light principle and a risk value of 1 to 100. You will also receive a push notification when a potential health risk     has been identified so you know how to act correctly to protect yourself and those around you.     Under Suspicion? you can receive information on what to do if you suspect an infection.</string>
     //LOG
     <string name="text_log">Notification Log</string>
+    <string name="log">This is a notification</string>
     //Push Notification
     <string name="channel_name">NotificationChannel</string>
     <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>

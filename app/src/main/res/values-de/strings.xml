@@ -30,6 +30,7 @@
         Informationen, was Sie bei einem Infektionsverdacht tun können.</string>
     //LOG
     <string name="text_log">Notification Log</string>
+    <string name="log">Dies ist eine Benachrichtigung</string>
     //Push Notification
     <string name="channel_name">NotificationChannel</string>
     <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>
