@@ -88,6 +88,16 @@ public class TestMenuActivity extends AppCompatActivity {
                 LocalSafer.safeRiskLevel(0);
             }
         });
-    }
 
+        // Request infection status test button listener
+        Button requestInfectionStatusButton = (Button)findViewById(R.id.Test4);
+
+        requestInfectionStatusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // try to check the infection status if the smartphone has a connection to the server
+                MainActivity.requestInfectionStatus();
+            }
+        });
+    }
 }
