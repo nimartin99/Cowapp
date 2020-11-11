@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">frontend</string>
+    //Main
+    <string name="test_button">Test</string>
+    <string name="report_infection_button">Infektion melden</string>
+    <string name="suspicion_button">Verdacht? - Was tun?</string>
+    <string name="info_button">?</string>
+    <string name="log_button">LOG</string>
+    <string name="risk_status_default">___ : ___ Risiko</string>
+    <string name="daysSinceText">Sie helfen seit ___ Tagen, Corona einzudämmen.</string>
+    //Data Protection
+    <string name="accept_button">Akzeptieren</string>
+    <string name="decline_button">Ablehnen</string>
+    <string name="head_data_protection">Nutzungsbedingungen</string>
+    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres
+        Mobilgerätes aktivieren und darüber Daten (generierte Schlüssel mit Zeitstempel und Standort
+        sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich
+        damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch
+        wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.\nNur so ist die Funktion der
+        Corona-Warn-App gegeben.</string>
+    //Info
+    <string name="head_info">Allg. Informationen</string>
+    <string name="text_info">Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann,
+        das Coronavirus weiter einzudämmen.Mit dieser kann potenzieller Kontakt zu Corona-infizierten Personen
+        im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und
+        eines Risikowerts von 1 bis 100 dargestellt werden. Des weiteren
+        erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen,
+        wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen.Unter Verdacht? - Was tun? erhalten Sie
+        Informationen, was Sie bei einem Infektionsverdacht tun können.</string>
+    //LOG
+    <string name="text_log">Notification Log</string>
+    //Push Notification
+    <string name="channel_name">NotificationChannel</string>
+    <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>
+    <string name="ok_button">Okay</string>
+    <string name="head_notification">Mögliches Gesundheitsrisiko</string>
+    <string name="text_notification">Eine Person, mit der Sie in direktem oder indirektem Kontakt
+        standen, hat sich mit dem Coronavirus infiziert.
+        Bitte lassen Sie sich testen und begeben sich bis zu einem negativen Testergebnis in Quarantäne.</string>
+    //Report Infection
+    <string name="report_no_button">Nein</string>
+    <string name="report_yes_button">Ja</string>
+    <string name="text_report_infection">Möchten Sie sich wirklich als infiziert melden? (Nur mit positivem PCR-Testergebnis)</string>
+    //Settings
+    <string name="setting_1">Setting 1</string>
+    <string name="setting_2">Setting 2</string>
+    //Suspicion
+    <string name="head_suspicion_info">Verdacht? - Was tun?</string>
+    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich
+        testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr
+        Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in
+        14-tägiger Quarantäne. Ist das Testergebnis negativ, dürfen Sie die Quarantäne beenden. Vielen Dank für Ihre Mithilfe,
+        der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
+    //Test Menu
+    <string name="head_test_menu">Test Menü</string>
+    <string name="test_button_1">Push-Benachrichtigung Test</string>
+    <string name="test_button_2">Schlüsselgenerierung Test</string>
+    <string name="test_button_3">Risikolevel Test</string>
+    <string name="reset_button_risklevel">Reset Risk Level</string>
+    //Thank You Screen
+    <string name="head_thank_you">Vielen Dank für die Meldung!</string>
+    <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt
+        und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
+</resources>

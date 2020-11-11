@@ -2,63 +2,45 @@
     <string name="app_name">frontend</string>
     //Main
     <string name="test_button">Test</string>
-    <string name="report_infection_button">Infektion melden</string>
-    <string name="suspicion_button">Verdacht? - Was tun?</string>
-    <string name="info_button">?</string>
+    <string name="report_infection_button">Report Infection</string>
+    <string name="suspicion_button">Suspicion?</string>
+    <string name="info_button">\?</string>
     <string name="log_button">LOG</string>
-    <string name="risk_status_default">___ : ___ Risiko</string>
-    <string name="daysSinceText">Sie helfen seit ___ Tagen, Corona einzudämmen.</string>
+    <string name="risk_status_default">___ : ___ risk</string>
+    <string name="daysSinceText">You have been helping to contain the coronavirus for __ days.</string>
     //Data Protection
-    <string name="accept_button">Akzeptieren</string>
-    <string name="decline_button">Ablehnen</string>
-    <string name="head_data_protection">Nutzungsbedingungen</string>
-    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres
-        Mobilgerätes aktivieren und darüber Daten (generierte Schlüssel mit Zeitstempel und Standort
-        sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich
-        damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch
-        wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.\nNur so ist die Funktion der
-        Corona-Warn-App gegeben.</string>
+    <string name="accept_button">Accept</string>
+    <string name="decline_button">Decline</string>
+    <string name="head_data_protection">Terms of Use</string>
+    <string name="text_data_protection">You agree that CoWApp is allowed to activate the Bluetooth of your device and send or receive data via it (generated keys with time stamp     and location as well as information about your current infection status). Furthermore you agree that the app may run as a background process     on your mobile device at any time and is allowed to send you push notifications, too. This is the only way the correct function of the     Corona-Warn-App is given.</string>
     //Info
-    <string name="head_info">Allg. Informationen</string>
-    <string name="text_info">Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann,
-        das Coronavirus weiter einzudämmen.Mit dieser kann potenzieller Kontakt zu Corona-infizierten Personen
-        im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und
-        eines Risikowerts von 1 bis 100 dargestellt werden. Des weiteren
-        erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen,
-        wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen.Unter Verdacht? - Was tun? erhalten Sie
-        Informationen, was Sie bei einem Infektionsverdacht tun können.</string>
+    <string name="head_info">General Information</string>
+    <string name="text_info">The CoWApp (Corona Warning App) is an application that anyone can use to further contain the spread of the coronavirus.     With it potential contact with corona-infected people can be determined in everyday life and an infection risk can be calculated. It is and     displayed by the traffic light principle and a risk value of 1 to 100. You will also receive a push notification when a potential health risk     has been identified so you know how to act correctly to protect yourself and those around you.     Under Suspicion? you can receive information on what to do if you suspect an infection.</string>
     //LOG
     <string name="text_log">Notification Log</string>
     //Push Notification
     <string name="channel_name">NotificationChannel</string>
     <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>
     <string name="ok_button">Okay</string>
-    <string name="head_notification">Mögliches Gesundheitsrisiko</string>
-    <string name="text_notification">Eine Person, mit der Sie in direktem oder indirektem Kontakt
-        standen, hat sich mit dem Coronavirus infiziert.
-        Bitte lassen Sie sich testen und begeben sich bis zu einem negativen Testergebnis in Quarantäne.</string>
+    <string name="head_notification">Possible health risk</string>
+    <string name="text_notification">A person with whom you were in direct or indirect contact has been infected with the corona virus.     Please let yourself be tested and go into quarantine until you receive a negative test result.</string>
     //Report Infection
-    <string name="report_no_button">Nein</string>
-    <string name="report_yes_button">Ja</string>
-    <string name="text_report_infection">Möchten Sie sich wirklich als infiziert melden? (Nur mit positivem PCR-Testergebnis)</string>
+    <string name="report_no_button">No</string>
+    <string name="report_yes_button">Yes</string>
+    <string name="text_report_infection">Do you really want to report yourself infected? (Only with positive PCR test result.)</string>
     //Settings
     <string name="setting_1">Setting 1</string>
     <string name="setting_2">Setting 2</string>
     //Suspicion
-    <string name="head_suspicion_info">Verdacht? - Was tun?</string>
-    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich
-        testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region \n(Suchen Sie Ihr
-        Gesundheitsamt: https://tools.rki.de/plztool/ )\nund bleiben in
-        14-tägiger Quarantäne. \nIst das Testergebnis negativ, dürfen Sie die Quarantäne beenden.\nVielen Dank für Ihre Mithilfe,
-        der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
+    <string name="head_suspicion_info">Suspicion? - What to do?</string>
+    <string name="text_suspicion_info">In case of suspicion, please go into quarantine immediately and let yourself be tested.     If the test result is positive, please inform the health department for your region     and stay in quarantine for 14 days. If the test result is negative, you can end the quarantine.     Thank you for your help to dam the further spread of the corona virus.</string>
     //Test Menu
-    <string name="head_test_menu">Test Menü</string>
-    <string name="test_button_1">Push-Benachrichtigung Test</string>
-    <string name="test_button_2">Schlüsselgenerierung Test</string>
-    <string name="test_button_3">Risikolevel Test</string>
-    <string name="reset_button_risklevel">Reset Risk Level</string>
+    <string name="head_test_menu">Test menu</string>
+    <string name="test_button_1">push notification test</string>
+    <string name="test_button_2">key generation test</string>
+    <string name="test_button_3">risk level test</string>
+    <string name="reset_button_risklevel">reset risk level</string>
     //Thank You Screen
-    <string name="head_thank_you">Vielen Dank für die Meldung!</string>
-    <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt
-        und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
+    <string name="head_thank_you">Thank you for the report!</string>
+    <string name="text_thank_you">The app warns your surroundings. Please inform your local health department and immediately go into 14-day quarantine.</string>
 </resources>

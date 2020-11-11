@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -557,7 +558,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static String generateStringDaysSince() {
-        String daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
+        String daysSinceText = "days of usage";
+        String language = Locale.getDefault().getLanguage();
+        if(language == "de") {
+            daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
+        }
+        else{
+            daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + getDateDiffSinceFirstUse() + " days to fight Corona.");
+        }
         return daysSinceText;
     }
 
@@ -587,15 +595,31 @@ public class MainActivity extends AppCompatActivity {
      * method called daily to show the right health risk status
      */
     public static void showRiskStatus(){
+        String language = Locale.getDefault().getLanguage();
         int riskValue = LocalSafer.getRiskLevel();
         if(riskValue <= 33) {
-            riskStatus.setText(riskValue + ": Geringes Risiko");
+            if(language == "de") {
+                riskStatus.setText(riskValue + ": Geringes Risiko");
+            }
+            else{
+                riskStatus.setText(riskValue + ": Low Risk");
+            }
         }
         else if(riskValue <=70) {
-            riskStatus.setText(riskValue + ": Moderates Risiko");
+            if(language == "de") {
+                riskStatus.setText(riskValue + ": Moderates Risiko");
+            }
+            else{
+                riskStatus.setText(riskValue + ": Moderate Risk");
+            }
         }
         else {
-            riskStatus.setText(riskValue + ": Hohes Risiko");
+            if(language == "de") {
+                riskStatus.setText(riskValue + ": Hohes Risiko");
+            }
+            else{
+                riskStatus.setText(riskValue + ": High Risk");
+            }
         }
     }
 
