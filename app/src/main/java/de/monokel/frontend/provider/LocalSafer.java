@@ -192,10 +192,14 @@ public class LocalSafer {
      */
     public static String[] getKeyPairs() {
         String [] result = getValuesAsArray(DATAFILE01);
-        for (int i = 0; i < result.length; i++) {
-            result[i] = result[i].substring(8);
+        if (result != null) {
+            for (int i = 0; i < result.length; i++) {
+                result[i] = result[i].substring(8);
+            }
+            return result;
+        } else {
+            return null;
         }
-        return result;
     }
 
     /**
@@ -334,11 +338,15 @@ public class LocalSafer {
      */
     public static String[] getOwnKeys() {
         String[] result = getValuesAsArray(DATAFILE07);
-        for (int i = 0; i < result.length; i++) {
-            result[i] = result[i].substring(0,result[i].indexOf("----"));
-            result[i] = result[i].substring(8);
+        if (result != null) {
+            for (int i = 0; i < result.length; i++) {
+                result[i] = result[i].substring(0, result[i].indexOf("----"));
+                result[i] = result[i].substring(8);
+            }
+            return result;
+        } else {
+            return null;
         }
-        return result;
     }
 
     /**
@@ -354,6 +362,10 @@ public class LocalSafer {
      * @return the current alarm count as int
      */
     public static int getAlarmCounter() {
-        return Integer.valueOf(readDataFile(DATAFILE08));
+        try {
+            return Integer.valueOf(readDataFile(DATAFILE08));
+        } catch (Exception e) {
+            return 0;
+        }
     }
 }
