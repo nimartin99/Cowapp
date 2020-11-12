@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import de.monokel.frontend.keytransfer.BeaconBackgroundService;
+import androidx.appcompat.app.AppCompatActivity;
+
 import de.monokel.frontend.provider.LocalSafer;
 import de.monokel.frontend.provider.NotificationService;
 
@@ -15,9 +17,9 @@ import de.monokel.frontend.provider.NotificationService;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini
- * @version 2020-10-28
+ * @version 2020-11-12
  */
-public class TestMenuActivity extends MainActivity {
+public class TestMenuActivity extends AppCompatActivity {
 
     private static final int riskLevelTestValue = 50;
     private static boolean clickedTransmit = true;
@@ -27,18 +29,6 @@ public class TestMenuActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_menu);
-
-        //Back button listener
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButtonTest);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Go to main screen
-                Intent nextActivity = new Intent(TestMenuActivity.this,MainActivity.class);
-                startActivity(nextActivity);
-            }
-        });
 
         //Push notification test button listener
         Button pushTestButton = (Button)findViewById(R.id.Test1);
@@ -62,7 +52,7 @@ public class TestMenuActivity extends MainActivity {
             @Override
             public void onClick(View v) {
                 // try to generate a key if the smartphone has a connection to the server
-                requestKey();
+                MainActivity.requestKey();
             }
         });
 
@@ -120,6 +110,17 @@ public class TestMenuActivity extends MainActivity {
                 }
             }
         });
-    }
 
+        // Request infection status test button listener
+        Button requestInfectionStatusButton = (Button)findViewById(R.id.Test4);
+
+        requestInfectionStatusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // try to check the infection status if the smartphone has a connection to the server
+                MainActivity.requestInfectionStatus();
+            }
+        });
+    }
+    }
 }

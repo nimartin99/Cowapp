@@ -20,16 +20,5 @@ public class SuspicionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suspicion);
 
-        //Back button listener
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButtonSuspicion);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Go to main screen
-                Intent nextActivity = new Intent(SuspicionActivity.this,MainActivity.class);
-                startActivity(nextActivity);
-            }
-        });
     }
 }

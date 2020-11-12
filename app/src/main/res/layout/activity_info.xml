@@ -10,18 +10,10 @@
         android:id="@+id/TextInfo"
         android:layout_width="346dp"
         android:layout_height="465dp"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:text="Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann,
-        das Coronavirus weiter einzudämmen.\nMit dieser kann potenzieller Kontakt zu Corona-infizierten Personen
-im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und
-eines Risikowerts von 1 bis 100 dargestellt werden.\nDes weiteren
-erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen,
-wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen.\nUnter Verdacht? - Was tun? erhalten Sie
-Informationen, was Sie bei einem Infektionsverdacht tun können."
+        android:text="@string/text_info"
         android:textColor="#000000"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/HeadInfo" />
@@ -31,9 +23,9 @@ Informationen, was Sie bei einem Infektionsverdacht tun können."
         android:layout_width="338dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="20dp"
-        android:text="Allg. Informationen"
+        android:text="@string/head_info"
         android:textColor="#142850"
         android:textSize="36sp"
         android:textStyle="bold"
@@ -42,14 +34,4 @@ Informationen, was Sie bei einem Infektionsverdacht tun können."
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageButton
-        android:id="@+id/backButtonInfo"
-        android:layout_width="70dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="#00909E"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
 </androidx.constraintlayout.widget.ConstraintLayout>

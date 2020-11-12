@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".SuspicionActivity">
 
-    <ImageButton
-        android:id="@+id/backButtonSuspicion"
-        android:layout_width="70dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="#00909E"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
 
     <TextView
         android:id="@+id/textSuspicionInfo"
@@ -23,11 +13,7 @@
         android:layout_height="465dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="10dp"
-        android:text="Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich
-testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region \n(Suchen Sie Ihr
-Gesundheitsamt: https://tools.rki.de/plztool/ )\nund bleiben in
-14-tägiger Quarantäne. \nIst das Testergebnis negativ, dürfen Sie die Quarantäne beenden.\nVielen Dank für Ihre Mithilfe,
-der weiteren Ausbreitung des Corona-Virus entgegenzuwirken."
+        android:text="@string/text_suspicion_info"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,9 +27,9 @@ der weiteren Ausbreitung des Corona-Virus entgegenzuwirken."
         android:layout_width="338dp"
         android:layout_height="55dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="20dp"
-        android:text="Verdacht? - Was tun?"
+        android:text="@string/head_suspicion_info"
         android:textColor="#142850"
         android:textSize="30sp"
         android:textStyle="bold"
