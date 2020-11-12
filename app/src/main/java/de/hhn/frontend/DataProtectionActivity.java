@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import de.hhn.frontend.keytransfer.BeaconBackgroundService;
+
 /**
  * Data protection start screen activity for CoWApp
  *
@@ -26,7 +28,9 @@ public class DataProtectionActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //Start the scanning on the first opening of the app
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                application.enableMonitoring();
                 //Go to main screen
                 Intent nextActivity = new Intent(DataProtectionActivity.this,MainActivity.class);
                 startActivity(nextActivity);

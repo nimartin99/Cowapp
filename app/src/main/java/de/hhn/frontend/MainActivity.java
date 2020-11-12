@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.provider.Alarm;
 import de.hhn.frontend.provider.Key;
 import de.hhn.frontend.provider.LocalSafer;
@@ -253,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         //generate and save the Date of the first app Start, maybe this code should be relocated.
         LocalSafer.safeFirstStartDate(getCurrentDate());
-
 
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
