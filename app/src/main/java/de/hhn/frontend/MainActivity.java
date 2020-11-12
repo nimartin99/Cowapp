@@ -254,6 +254,8 @@ public class MainActivity extends AppCompatActivity {
         //generate and save the Date of the first app Start, maybe this code should be relocated.
         LocalSafer.safeFirstStartDate(getCurrentDate());
 
+        requestKey();
+
 
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -656,7 +658,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static void showDaysSinceUse() {
         daysSinceFirstUseTextview.setText(generateStringDaysSince());
-
     }
 
 
