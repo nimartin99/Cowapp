@@ -89,4 +89,24 @@
         android:text="Reset Risk Level"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Test2" />
+
+    <Button
+        android:id="@+id/transmit"
+        android:layout_width="380dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="15dp"
+        android:text="Transmitting On/Off"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Test3" />
+
+    <Button
+        android:id="@+id/scan"
+        android:layout_width="380dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="15dp"
+        android:text="Scanning ON/OFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/transmit" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,8 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
-import android.bluetooth.le.AdvertiseCallback;
-import android.bluetooth.le.AdvertiseSettings;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -26,6 +25,7 @@ import org.altbeacon.beacon.powersave.BackgroundPowerSaver;
 import org.altbeacon.beacon.startup.BootstrapNotifier;
 import org.altbeacon.beacon.startup.RegionBootstrap;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -46,9 +46,12 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
     private static Context context;
 
     private static final String TAG = "BeaconBackgroundService";
-    private RegionBootstrap regionBootstrap;
+    private static RegionBootstrap regionBootstrap;
     private BackgroundPowerSaver backgroundPowerSaver;
     private BeaconManager beaconManager;
+    private static BeaconTransmitter beaconTransmitter;
+
+    public static ArrayList<String> beaconids = new ArrayList<>();
 
     @Override
     public void onCreate() {
@@ -104,8 +107,8 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
 
             Log.d(TAG, "setting up background monitoring for beacons and power saving");
             // wake up the app when a beacon is seen
-            Region region = new Region("backgroundRegion", null, null, null);
-            regionBootstrap = new RegionBootstrap(this, region);
+//            Region region = new Region("backgroundRegion", null, null, null);
+//            regionBootstrap = new RegionBootstrap(this, region);
 
             beaconManager.bind(this);
             // simply constructing this class and holding a reference to it in your custom Application
@@ -113,7 +116,7 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             // is not visible.  This reduces bluetooth power usage by about 60%
             backgroundPowerSaver = new BackgroundPowerSaver(this);
 
-            // This code block starts beacon transmission
+            /*// This code block starts beacon transmission
             Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + Constants.id1);
             Beacon beacon = new Beacon.Builder()
                     .setId1(Constants.id1)
@@ -124,8 +127,44 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
                     .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17,d:18-21");
             BeaconTransmitter beaconTransmitter = new
                     BeaconTransmitter(getApplicationContext(), beaconParser);
+            beaconTransmitter.startAdvertising(beacon);*/
+        }
+    }
+
+    public void enableMonitoring() {
+        Log.d(TAG, "Scanning: ON");
+        Region region = new Region("backgroundRegion",
+                null, null, null);
+        regionBootstrap = new RegionBootstrap(this, region);
+    }
+
+    public void disableMonitoring() {
+        Log.d(TAG, "Scanning: OFF");
+        if (regionBootstrap != null) {
+            regionBootstrap.disable();
+            regionBootstrap = null;
+        }
+    }
+
+    public static void transmitAsBeacon() {
+        if(Constants.SCAN_AND_TRANSMIT) {
+            Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + Constants.testid1);
+            Beacon beacon = new Beacon.Builder()
+                    .setId1(Constants.testid1)
+                    .setDataFields(Arrays.asList(new Long[]{0l}))
+                    .build();
+
+            BeaconParser beaconParser = new BeaconParser()
+                    .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17,d:18-21");
+                    beaconTransmitter = new
+                    BeaconTransmitter(BeaconBackgroundService.getAppContext(), beaconParser);
             beaconTransmitter.startAdvertising(beacon);
         }
+    }
+
+    public static void stopTransmittingAsBeacon() {
+        Log.d(TAG, "Stop Transmitting Exposure Notification Beacon");
+        beaconTransmitter.stopAdvertising();
     }
 
     /**
@@ -183,11 +222,14 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         if (beacons.size() > 0) {
             for (Beacon b : beacons) {
                 String beaconid1 = String.valueOf(b.getId1());
-                if (beaconid1.substring(0, 8).equals("01234567")) {
+                if (beaconid1.substring(0, 8).equals(Constants.cowappBeaconIdentifier)) {
                     String context = "Beacon found: id1=" + beaconid1;
                     Log.d(TAG, context);
+                    addId(beaconid1);
                     //Comment out to send Notification
-                    //sendNotification(context);
+                    sendNotification(context);
+                } else {
+                    Log.d(TAG, "Found an unknown Beacon: "+ beaconid1);
                 }
             }
         }
@@ -245,5 +287,10 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
      */
     public static Context getAppContext() {
         return BeaconBackgroundService.context;
+    }
+
+    public static void addId(String id) {
+        Log.d(TAG, "Added "+id);
+        beaconids.add(id);
     }
 }

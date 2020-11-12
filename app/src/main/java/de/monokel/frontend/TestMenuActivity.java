@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import de.monokel.frontend.keytransfer.BeaconBackgroundService;
 import de.monokel.frontend.provider.LocalSafer;
 import de.monokel.frontend.provider.NotificationService;
 
@@ -19,6 +20,8 @@ import de.monokel.frontend.provider.NotificationService;
 public class TestMenuActivity extends MainActivity {
 
     private static final int riskLevelTestValue = 50;
+    private static boolean clickedTransmit = true;
+    private static boolean clickedScan = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +87,37 @@ public class TestMenuActivity extends MainActivity {
             public void onClick(View v) {
                 //reset risk level to 0
                 LocalSafer.safeRiskLevel(0);
+            }
+        });
+
+        Button transmitOnOff = findViewById(R.id.transmit);
+
+        transmitOnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(clickedTransmit) {
+                    BeaconBackgroundService.transmitAsBeacon(Constants.id1);
+                    clickedTransmit = false;
+                } else {
+                    BeaconBackgroundService.stopTransmittingAsBeacon();
+                    clickedTransmit = true;
+                }
+            }
+        });
+
+        Button scanningOnOff = findViewById(R.id.scan);
+
+        scanningOnOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                if(clickedScan) {
+                    application.enableMonitoring();
+                    clickedScan = false;
+                } else {
+                    application.disableMonitoring();
+                    clickedScan = true;
+                }
             }
         });
     }
