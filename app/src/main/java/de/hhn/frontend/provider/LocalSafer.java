@@ -89,47 +89,51 @@ public class LocalSafer {
      */
     private static boolean dateIsOld(Date date) {
         Log.d(TAG, "dateIsOld() was called");
+
         boolean result = false;
         Date currentDate = new Date();
+        Date oldDate = date;
 
-        int currentMonth = currentDate.getMonth();
-        int currentDay = currentDate.getDay();
-        int oldMonth = date.getMonth();
+        int month = date.getMonth();
+        int monthHasDays = daysOfMonth(month);
         int oldDay = date.getDay();
 
-        if (currentMonth != oldMonth) {
-            int days = 0;
+        oldDay = oldDay + 14; //2 weeks
 
-            switch (oldMonth) {
-                case 1:
-                case 7:
-                case 3:
-                case 5:
-                case 8:
-                case 10:
-                case 12:
-                    days = 31;
-                    break;
+        if (oldDay > monthHasDays) {
+            oldDate.setMonth(month + 1);
+            oldDate.setDate(monthHasDays - oldDay);
+        } else {
+            oldDate.setDate(oldDay);
+        }
 
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    days = 30;
-                    break;
-
-                case 2:
-                    days = 28;
-                    break;
-            }
-
-            if (((days - oldDay) + currentDay) > 14) {
-                result = true;
-            }
-        } else if ((currentDay - oldDay) > 14) {
+        if (oldDate.before(currentDate)) {
             result = true;
         }
+
         return result;
+    }
+
+    private static int daysOfMonth(int month) {
+        switch (month) {
+            case 1:
+            case 7:
+            case 3:
+            case 5:
+            case 8:
+            case 10:
+            case 12:
+                return  31;
+
+            case 4:
+            case 6:
+            case 9:
+            case 11:
+                return  30;
+
+            default:
+                return  28;
+        }
     }
 
     /**
@@ -153,6 +157,7 @@ public class LocalSafer {
      */
     private static void deleteOldValues(String datafileName) {
         Log.d(TAG, "deleteOldValues was called with datafile " + datafileName);
+
         String[] values = getValuesAsArray(datafileName);
         String result = "";
 
