@@ -58,7 +58,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas
- * @version 2020-11-10
+ * @version 2020-11-12
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -286,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RequestedObject> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                noConnectionNotification();
+                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
             }
         });
     }
@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
                     Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                    noConnectionNotification();
+                    serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                 }
             });
         } else {
@@ -360,8 +360,12 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "User has had direct contact with an infected person");
                             // send own contacts as indirect contacts to the server
                             reportInfection("INDIRECT");
+                            // inform user via push-up notification about the direct contact
+                            serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
                         } else if (infectionStatus.equals("INDIRECT_CONTACT")) {
                             Log.d(TAG, "User has had indirect contact with an infected person");
+                            // inform user via push-up notification about the indirect contact
+                            serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
                         } else {
                             Log.w(TAG, "NO DEFINED INFECTION_STATUS");
                         }
@@ -374,7 +378,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                    noConnectionNotification();
+                    serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                 }
             });
         } else {
@@ -402,17 +406,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                noConnectionNotification();
+                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
             }
         });
     }
 
     // standard notification if there is no connection to the server
-    private static void noConnectionNotification() {
-        Intent retryRequestPushNotification = new Intent(context, NotificationService.class);
-        retryRequestPushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
-        retryRequestPushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
-        context.startService(retryRequestPushNotification);
+    private static void serverResponseNotification(String notificationType) {
+        Intent responsePushNotification = new Intent(context, NotificationService.class);
+        switch (notificationType) {
+            case "DIRECT_CONTACT_NOTIFICATION":
+                responsePushNotification.putExtra("TITLE", "Direkten Kontakt zu einer infizierten Person festgestellt");
+                responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
+                responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                break;
+            case "INDIRECT_CONTACT_NOTIFICATION":
+                responsePushNotification.putExtra("TITLE", "Indirekten Kontakt zu einer infizierten Person festgestellt");
+                responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
+                responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                break;
+            case "NO_CONNECTION_NOTIFICATION":
+                responsePushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
+                responsePushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+                break;
+            default:
+                Log.w(TAG, "NO DEFINED NOTIFICATION_TYPE");
+        }
+        context.startService(responsePushNotification);
     }
 
     /**
