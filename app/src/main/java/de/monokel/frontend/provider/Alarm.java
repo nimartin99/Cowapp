@@ -22,7 +22,7 @@ public class Alarm {
         LocalSafer.addNotificationToSavedNotifications(null);
 
         //update the information about the date of the first usage and the days since the app is used
-        // MainActivity.showDaysSinceUse();
+        MainActivity.showDateDisplay();
 
         // check if user has had direct or indirect contact
         MainActivity.requestInfectionStatus();

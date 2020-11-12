@@ -37,6 +37,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+
 import de.monokel.frontend.provider.Alarm;
 import de.monokel.frontend.provider.Key;
 import de.monokel.frontend.provider.LocalSafer;
@@ -89,7 +90,8 @@ public class MainActivity extends AppCompatActivity {
     //To display the current risk status
     private static ImageView trafficLight;
     private static TextView riskStatus;
-    private static TextView daysSinceFirstUseTextview;
+    //To display the first use date and the elapsed time since the app is used.
+    private static TextView dateDisplay;
 
 
     String prefDataProtection = "ausstehend";
@@ -100,9 +102,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //traffic light image view and risk status text view
+        this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
         this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
         this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
-        this.daysSinceFirstUseTextview = (TextView) this.findViewById(R.id.ViewDaysUse);
+
 
         //Check bluetooth and location turned on
         if(Constants.SCAN_AND_TRANSMIT) {
@@ -129,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         showRiskStatus();
 
         //show current Info about days since usage.
-        //showDaysSinceUse();
+        showDateDisplay();
 
 
         //If the app is opened for the first time the user has to accept the data protection regulations
@@ -179,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
             testMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // request a key
+                    requestKey();
                     //Go to test menu screen
                     Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
                     startActivity(nextActivity);
@@ -251,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalSafer.safeFirstStartDate(getCurrentDate());
+        LocalSafer.safeFirstStartDate(getCurrentDateString());
 
 
         if (preferences.getBoolean(prefDataProtection, true)) {
@@ -365,9 +370,9 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Log.w(TAG, "NO DEFINED INFECTION_STATUS");
                         }
-                    } else if (response.code() == 400) {
-                        // user has had no contact
-                        Log.d(TAG, "User has had no contact with an infected person");
+                        Log.d(TAG, "Contacts are successfully reported");
+                    } else if (response.code() == 404) {
+                        Log.w(TAG, "NO DEFINED CONTACT_TYPE");
                     }
                 }
 
@@ -378,7 +383,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         } else {
-            Log.d(TAG, "User has no keys");
+            Log.d(TAG, "User doesn't have contacts registered");
         }
     }
 
@@ -593,25 +598,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     /**
-     * Getter of the current date when this method is used
-     *
-     * @return
+     * This method returns a date format, matching to the currently used locale setting
      */
 
-    public static String getCurrentDate() {
+    public static SimpleDateFormat getDateFormat() {
+        // returns default Locale set by the Java Virtual Machine
+        String language = Locale.getDefault().getLanguage();
+
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+        if (language == "de") {
+            format = new SimpleDateFormat("dd.MM.yyyy");
+        } else if (language == "en-GB") {
+            format = new SimpleDateFormat("dd/MM/yyyy");
+        } else if (language == "en-US") {
+            format = new SimpleDateFormat("MM/dd/yyyy");
+        }
+
+        return format;
+    }
+
+    public static String getCurrentDateString() {
 
         Date currentDate = Calendar.getInstance().getTime();
-        String formattedDateString = DateFormat.getDateInstance().format(currentDate);
+
+        DateFormat format = getDateFormat();
+        String formattedDateString = format.format(currentDate);
 
         //Log.d("Jonas Log", currentDate.toString());
-        //Log.d("Jonas Log", formattedDateString);
+        // Log.d("Jonas Log", formattedDateString);
 
         return formattedDateString;
     }
+
+    public static Date getCurrentDate() {
+        Date currentDate = Calendar.getInstance().getTime();
+
+        return currentDate;
+    }
+
 
     /**
      * Methode berechnet den Abstand zwischen dem heutigen und dem Datum des ersten Starts der App
@@ -624,9 +650,12 @@ public class MainActivity extends AppCompatActivity {
     public static long getDateDiffSinceFirstUse() {
 
 
-        Date firstAppStartDate = null;
+        DateFormat format = getDateFormat();
+
+        Date firstAppStartDate = new Date();
+
         try {
-            firstAppStartDate = new SimpleDateFormat("MMMM dd, yyyy").parse(LocalSafer.getFirstStartDate());
+            firstAppStartDate = format.parse(LocalSafer.getFirstStartDate());
         } catch (ParseException e) {
             e.printStackTrace();
             Log.d("Jonas Log", "Parse gone Wrong");
@@ -642,19 +671,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static String generateStringDaysSince() {
-        String daysSinceText = "days of usage";
+
+        String daysSinceText = ("Seit dem helfen 11.11.2020 Sie seit 7 Tagen, Corona einzudämmen.");
+
         String language = Locale.getDefault().getLanguage();
-        if(language == "de") {
+        if (language == "de") {
             daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
-        }
-        else{
+        } else {
             daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + getDateDiffSinceFirstUse() + " days to fight Corona.");
         }
         return daysSinceText;
     }
 
-    public static void showDaysSinceUse() {
-        daysSinceFirstUseTextview.setText(generateStringDaysSince());
+    public static void showDateDisplay() {
+        dateDisplay.setText(generateStringDaysSince());
 
     }
 
@@ -664,13 +694,11 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void showTrafficLightStatus() {
         int riskValue = LocalSafer.getRiskLevel();
-        if(riskValue <= 33) {
+        if (riskValue <= 33) {
             trafficLight.setImageResource(R.drawable.green_traffic_light);
-        }
-        else if(riskValue <=70) {
+        } else if (riskValue <= 70) {
             trafficLight.setImageResource(R.drawable.yellow_traffic_light);
-        }
-        else {
+        } else {
             trafficLight.setImageResource(R.drawable.red_traffic_light);
         }
     }
