@@ -368,4 +368,12 @@ public class LocalSafer {
             return 0;
         }
     }
+
+    /**
+     * This method adds the received Key to an buffer-datafile, so we can work with it.
+     * @param key the received key
+     */
+    public synchronized static void addReceivedKey(String key) {
+
+    }
 }

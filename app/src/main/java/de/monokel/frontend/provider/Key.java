@@ -72,12 +72,6 @@ public class Key {
             case('C'): return 'D';
             case('D'): return 'E';
             case('E'): return 'F';
-            case('F'): return 'a';
-            case('a'): return 'b';
-            case('b'): return 'c';
-            case('c'): return 'd';
-            case('d'): return 'e';
-            case('e'): return 'f';
             default: return '0';
         }
     }
