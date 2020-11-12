@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="de.monokel.frontend">
+    package="de.hhn.frontend">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -9,7 +9,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".keytransfer.BeaconBackgroundService"
+        android:name="de.hhn.frontend.keytransfer.BeaconBackgroundService"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -19,26 +19,26 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <service
-            android:name=".provider.NotificationService"
+            android:name="de.hhn.frontend.provider.NotificationService"
             android:enabled="true"
             android:exported="true"></service>
 
-        <activity android:name=".MainActivity">
+        <activity android:name="de.hhn.frontend.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestMenuActivity" />
-        <activity android:name=".PushNotificationActivity" />
-        <activity android:name=".ThankYouActivity" />
-        <activity android:name=".SuspicionActivity" />
-        <activity android:name=".ReportInfectionActivity" />
-        <activity android:name=".InfoActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".LogActivity" />
-        <activity android:name=".DataProtectionActivity" />
+        <activity android:name="de.hhn.frontend.TestMenuActivity" />
+        <activity android:name="de.hhn.frontend.PushNotificationActivity" />
+        <activity android:name="de.hhn.frontend.ThankYouActivity" />
+        <activity android:name="de.hhn.frontend.SuspicionActivity" />
+        <activity android:name="de.hhn.frontend.ReportInfectionActivity" />
+        <activity android:name="de.hhn.frontend.InfoActivity" />
+        <activity android:name="de.hhn.frontend.SettingsActivity" />
+        <activity android:name="de.hhn.frontend.LogActivity" />
+        <activity android:name="de.hhn.frontend.DataProtectionActivity" />
 
         <service
             android:name="org.altbeacon.beacon.service.BeaconService"
