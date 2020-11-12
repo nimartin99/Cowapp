@@ -1,6 +1,7 @@
 package de.hhn.frontend.provider;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,6 +20,8 @@ import de.hhn.frontend.keytransfer.BeaconBackgroundService;
  * @version Nov 2020
  */
 public class LocalSafer {
+
+    private static final String TAG = "LocalSafer";
 
     private static String DATAFILE01 = "cowappkeys.txt";
     private static String DATAFILE02 = "cowappnotifications.txt";
@@ -294,6 +297,7 @@ public class LocalSafer {
      * @param key the own key as String
      */
     public static void safeOwnKey(String key) {
+        Log.d(TAG, "safeOwnKey: " + key);
         safeStringAtDatafile(DATAFILE06, key);
         addKeyToOwnKeys(key);
     }
@@ -305,7 +309,8 @@ public class LocalSafer {
      */
     public static String getOwnKey() {
         String key = readDataFile(DATAFILE06);
-        if(key.isEmpty()) {
+        Log.d(TAG, "getOwnKey: " + key);
+        if(!key.isEmpty()) {
             String result = Constants.cowappBeaconIdentifier + "-" + readDataFile(DATAFILE06);
             return result;
         } else {

@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private static RetrofitService retrofitService;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
+    private String PHONE_URL = "http://" + Personal_Constants.OWN_IP + ":3000";
 
     //Expected Permission Values
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
