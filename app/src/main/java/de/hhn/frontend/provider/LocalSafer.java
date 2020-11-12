@@ -91,23 +91,10 @@ public class LocalSafer {
         Log.d(TAG, "dateIsOld() was called");
 
         boolean result = false;
-        Date currentDate = new Date();
         Date oldDate = date;
+        oldDate.setDate(date.getDate() + 14);
 
-        int month = date.getMonth();
-        int monthHasDays = daysOfMonth(month);
-        int oldDay = date.getDay();
-
-        oldDay = oldDay + 14; //2 weeks
-
-        if (oldDay > monthHasDays) {
-            oldDate.setMonth(month + 1);
-            oldDate.setDate(monthHasDays - oldDay);
-        } else {
-            oldDate.setDate(oldDay);
-        }
-
-        if (oldDate.before(currentDate)) {
+        if (oldDate.before(new Date())) {
             result = true;
         }
 
