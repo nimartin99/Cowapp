@@ -101,28 +101,6 @@ public class LocalSafer {
         return result;
     }
 
-    private static int daysOfMonth(int month) {
-        switch (month) {
-            case 1:
-            case 7:
-            case 3:
-            case 5:
-            case 8:
-            case 10:
-            case 12:
-                return  31;
-
-            case 4:
-            case 6:
-            case 9:
-            case 11:
-                return  30;
-
-            default:
-                return  28;
-        }
-    }
-
     /**
      * This Method returns an Array of Strings.
      * The format of the Strings is the following:
