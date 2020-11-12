@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ReportInfectionActivity">
 
-    <ImageButton
-        android:id="@+id/backButtonReport"
-        android:layout_width="70dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:backgroundTint="#00909E"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_revert" />
 
     <Button
         android:id="@+id/reportNoButton"

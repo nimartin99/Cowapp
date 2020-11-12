@@ -27,18 +27,6 @@ public class TestMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_menu);
 
-        //Back button listener
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButtonTest);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Go to main screen
-                Intent nextActivity = new Intent(TestMenuActivity.this,MainActivity.class);
-                startActivity(nextActivity);
-            }
-        });
-
         //Push notification test button listener
         Button pushTestButton = (Button)findViewById(R.id.Test1);
 

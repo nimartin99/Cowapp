@@ -27,18 +27,6 @@ public class LogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
 
-        //Back button listener
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButtonLog);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Go to main screen
-                Intent nextActivity = new Intent(LogActivity.this,MainActivity.class);
-                startActivity(nextActivity);
-            }
-        });
-
         notificationLayout = findViewById(R.id.notificationlayout);
         initScrollbar();
     }

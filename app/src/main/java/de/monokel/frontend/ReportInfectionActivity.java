@@ -24,18 +24,6 @@ public class ReportInfectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_infection);
 
-        //Back button listener
-        ImageButton backButton = (ImageButton)findViewById(R.id.backButtonReport);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Go to main screen
-                Intent nextActivity = new Intent(ReportInfectionActivity.this,MainActivity.class);
-                startActivity(nextActivity);
-            }
-        });
-
         //Yes button listener
         Button yesButton = (Button)findViewById(R.id.reportYesButton);
 
