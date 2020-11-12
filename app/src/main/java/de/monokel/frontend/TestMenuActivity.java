@@ -86,7 +86,7 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(clickedTransmit) {
-                    BeaconBackgroundService.transmitAsBeacon(Constants.id1);
+                    BeaconBackgroundService.transmitAsBeacon();
                     clickedTransmit = false;
                 } else {
                     BeaconBackgroundService.stopTransmittingAsBeacon();
