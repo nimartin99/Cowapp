@@ -368,5 +368,6 @@ public class LocalSafer {
      */
     public synchronized static void addReceivedKey(String key) {
         Log.d(TAG, "addReceivedKey() was called " + key);
+        addKeyPairToSavedKeyPairs(key);
     }
 }

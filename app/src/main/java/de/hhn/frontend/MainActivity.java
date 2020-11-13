@@ -215,15 +215,13 @@ public class MainActivity extends AppCompatActivity {
         //Register AlarmManager Broadcast receive.
         firingCal = Calendar.getInstance();
         firingCal.set(Calendar.HOUR, 0); // alarm hour
-        firingCal.set(Calendar.MINUTE, 15); // alarm minute
+        firingCal.set(Calendar.MINUTE, 5); // alarm minute
         firingCal.set(Calendar.SECOND, 0); // and alarm second
         long intendedTime = firingCal.getTimeInMillis();
 
         registerMyAlarmBroadcast();
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, AlarmManager.INTERVAL_DAY, myPendingIntent);
-
-        alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , AlarmManager.INTERVAL_FIFTEEN_MINUTES , myPendingIntent );
+        alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , (5 * 60 * 1000), myPendingIntent );
 
     }
 
