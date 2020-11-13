@@ -41,6 +41,8 @@
     <string name="test_button_2">key generation test</string>
     <string name="test_button_3">risk level test</string>
     <string name="test_button_4">check infection status test</string>
+    <string name="test_button_5">log own keys test</string>
+    <string name="test_button_6">delete own keys test</string>
     <string name="reset_button_risklevel">reset risk level</string>
     //Thank You Screen
     <string name="head_thank_you">Thank you for the report!</string>
