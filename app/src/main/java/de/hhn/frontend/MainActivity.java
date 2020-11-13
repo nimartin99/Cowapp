@@ -30,6 +30,7 @@ import org.altbeacon.beacon.BeaconManager;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -256,7 +257,6 @@ public class MainActivity extends AppCompatActivity {
 
         requestKey();
 
-
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(prefDataProtection, false);
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
                     // send new key to the db
                     sendKey();
                 } else if (response.code() == 404) {
-                    Log.d(TAG, "Key doesn't exist");
+                    Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
                 }
             }
 
@@ -297,96 +297,126 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Report an infection by sending the current key to the server.
      */
-    public static void reportInfection(String contactType) {
-        // check if infected user has had contacts
-        if (LocalSafer.getKeyPairs() != null) {
-            // get all contact keys
-            HashMap<String, String> keyMap = new HashMap<>();
-            StringBuilder contactDate = new StringBuilder();
-            StringBuilder contactKey = new StringBuilder();
-            for (int i = 0; i < LocalSafer.getKeyPairs().length; i++) {
-                // don't append "|" on the fist circle
-                if (i == 0) {
-                    contactDate.append(LocalSafer.getKeyPairs()[i].split("----")[1]);
-                    contactKey.append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+    public static void reportInfection(final String contactType) {
+        Log.d(TAG, "Sending all contact keys to the server, therefore the response may take some time...");
+        Runnable runnable = new Runnable() {
+            public void run() {
+                // check if infected user has had contacts
+                if (LocalSafer.getKeyPairs() != null) {
+                    // get all contact keys
+                    HashMap<String, String> keyMap = new HashMap<>();
+                    StringBuilder contactDate = new StringBuilder();
+                    StringBuilder contactKey = new StringBuilder();
+                    for (int i = 0; i < LocalSafer.getKeyPairs().length; i++) {
+                        // don't append "|" on the fist circle
+                        if (i == 0) {
+                            contactDate.append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                            contactKey.append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                        } else {
+                            contactDate.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[1]);
+                            contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                        }
+                    }
+                    keyMap.put("contactType", contactType);
+                    keyMap.put("contactDate", contactDate.toString());
+                    keyMap.put("contactKey", contactKey.toString());
+
+                    // send contact keys to the server
+                    Call<Void> call = retrofitService.reportInfection(keyMap);
+                    RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            if (response.code() == 200) {
+                                Log.d(TAG, "Contacts are successfully reported");
+                            } else if (response.code() == 400) {
+                                Log.w(TAG, "reportInfection: NO DEFINED CONTACT_TYPE");
+                            } else if (response.code() == 404) {
+                                Log.w(TAG, "reportInfection: UNDEFINED_REQUEST_BODY_VALUE");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                            serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                        }
+                    });
                 } else {
-                    contactDate.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[1]);
-                    contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                    Log.d(TAG, "User doesn't have contacts registered");
                 }
             }
-            keyMap.put("contactType", contactType);
-            keyMap.put("contactDate", contactDate.toString());
-            keyMap.put("contactKey", contactKey.toString());
-
-            // send contact keys to the server
-            Call<Void> call = retrofitService.reportInfection(keyMap);
-            RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.code() == 200) {
-                        Log.d(TAG, "Contacts are successfully reported");
-                    } else if (response.code() == 404) {
-                        Log.w(TAG, "NO DEFINED CONTACT_TYPE");
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                    serverResponseNotification("NO_CONNECTION_NOTIFICATION");
-                }
-            });
-        } else {
-            Log.d(TAG, "User doesn't have contacts registered");
-        }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     /**
      * Request the infection status of the user from the server.
      */
     public static void requestInfectionStatus() {
-        if (LocalSafer.getOwnKeys() != null) {
-            // read own keys
-            HashMap<String, String> ownKeysMap = new HashMap<>();
-            for (int i = 0; i < LocalSafer.getOwnKeys().length; i++) {
-                ownKeysMap.put("userKey", LocalSafer.getOwnKeys()[i]);
-            }
-            // send user keys to the server
-            Call<String> call = retrofitService.requestInfectionStatus(ownKeysMap);
-            RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.code() == 200) {
-                        // get infection status
-                        String infectionStatus = response.body();
-                        if (infectionStatus.equals("DIRECT_CONTACT")) {
-                            Log.d(TAG, "User has had direct contact with an infected person");
-                            // send own contacts as indirect contacts to the server
-                            reportInfection("INDIRECT");
-                            // inform user via push-up notification about the direct contact
-                            serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
-                        } else if (infectionStatus.equals("INDIRECT_CONTACT")) {
-                            Log.d(TAG, "User has had indirect contact with an infected person");
-                            // inform user via push-up notification about the indirect contact
-                            serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
+        Log.d(TAG, "Sending all own keys to the server, therefore the response may take some time...");
+        Runnable runnable = new Runnable() {
+            public void run() {
+                if (LocalSafer.getOwnKeys() != null) {
+                    // get all own keys
+                    HashMap<String, String> ownKeysMap = new HashMap<>();
+                    StringBuilder contactDate = new StringBuilder();
+                    StringBuilder contactKey = new StringBuilder();
+                    for (int i = 0; i < LocalSafer.getOwnKeys().length; i++) {
+                        // don't append "|" on the fist circle
+                        if (i == 0) {
+                            contactDate.append(LocalSafer.getOwnKeys()[i].split("----")[1]);
+                            contactKey.append(LocalSafer.getOwnKeys()[i].split("----")[0]);
                         } else {
-                            Log.w(TAG, "NO DEFINED INFECTION_STATUS");
+                            contactDate.append("|").append(LocalSafer.getOwnKeys()[i].split("----")[1]);
+                            contactKey.append("|").append(LocalSafer.getOwnKeys()[i].split("----")[0]);
                         }
-                    } else if (response.code() == 400) {
-                        // user has had no contact
-                        Log.d(TAG, "User has had no contact with an infected person");
                     }
-                }
+                    ownKeysMap.put("userDate", contactDate.toString());
+                    ownKeysMap.put("userKey", contactKey.toString());
 
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                    serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                    // send user keys to the server
+                    Call<String> call = retrofitService.requestInfectionStatus(ownKeysMap);
+                    RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            if (response.code() == 200) {
+                                // get infection status
+                                String infectionStatus = response.body();
+                                if (infectionStatus.equals("DIRECT_CONTACT")) {
+                                    Log.d(TAG, "User has had direct contact with an infected person");
+                                    // send own contacts as indirect contacts to the server
+                                    reportInfection("INDIRECT");
+                                    // inform user via push-up notification about the direct contact
+                                    serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
+                                } else if (infectionStatus.equals("INDIRECT_CONTACT")) {
+                                    Log.d(TAG, "User has had indirect contact with an infected person");
+                                    // inform user via push-up notification about the indirect contact
+                                    serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
+                                } else {
+                                    Log.w(TAG, "onResponse: NO DEFINED INFECTION_STATUS");
+                                }
+                            } else if (response.code() == 400) {
+                                // user has had no contact
+                                Log.d(TAG, "User has had no contact with an infected person");
+                            } else if (response.code() == 404) {
+                                Log.w(TAG, "onResponse: UNDEFINED_REQUEST_BODY_VALUE");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+                            Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                            serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                        }
+                    });
+                } else {
+                    Log.d(TAG, "User has no keys");
                 }
-            });
-        } else {
-            Log.d(TAG, "User has no keys");
-        }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     // Send the key to inform the database about the new key
@@ -394,16 +424,17 @@ public class MainActivity extends AppCompatActivity {
         // prepare users key for report
         HashMap<String, String> sendKeyMap = new HashMap<>();
         sendKeyMap.put("key", Key.getKey());
+
         // send values to the server
         Call<Void> call = retrofitService.sendKey(sendKeyMap);
         RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 200) {
-                    // safe new key
-                    LocalSafer.safeOwnKey(Key.getKey());
                     // log newest key
                     Log.d(TAG, "Key: " + Key.getKey());
+                    // safe new key
+                    LocalSafer.safeOwnKey(Key.getKey());
                 }
             }
             @Override
