@@ -89,46 +89,15 @@ public class LocalSafer {
      */
     private static boolean dateIsOld(Date date) {
         Log.d(TAG, "dateIsOld() was called");
+
         boolean result = false;
-        Date currentDate = new Date();
+        Date oldDate = date;
+        oldDate.setDate(date.getDate() + 14);
 
-        int currentMonth = currentDate.getMonth();
-        int currentDay = currentDate.getDay();
-        int oldMonth = date.getMonth();
-        int oldDay = date.getDay();
-
-        if (currentMonth != oldMonth) {
-            int days = 0;
-
-            switch (oldMonth) {
-                case 1:
-                case 7:
-                case 3:
-                case 5:
-                case 8:
-                case 10:
-                case 12:
-                    days = 31;
-                    break;
-
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    days = 30;
-                    break;
-
-                case 2:
-                    days = 28;
-                    break;
-            }
-
-            if (((days - oldDay) + currentDay) > 14) {
-                result = true;
-            }
-        } else if ((currentDay - oldDay) > 14) {
+        if (oldDate.before(new Date())) {
             result = true;
         }
+
         return result;
     }
 
@@ -153,6 +122,7 @@ public class LocalSafer {
      */
     private static void deleteOldValues(String datafileName) {
         Log.d(TAG, "deleteOldValues was called with datafile " + datafileName);
+
         String[] values = getValuesAsArray(datafileName);
         String result = "";
 
