@@ -3,12 +3,11 @@ package de.hhn.frontend.risklevel;
 import de.hhn.frontend.provider.LocalSafer;
 
 /**
- * Klasse mit allen Operationen welche das Risikolevel betreffen.
- * Das Risikolevel ist ein Wert zwischen 0 und 100.
- * Er soll immer jeden Tag aktualisiert werden, oder wenn eine Infektionsmeldung durchgeführt wurde
+ * Classe with all operations needed for the risk level
+ * the risk level is a value between 0 and 100 and represents the risk of a possible infection
  *
  * @author jonas
- * @date 26.10.2020
+ * @version 14.11.2020
  */
 
 
@@ -27,80 +26,88 @@ public class RiskLevel {
         if (newRiskLevel < 0 || newRiskLevel > 100) {
             throw new IllegalArgumentException("Illegal Risk Level: must be an int value between 0 and 100!");
 
-        } else if (LocalSafer.getRiskLevel() > newRiskLevel || isDailyUpdate) {
+        } else if (LocalSafer.getRiskLevel() > newRiskLevel && isDailyUpdate) {
 
             increaseDaysSinceLastContact();
 
-        } else if (LocalSafer.getRiskLevel() > newRiskLevel || !isDailyUpdate) {
-
-        } else if (LocalSafer.getRiskLevel() < newRiskLevel || isDailyUpdate) {
+        } else if (LocalSafer.getRiskLevel() < newRiskLevel && isDailyUpdate) {
             setRiskLevel(newRiskLevel);
             resetDaysSinceLastContact();
 
 
-        } else if (LocalSafer.getRiskLevel() < newRiskLevel || !isDailyUpdate) {
+        } else if (LocalSafer.getRiskLevel() < newRiskLevel && !isDailyUpdate) {
             setRiskLevel(newRiskLevel);
             resetDaysSinceLastContact();
         }
     }
 
     /**
-     * gleiche Methode wie die daurauffolgende, nur ohne den 2. Parameter, da dieser hier nicht berücksichtig werden muss.
+     * smaller method with less parameters, used if the server does respond with information matching the TypeOfExposureEnum.
      *
-     * @param action Aktion welche beim berechnen des Risikolevels berücktsichtigt werden soll, hier wird jedoch nur ein NO_CONTACT berücktsicht, für alle anderen Fälle muss die darauffolgende Methode verwendet werden!(Diese hat einen weiteren Enum Parameter)
+     * @param action Type of action that could cause an infection
      */
 
     public static int calculateRiskLevel(TypeOfExposureEnum action) {
-        if (action == TypeOfExposureEnum.NO_CONTACT) {
-
-            checkDaysSinceLastContact();
-        }
-        return 0;
-    }
-
-    /**
-     * Methode zum berechnen des Risikolevels anhand der übergebenen Aktion
-     *
-     * @param action Art der Aktion welche eine Infektion zur Folge haben könnte
-     * @param amount Anzahl wie oft die zuvor genannte Aktion stattgefunden, z.B.: es wurden 1-wenige Schlüssel ausgetauscht, es wurden wenige - einige Schlüssel ausgetauscht oder eben einige bis viele Schlüssel ausgetauscht.
-     * @return berechneter Wert des Risikolevels
-     */
-
-
-    public int calculateRiskLevel(TypeOfExposureEnum action, AmountOfContactsEnum amount) {
 
         int localRiskLevel = 101;
 
-        if (action == TypeOfExposureEnum.SHORT_EXPOSURE_INDIRECT_CONTACT || amount == AmountOfContactsEnum.FEW) {
+        if (action == TypeOfExposureEnum.NO_CONTACT) {
+            localRiskLevel = 0;
+            checkDaysSinceLastContact();
+        } else if (action == TypeOfExposureEnum.INDIRECT_CONTACT) {
+            localRiskLevel = 60;
+
+        } else if (action == TypeOfExposureEnum.DIRECT_CONTACT) {
+            localRiskLevel = 90;
+
+        }
+
+        return localRiskLevel;
+    }
+
+    /**
+     * method to calculate the risk level, used when the server responds with information matching both enums: TypeOfExposureEnum and AmountOfContactsEnum
+     *
+     * @param action Type of action that could cause an infection
+     * @param amount the amount how much a action occured with the same key  e.G.: 1 - few keys have been exchanged, few - some keys have been exchanged or some - many keys have been exchanged.
+     * @return calculated value of the risk level
+     */
+
+
+    public static int calculateRiskLevel(TypeOfExposureEnum action, AmountOfContactsEnum amount) {
+
+        int localRiskLevel = 101;
+
+        if (action == TypeOfExposureEnum.SHORT_EXPOSURE_INDIRECT_CONTACT && amount == AmountOfContactsEnum.FEW) {
             localRiskLevel = 20;
 
-        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_INDIRECT_CONTACT || amount == AmountOfContactsEnum.SOME) {
+        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_INDIRECT_CONTACT && amount == AmountOfContactsEnum.SOME) {
             localRiskLevel = 30;
-        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_INDIRECT_CONTACT || amount == AmountOfContactsEnum.MANY) {
+        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_INDIRECT_CONTACT && amount == AmountOfContactsEnum.MANY) {
             localRiskLevel = 35;
 
 
-        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_INDIRECT_CONTACT || amount == AmountOfContactsEnum.FEW) {
+        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_INDIRECT_CONTACT && amount == AmountOfContactsEnum.FEW) {
             localRiskLevel = 40;
-        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_INDIRECT_CONTACT || amount == AmountOfContactsEnum.SOME) {
+        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_INDIRECT_CONTACT && amount == AmountOfContactsEnum.SOME) {
             localRiskLevel = 50;
-        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_INDIRECT_CONTACT || amount == AmountOfContactsEnum.SOME) {
+        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_INDIRECT_CONTACT && amount == AmountOfContactsEnum.MANY) {
             localRiskLevel = 60;
 
 
-        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_DIRECT_CONTACT || amount == AmountOfContactsEnum.FEW) {
+        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.FEW) {
             localRiskLevel = 90;
-        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_DIRECT_CONTACT || amount == AmountOfContactsEnum.SOME) {
+        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.SOME) {
             localRiskLevel = 95;
-        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_DIRECT_CONTACT || amount == AmountOfContactsEnum.MANY) {
+        } else if (action == TypeOfExposureEnum.SHORT_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.MANY) {
             localRiskLevel = 97;
 
 
-        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT || amount == AmountOfContactsEnum.FEW) {
+        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.FEW) {
             localRiskLevel = 96;
-        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT || amount == AmountOfContactsEnum.SOME) {
+        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.SOME) {
             localRiskLevel = 98;
-        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT || amount == AmountOfContactsEnum.MANY) {
+        } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.MANY) {
             localRiskLevel = 100;
         }
 

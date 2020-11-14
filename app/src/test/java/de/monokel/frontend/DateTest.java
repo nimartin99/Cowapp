@@ -10,11 +10,45 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import de.hhn.frontend.MainActivity;
+import de.hhn.frontend.date.dateHelper;
+
+import static org.junit.Assert.assertEquals;
+
 public class DateTest {
 
     @Test
     public void currentDateTest() {
         System.out.println(MainActivity.getCurrentDateString());
+    }
+
+    @Test
+    public void dateDifferenceTest() {
+
+        Date date1 = new Date(2020, 11, 1);
+
+        Date date3 = new Date(2020, 11, 11);
+
+
+        long diffInMillis = date3.getTime() - date1.getTime();
+        long dateDiffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
+
+        assertEquals(dateDiffInDays, 10);
+
+
+    }
+
+    @Test
+    public void calculateIntervalTest() {
+        Date date1 = new Date(2020, 11, 1);
+        Date date2 = new Date(2020, 11, 11);
+
+        assertEquals(dateHelper.calculateTimeIntervalBetweenTwoDays(date1, date2), 10);
+    }
+
+    @Test
+    public void convertDateFromStringToDate() {
+
     }
 
 
@@ -52,19 +86,6 @@ public class DateTest {
         }
         System.out.println("5. Ausgabe: ");
         System.out.println(date.toString());
-
-
-        //Test der Berechnung
-
-        Date date1 = new Date(2020, 6, 6);
-
-        Date date3 = new Date(2020, 11, 12);
-
-
-        long diffInMillis = date3.getTime() - date1.getTime();
-        long dateDiffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
-
-        System.out.println(dateDiffInDays);
 
 
     }
