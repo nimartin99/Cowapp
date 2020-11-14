@@ -1,0 +1,29 @@
+------------------------------------------
+--- Instruction: How to run the server ---
+------------------------------------------
+
+1. To start the 'server.js' file you must have Node.js installed.
+   (Download website: https://nodejs.org/en/download/)
+
+2. After you've installed Node.js, install the 'express' and 'mongodb' modules via the commands:
+       - "npm install express" and
+       - "npm install mongodb"
+   without the "" in the terminal.
+   These modules as the same for Node.js are only needed to be installed once.
+
+3. After these modules are installed, you can run the server by navigating to the 'server' folder
+   and run
+       - "node server.js"
+   again without the "" in the terminal.
+
+4. Now the 'server.js' file should start listening on Port 3000 on your local host and the
+   client-server-communication of CoWApp by using an emulated Android-Phone should work
+
+5. If you want to run CoWApp on a real Android-Phone, you have to make sure that your phone and
+   your computer, on which you're running the server, are connected to the same internet. After that
+   go the 'MainActivity' class of the project and change the value of the variable 'BASE_URL' to
+   "http://'OWN_IP':3000", you need to replace 'OWN_IP' with the ip-address of your computer on which
+   your running the server on. To get the ip you can type
+       - "ipconfig" if you are on a windows pc, or
+       - "ifconfig" if you are on a mac or a linux pc
+   again without the "" in the terminal.

@@ -59,6 +59,8 @@
     <string name="test_button_2">Schlüsselgenerierung Test</string>
     <string name="test_button_3">Risikolevel Test</string>
     <string name="test_button_4">Infektionsstatus überprüfen Test</string>
+    <string name="test_button_5">Logge eigene Schlüssel Test</string>
+    <string name="test_button_6">Lösche eigene Schlüssel Test</string>
     <string name="reset_button_risklevel">Reset Risk Level</string>
     //Thank You Screen
     <string name="head_thank_you">Vielen Dank für die Meldung!</string>
