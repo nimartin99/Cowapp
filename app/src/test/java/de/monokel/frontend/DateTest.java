@@ -17,10 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 public class DateTest {
 
-    @Test
-    public void currentDateTest() {
-        System.out.println(MainActivity.getCurrentDateString());
-    }
+
 
     @Test
     public void dateDifferenceTest() {
@@ -48,6 +45,24 @@ public class DateTest {
 
     @Test
     public void convertDateFromStringToDate() {
+        // get first date of current date
+        Date date = dateHelper.getCurrentDate();
+        //get first String of current date
+        String dateString = dateHelper.getCurrentDateString();
+
+        // get second date by converting first String
+        Date date2 = dateHelper.convertStringToDate(dateString);
+
+        //assert equals is false if both dates are on the same day, if they have different time like second, hour.
+        //convert first date to a String and then back into a date, after that the date contains only Information of the used format(Day, Month, Year).
+        String string2 = dateHelper.convertDateToString(date);
+        date = dateHelper.convertStringToDate(string2);
+
+        //assert equals is false if both dates are on the same day, if they have different time like second, hour
+        assertEquals(date, date2);
+
+        assertEquals(dateString, dateHelper.convertDateToString(date));
+
 
     }
 
@@ -56,7 +71,7 @@ public class DateTest {
 
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
 
-        String dateString = MainActivity.getCurrentDateString();
+        String dateString = dateHelper.getCurrentDateString();
         System.out.println("1. Ausgabe: ");
         System.out.println(dateString);
 
@@ -70,7 +85,7 @@ public class DateTest {
         String strDate = format.format(dateCal);
         System.out.println(strDate);
 
-        Date date2 = MainActivity.getCurrentDate();
+        Date date2 = dateHelper.getCurrentDate();
         System.out.println("4. Ausgabe: ");
         System.out.println(date2);
 
