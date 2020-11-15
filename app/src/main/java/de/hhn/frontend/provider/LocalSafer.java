@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import de.hhn.frontend.Constants;
@@ -30,6 +32,7 @@ public class LocalSafer {
     private static String DATAFILE06 = "cowappownkey.txt";
     private static String DATAFILE07 = "cowappownkeys.txt";
     private static String DATAFILE08 = "cowappalarm.txt";
+    private static String DATAFILE09 = "cowappkeybuffer.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -160,6 +163,33 @@ public class LocalSafer {
     public static void clearKeyPairDataFile() {
         Log.d(TAG, "cleareKeyPairDataFile() was called.");
         safeStringAtDatafile(DATAFILE01, "");
+    }
+
+    /**
+     * safes the given key.
+     * @param contactKey The Key of the contact
+     */
+    public synchronized static String[] addKeyToBufferFile(String contactKey) {
+        Log.d(TAG, "addKeyToBufferFile: " + contactKey);
+
+        if (contactKey == null) {
+            String[] result = getValuesAsArray(DATAFILE09);
+            clearBufferFile();
+            return result;
+        } else {
+            String alreadySavedKeyPairs = readDataFile(DATAFILE09);
+            String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey;
+            safeStringAtDatafile(DATAFILE09, allKeyPairsToSafe);
+            return null;
+        }
+    }
+
+    /**
+     * This method clears the bufferFile.
+     */
+    public static void clearBufferFile() {
+        Log.d(TAG, "cleareBufferFile() was called.");
+        safeStringAtDatafile(DATAFILE09, "");
     }
 
     /**
@@ -368,6 +398,26 @@ public class LocalSafer {
      */
     public synchronized static void addReceivedKey(String key) {
         Log.d(TAG, "addReceivedKey() was called " + key);
-        addKeyPairToSavedKeyPairs(key);
+        addKeyToBufferFile(key);
+    }
+
+    /**
+     * This method analyzes the buffer file and adds every key just one time to the key-pari datafile.
+     */
+    public synchronized static void analyzeBufferFile() {
+        Log.d(TAG, "analyzeBufferFile() was called ");
+
+        String[] bufferValues = addKeyToBufferFile(null);
+        HashSet<String> strings = new HashSet<>();
+
+        if (bufferValues != null) {
+            for (String string : bufferValues) {
+                strings.add(string);
+            }
+
+            for (String string : strings) {
+                addKeyPairToSavedKeyPairs(string);
+            }
+        }
     }
 }

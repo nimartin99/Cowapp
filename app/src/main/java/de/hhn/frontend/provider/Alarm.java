@@ -46,6 +46,7 @@ public class Alarm {
      * This method is called all five Minutes.
      */
     public static void fiveMinutesBusiness() {
+        LocalSafer.analyzeBufferFile();
     }
 
     public static void ring() {
