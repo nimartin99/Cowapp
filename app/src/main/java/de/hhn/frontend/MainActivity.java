@@ -99,133 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
     String prefDataProtection = "ausstehend";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //traffic light image view and risk status text view
-        this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
-        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
-        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
-
-
-        //Check bluetooth and location turned on
-        if (Constants.SCAN_AND_TRANSMIT) {
-            verifyBluetooth();
-        }
-        //Request needed permissions
-        requestPermissions();
-
-        // init retrofit
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        retrofitService = retrofit.create(RetrofitService.class);
-
-        // get context for using context in static methods
-        context = this.getApplicationContext();
-
-        //Create channel for push up notifications
-        createNotificationChannel();
-
-        //show current risk level (updated once a day)
-        showTrafficLightStatus();
-        showRiskStatus();
-
-        //show current Info about days since usage.
-        showDateDisplay();
-
-
-        //If the app is opened for the first time the user has to accept the data protection regulations
-        if (firstAppStart()) {
-            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
-            startActivity(nextActivity);
-        } else {
-            //Info button listener
-            Button infoButton = (Button) findViewById(R.id.InfoButton);
-
-            infoButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to info screen
-                    Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Settings button listener
-            ImageButton settingsButton = (ImageButton) findViewById(R.id.EinstellungenButton);
-
-            settingsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to settings screen
-                    Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //LOG button listener
-            Button logButton = (Button) findViewById(R.id.LOGButton);
-
-            logButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to LOG screen
-                    Intent nextActivity = new Intent(MainActivity.this, LogActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Test menu button listener
-            Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
-
-            testMenuButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to test menu screen
-                    Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Report infection button listener
-            Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
-
-            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to report infection
-                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //suspicion button listener
-            Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
-
-            suspicionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to inform what to do with infection suspicion
-                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-        }
-
-        //Register AlarmManager Broadcast receive.
-        firingCal = Calendar.getInstance();
-        firingCal.set(Calendar.HOUR, 0); // alarm hour
-        firingCal.set(Calendar.MINUTE, 5); // alarm minute
-        firingCal.set(Calendar.SECOND, 0); // and alarm second
-        long intendedTime = firingCal.getTimeInMillis();
-
-        registerMyAlarmBroadcast();
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
+    public static void showDateDisplay() {
+        dateDisplay.setText(generateStringForDateDisplay());
 
     }
 
@@ -248,24 +123,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * At first start of the app the user has to accept the data protection regulations before he can
-     * use the app
+     * generates the text used by the date display
      */
-    public boolean firstAppStart() {
-        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
-        //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
 
-        requestKey();
+    public static String generateStringForDateDisplay() {
 
-        if (preferences.getBoolean(prefDataProtection, true)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(prefDataProtection, false);
-            editor.commit();
-            return true;
+        String daysSinceText = "Text wurde noch nicht überschrieben";
+
+        String language = Locale.getDefault().getLanguage();
+
+
+        if (language == "de") {
+            daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + dateHelper.getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
         } else {
-            return false;
+            daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + dateHelper.getDateDiffSinceFirstUse() + " days to fight Corona.");
         }
+        return daysSinceText;
     }
 
     /**
@@ -657,10 +530,157 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    public static void showDateDisplay() {
-        dateDisplay.setText(dateHelper.generateStringForDateDisplay());
+        //traffic light image view and risk status text view
+        //this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
+        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
+        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
 
+
+        //Check bluetooth and location turned on
+        if (Constants.SCAN_AND_TRANSMIT) {
+            verifyBluetooth();
+        }
+        //Request needed permissions
+        requestPermissions();
+
+        // init retrofit
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofitService = retrofit.create(RetrofitService.class);
+
+        // get context for using context in static methods
+        context = this.getApplicationContext();
+
+        //Create channel for push up notifications
+        createNotificationChannel();
+
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
+
+        //show current Info about days since usage.
+        showDateDisplay();
+
+
+        //If the app is opened for the first time the user has to accept the data protection regulations
+        if (firstAppStart()) {
+            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
+            startActivity(nextActivity);
+        } else {
+            //Info button listener
+            Button infoButton = (Button) findViewById(R.id.InfoButton);
+
+            infoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to info screen
+                    Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //Settings button listener
+            ImageButton settingsButton = (ImageButton) findViewById(R.id.EinstellungenButton);
+
+            settingsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to settings screen
+                    Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //LOG button listener
+            Button logButton = (Button) findViewById(R.id.LOGButton);
+
+            logButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to LOG screen
+                    Intent nextActivity = new Intent(MainActivity.this, LogActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //Test menu button listener
+            Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
+
+            testMenuButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to test menu screen
+                    Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //Report infection button listener
+            Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
+
+            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to report infection
+                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //suspicion button listener
+            Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
+
+            suspicionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to inform what to do with infection suspicion
+                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+        }
+
+        //Register AlarmManager Broadcast receive.
+        firingCal = Calendar.getInstance();
+        firingCal.set(Calendar.HOUR, 0); // alarm hour
+        firingCal.set(Calendar.MINUTE, 5); // alarm minute
+        firingCal.set(Calendar.SECOND, 0); // and alarm second
+        long intendedTime = firingCal.getTimeInMillis();
+
+        registerMyAlarmBroadcast();
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
+
+    }
+
+    /**
+     * At first start of the app the user has to accept the data protection regulations before he can
+     * use the app
+     */
+    public boolean firstAppStart() {
+        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
+
+        //generate and save the Date of the first app Start, maybe this code should be relocated.
+
+        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+
+        requestKey();
+
+        if (preferences.getBoolean(prefDataProtection, true)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(prefDataProtection, false);
+            editor.commit();
+            return true;
+        } else {
+            return false;
+        }
     }
 
 

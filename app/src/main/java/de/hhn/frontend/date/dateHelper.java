@@ -74,12 +74,15 @@ public class dateHelper {
 
     public static Date convertStringToDate(String stringToConvert) {
 
-        Date date = null;
+        Date date = new Date();
+
+        SimpleDateFormat format = getDateFormat();
+
         try {
-            date = getDateFormat().parse(stringToConvert);
+            date = format.parse(stringToConvert);
         } catch (ParseException e) {
             e.printStackTrace();
-            Log.d("Jonas Log", "Parse gone Wrong");
+            Log.d("Jonas Log", "Parse gone Wrong @convertStringToDate");
             System.out.println("Parsing the String of getFirstStartDate to a Date went wrong!");
         }
 
@@ -88,7 +91,10 @@ public class dateHelper {
     }
 
     public static Date getCurrentDate() {
-        return Calendar.getInstance().getTime();
+
+        //return Calendar.getInstance().getTime();
+        Date date = new Date();
+        return date;
     }
 
 
@@ -102,37 +108,16 @@ public class dateHelper {
 
     public static long getDateDiffSinceFirstUse() {
 
-        DateFormat format = getDateFormat();
-        Date firstAppStartDate = null;
+        SimpleDateFormat format = getDateFormat();
 
-        try {
-            firstAppStartDate = format.parse(LocalSafer.getFirstStartDate());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.d("Jonas Log", "Parse gone Wrong");
-            System.out.println("Parsing the String of getFirstStartDate to a Date went wrong!");
-        }
+        Date firstAppStartDate = convertStringToDate(LocalSafer.getFirstStartDate());
+
 
         Date currentDate = new Date();
         long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();
         return TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
     }
 
-    /**
-     * generates the text used by the date display
-     */
 
-    public static String generateStringForDateDisplay() {
-
-        String daysSinceText;
-
-        String language = Locale.getDefault().getLanguage();
-        if (language == "de") {
-            daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
-        } else {
-            daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + getDateDiffSinceFirstUse() + " days to fight Corona.");
-        }
-        return daysSinceText;
-    }
 
 }
