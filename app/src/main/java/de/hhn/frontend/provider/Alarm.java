@@ -42,12 +42,22 @@ public class Alarm {
         MainActivity.requestKey();
     }
 
-    public static void ring() {
-        fifteenMinutesBusiness();
+    /**
+     * This method is called all five Minutes.
+     */
+    public static void fiveMinutesBusiness() {
+    }
 
+    public static void ring() {
+        fiveMinutesBusiness();
         int i = LocalSafer.getAlarmCounter();
         i++;
-        if (i == 96) {
+
+        if ((i % 3) == 0) {
+            fifteenMinutesBusiness();
+        }
+
+        if (i == 288) {
             dailyBusiness();
             i = 0;
         }
