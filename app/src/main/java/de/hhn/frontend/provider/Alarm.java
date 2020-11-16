@@ -26,6 +26,9 @@ public class Alarm {
         // check if user has had direct or indirect contact and calculate and update the riskLevel
         MainActivity.requestInfectionStatus();
 
+        //activate or disable exchanging keys when the user is currently infected
+        RiskLevel.controlKeyExchange();
+
         //update current risk status (traffic light and risk status title) on main screen
         MainActivity.showTrafficLightStatus();
         MainActivity.showRiskStatus();

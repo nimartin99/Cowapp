@@ -1,5 +1,6 @@
 package de.hhn.frontend.risklevel;
 
+import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.provider.LocalSafer;
 
 /**
@@ -173,6 +174,23 @@ public class RiskLevel {
         }
 
         return riskLevelIsOutdated;
+    }
+
+    public static void controlKeyExchange() {
+
+        if (LocalSafer.getRiskLevel() == 100) {
+            //disable scanning and transmitting of the bluetoothLE key exchange
+            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+            application.disableMonitoring();
+            BeaconBackgroundService.stopTransmittingAsBeacon();
+
+        } else if (LocalSafer.getRiskLevel() != 100) {
+            //activate scanning and transmitting of the bluetoothLE key exchange
+            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+            application.enableMonitoring();
+            BeaconBackgroundService.transmitAsBeacon();
+        }
+
     }
 
 }
