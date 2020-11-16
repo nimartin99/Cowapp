@@ -1,5 +1,6 @@
 package de.hhn.frontend;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.NotificationChannel;
@@ -19,6 +20,9 @@ import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -59,7 +63,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas
- * @version 2020-11-12
+ * @version 2020-11-16
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -139,42 +143,6 @@ public class MainActivity extends AppCompatActivity {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
         } else {
-            //Info button listener
-            Button infoButton = (Button) findViewById(R.id.InfoButton);
-
-            infoButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to info screen
-                    Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Settings button listener
-            ImageButton settingsButton = (ImageButton) findViewById(R.id.EinstellungenButton);
-
-            settingsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to settings screen
-                    Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //LOG button listener
-            Button logButton = (Button) findViewById(R.id.LOGButton);
-
-            logButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to LOG screen
-                    Intent nextActivity = new Intent(MainActivity.this, LogActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
             //Test menu button listener
             Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
 
@@ -223,6 +191,45 @@ public class MainActivity extends AppCompatActivity {
 
         alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , (5 * 60 * 1000), myPendingIntent );
 
+    }
+
+    /**
+     * Creates the dropdown menu of the main screen
+     * @param menu the created menu
+     * @return true so the menu is shown
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_items, menu);
+        return true;
+    }
+
+    /**
+     * adds on click listeners to the dropdown menu
+     * @param item the item on which the user has clicked
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.item1:
+                //Go to LOG screen
+                Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
+                startActivity(nextActivityItem1);
+                return true;
+            case R.id.item2:
+                //Go to settings screen
+                Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(nextActivityItem2);
+                return true;
+            case R.id.item3:
+                //Go to info screen
+                Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(nextActivity);
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
