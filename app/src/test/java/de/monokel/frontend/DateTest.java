@@ -36,7 +36,7 @@ public class DateTest {
         // get second date by converting first String
         Date date2 = dateHelper.convertStringToDate(dateString);
 
-        //assert equals is false if both dates are on the same day, if they have different time like second, hour.
+        //assert equals with two dates results false when both dates are on the same day, if they have different time like second, hour.
         //convert first date to a String and then back into a date, after that the date contains only Information of the used format(Day, Month, Year).
         String string2 = dateHelper.convertDateToString(date);
         date = dateHelper.convertStringToDate(string2);
@@ -55,11 +55,6 @@ public class DateTest {
         Date date1 = new Date(2020, 11, 1);
 
         Date date3 = new Date(2020, 11, 11);
-
-
-        //long diffInMillis = date3.getTime() - date1.getTime();
-        //long dateDiffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
-
         long dateDiffInDays = dateHelper.calculateTimeIntervalBetweenTwoDays(date1, date3);
         assertEquals(dateDiffInDays, 10);
 

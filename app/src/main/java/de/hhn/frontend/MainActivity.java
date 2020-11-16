@@ -604,8 +604,7 @@ public class MainActivity extends AppCompatActivity {
         showRiskStatus();
 
         //show current Info about days since usage.
-        //showDaysSinceUse();
-
+        showDateDisplay();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (firstAppStart()) {

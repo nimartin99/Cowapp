@@ -7,7 +7,7 @@ import de.hhn.frontend.risklevel.TypeOfExposureEnum;
 /**
  * This class has the method which is called once a day.
  *
- * @author Miftari, Leibl, Alessandrini
+ * @author Miftari, Leibl, Alessandrini, Klein
  * @version 2020-11-11
  */
 public class Alarm {
