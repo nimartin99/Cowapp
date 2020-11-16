@@ -81,6 +81,8 @@ public class TestMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //reset risk level to 0
                 LocalSafer.safeRiskLevel(0);
+                MainActivity.showRiskStatus();
+                MainActivity.showTrafficLightStatus();
             }
         });
 
