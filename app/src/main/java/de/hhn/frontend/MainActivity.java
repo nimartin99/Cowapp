@@ -42,12 +42,15 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+import de.hhn.frontend.date.dateHelper;
 import de.hhn.frontend.provider.Alarm;
 import de.hhn.frontend.provider.Key;
 import de.hhn.frontend.provider.LocalSafer;
 import de.hhn.frontend.provider.NotificationService;
 import de.hhn.frontend.provider.RequestedObject;
 import de.hhn.frontend.provider.RetrofitService;
+import de.hhn.frontend.risklevel.RiskLevel;
+import de.hhn.frontend.risklevel.TypeOfExposureEnum;
 import de.hhn.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +65,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Philipp Alessandrini
  * @author Mergim Miftari
  * @author Nico Martin
- * @author Jonas
+ * @author Jonas Klein
  * @version 2020-11-16
  */
 public class MainActivity extends AppCompatActivity {
@@ -95,148 +98,64 @@ public class MainActivity extends AppCompatActivity {
     //To display the current risk status
     private static ImageView trafficLight;
     private static TextView riskStatus;
-    private static TextView daysSinceFirstUseTextview;
+    //To display the first use date and the elapsed time since the app is used.
+    private static TextView dateDisplay;
 
 
     String prefDataProtection = "ausstehend";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    // Send the key to inform the database about the new key
+    private static void sendKey() {
+        // prepare users key for report
+        HashMap<String, String> sendKeyMap = new HashMap<>();
+        sendKeyMap.put("key", Key.getKey());
 
-        //traffic light image view and risk status text view
-        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
-        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
-        this.daysSinceFirstUseTextview = (TextView) this.findViewById(R.id.ViewDaysUse);
+        // send values to the server
+        Call<Void> call = retrofitService.sendKey(sendKeyMap);
+        RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    // log newest key
+                    Log.d(TAG, "Key: " + Key.getKey());
+                    // safe new key
+                    LocalSafer.safeOwnKey(Key.getKey());
+                }
+            }
 
-        //Check bluetooth and location turned on
-        if(Constants.SCAN_AND_TRANSMIT) {
-            verifyBluetooth();
-        }
-        //Request needed permissions
-        requestPermissions();
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+            }
+        });
+    }
 
-        // init retrofit
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        retrofitService = retrofit.create(RetrofitService.class);
+    /**
+     * Sets the content of the date display on the mainscreen of the app
+     */
+    public static void showDateDisplay() {
+        dateDisplay.setText(dateHelper.generateStringForDateDisplay());
+    }
 
-        // get context for using context in static methods
-        context = this.getApplicationContext();
-
-        //Create channel for push up notifications
-        createNotificationChannel();
-
-        //show current risk level (updated once a day)
-        showTrafficLightStatus();
-        showRiskStatus();
-
-        //show current Info about days since usage.
-        //showDaysSinceUse();
-
-
-        //If the app is opened for the first time the user has to accept the data protection regulations
-        if (firstAppStart()) {
-            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
-            startActivity(nextActivity);
+    /**
+     * method called daily to show the right traffic light status (for current health risk)
+     */
+    public static void showTrafficLightStatus() {
+        int riskValue = LocalSafer.getRiskLevel();
+        if (riskValue <= 33) {
+            trafficLight.setImageResource(R.drawable.green_traffic_light);
+        } else if (riskValue <= 70) {
+            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
         } else {
-            //Test menu button listener
-            Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
-
-            testMenuButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to test menu screen
-                    Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Report infection button listener
-            Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
-
-            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to report infection
-                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //suspicion button listener
-            Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
-
-            suspicionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to inform what to do with infection suspicion
-                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-        }
-
-        //Register AlarmManager Broadcast receive.
-        firingCal = Calendar.getInstance();
-        firingCal.set(Calendar.HOUR, 0); // alarm hour
-        firingCal.set(Calendar.MINUTE, 5); // alarm minute
-        firingCal.set(Calendar.SECOND, 0); // and alarm second
-        long intendedTime = firingCal.getTimeInMillis();
-
-        registerMyAlarmBroadcast();
-
-        alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , (5 * 60 * 1000), myPendingIntent );
-
-    }
-
-    /**
-     * Creates the dropdown menu of the main screen
-     * @param menu the created menu
-     * @return true so the menu is shown
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_items, menu);
-        return true;
-    }
-
-    /**
-     * adds on click listeners to the dropdown menu
-     * @param item the item on which the user has clicked
-     * @return
-     */
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.item1:
-                //Go to LOG screen
-                Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
-                startActivity(nextActivityItem1);
-                return true;
-            case R.id.item2:
-                //Go to settings screen
-                Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(nextActivityItem2);
-                return true;
-            case R.id.item3:
-                //Go to info screen
-                Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
-                startActivity(nextActivity);
-                return true;
-            default: return super.onOptionsItemSelected(item);
+            trafficLight.setImageResource(R.drawable.red_traffic_light);
         }
     }
 
     /**
      * This method supports the once-a-day-alarm-clock for deleting keys older then 3 weeks.
      */
-    private void registerMyAlarmBroadcast()
-    {
+    private void registerMyAlarmBroadcast() {
         //This is the call back function(BroadcastReceiver) which will be call when your
         //alarm time will reached.
         myBroadcastReceiver = new BroadcastReceiver() {
@@ -246,29 +165,41 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        registerReceiver(myBroadcastReceiver, new IntentFilter("com.alarm.example") );
-        myPendingIntent = PendingIntent.getBroadcast( this, 0, new Intent("com.alarm.example"),0 );
-        alarmManager = (AlarmManager)(this.getSystemService( Context.ALARM_SERVICE ));
+        registerReceiver(myBroadcastReceiver, new IntentFilter("com.alarm.example"));
+        myPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), 0);
+        alarmManager = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
     }
 
     /**
-     * At first start of the app the user has to accept the data protection regulations before he can
-     * use the app
+     * method called daily to show the right health risk status
      */
-    public boolean firstAppStart() {
-        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
-        //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalSafer.safeFirstStartDate(getCurrentDate());
-
-        requestKey();
-
-        if (preferences.getBoolean(prefDataProtection, true)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(prefDataProtection, false);
-            editor.commit();
-            return true;
-        } else {
-            return false;
+    public static void showRiskStatus() {
+        String language = Locale.getDefault().getLanguage();
+        int riskValue = LocalSafer.getRiskLevel();
+        if (riskValue <= 33) {
+            if (language == "de") {
+                riskStatus.setText(riskValue + ": Geringes Risiko");
+            } else {
+                riskStatus.setText(riskValue + ": Low Risk");
+            }
+        } else if (riskValue <= 70) {
+            if (language == "de") {
+                riskStatus.setText(riskValue + ": Moderates Risiko");
+            } else {
+                riskStatus.setText(riskValue + ": Moderate Risk");
+            }
+        } else if (riskValue > 70 && riskValue < 100) {
+            if (language == "de") {
+                riskStatus.setText(riskValue + ": Hohes Risiko");
+            } else {
+                riskStatus.setText(riskValue + ": High Risk");
+            }
+        } else if (riskValue == 100) {
+            if (language == "de") {
+                riskStatus.setText("Bestehende Infektion");
+            } else {
+                riskStatus.setText("current infection");
+            }
         }
     }
 
@@ -394,14 +325,23 @@ public class MainActivity extends AppCompatActivity {
                                     reportInfection("INDIRECT");
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
+
+                                    //calculate and safe Risklevel, update of days since last contact corresponding to the server response
+                                    RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.DIRECT_CONTACT), true);
+
                                 } else if (infectionStatus.equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
+
+                                    //calculate and safe Risklevel, update of days since last contact corresponding to the server response
+                                    RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.INDIRECT_CONTACT), true);
                                 } else {
                                     Log.w(TAG, "onResponse: NO DEFINED INFECTION_STATUS");
                                 }
                             } else if (response.code() == 400) {
+                                //calculate and safe Risklevel, update of days since last contact corresponding to the server response
+                                RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.NO_CONTACT), true);
                                 // user has had no contact
                                 Log.d(TAG, "User has had no contact with an infected person");
                             } else if (response.code() == 404) {
@@ -424,30 +364,8 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-    // Send the key to inform the database about the new key
-    private static void sendKey() {
-        // prepare users key for report
-        HashMap<String, String> sendKeyMap = new HashMap<>();
-        sendKeyMap.put("key", Key.getKey());
-
-        // send values to the server
-        Call<Void> call = retrofitService.sendKey(sendKeyMap);
-        RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 200) {
-                    // log newest key
-                    Log.d(TAG, "Key: " + Key.getKey());
-                    // safe new key
-                    LocalSafer.safeOwnKey(Key.getKey());
-                }
-            }
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
-            }
-        });
+    public static Context getContext() {
+        return context;
     }
 
     // standard notification if there is no connection to the server
@@ -651,121 +569,160 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
+        //traffic light image view and risk status text view
+        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
+        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
+        this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
 
+        //Check bluetooth and location turned on
+        if (Constants.SCAN_AND_TRANSMIT) {
+            verifyBluetooth();
+        }
+        //Request needed permissions
+        requestPermissions();
 
+        // init retrofit
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofitService = retrofit.create(RetrofitService.class);
+
+        // get context for using context in static methods
+        context = this.getApplicationContext();
+
+        //Create channel for push up notifications
+        createNotificationChannel();
+
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
+
+        //show current Info about days since usage.
+        showDateDisplay();
+
+        //If the app is opened for the first time the user has to accept the data protection regulations
+        if (firstAppStart()) {
+            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
+            startActivity(nextActivity);
+        } else {
+            //Test menu button listener
+            Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
+
+            testMenuButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to test menu screen
+                    Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //Report infection button listener
+            Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
+
+            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to report infection
+                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //suspicion button listener
+            Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
+
+            suspicionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to inform what to do with infection suspicion
+                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+        }
+
+        //Register AlarmManager Broadcast receive.
+        firingCal = Calendar.getInstance();
+        firingCal.set(Calendar.HOUR, 0); // alarm hour
+        firingCal.set(Calendar.MINUTE, 5); // alarm minute
+        firingCal.set(Calendar.SECOND, 0); // and alarm second
+        long intendedTime = firingCal.getTimeInMillis();
+
+        registerMyAlarmBroadcast();
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
+
+    }
 
     /**
-     * Getter of the current date when this method is used
+     * Creates the dropdown menu of the main screen
      *
+     * @param menu the created menu
+     * @return true so the menu is shown
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_items, menu);
+        return true;
+    }
+
+    /**
+     * adds on click listeners to the dropdown menu
+     *
+     * @param item the item on which the user has clicked
      * @return
      */
-
-    public static String getCurrentDate() {
-
-        Date currentDate = Calendar.getInstance().getTime();
-        String formattedDateString = DateFormat.getDateInstance().format(currentDate);
-
-        //Log.d("Jonas Log", currentDate.toString());
-        //Log.d("Jonas Log", formattedDateString);
-
-        return formattedDateString;
-    }
-
-    /**
-     * Methode berechnet den Abstand zwischen dem heutigen und dem Datum des ersten Starts der App
-     *
-     * @return
-     * @throws ParseException
-     */
-
-
-    public static long getDateDiffSinceFirstUse() {
-
-
-        Date firstAppStartDate = null;
-        try {
-            firstAppStartDate = new SimpleDateFormat("MMMM dd, yyyy").parse(LocalSafer.getFirstStartDate());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.d("Jonas Log", "Parse gone Wrong");
-        }
-
-        Date currentDate = new Date();
-
-        long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();
-        long dateDiffInDays = TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
-
-        return dateDiffInDays;
-    }
-
-
-    public static String generateStringDaysSince() {
-        String daysSinceText = "days of usage";
-        String language = Locale.getDefault().getLanguage();
-        if(language == "de") {
-            daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
-        }
-        else{
-            daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + getDateDiffSinceFirstUse() + " days to fight Corona.");
-        }
-        return daysSinceText;
-    }
-
-    public static void showDaysSinceUse() {
-        daysSinceFirstUseTextview.setText(generateStringDaysSince());
-    }
-
-
-    /**
-     * method called daily to show the right traffic light status (for current health risk)
-     */
-    public static void showTrafficLightStatus() {
-        int riskValue = LocalSafer.getRiskLevel();
-        if(riskValue <= 33) {
-            trafficLight.setImageResource(R.drawable.green_traffic_light);
-        }
-        else if(riskValue <=70) {
-            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
-        }
-        else {
-            trafficLight.setImageResource(R.drawable.red_traffic_light);
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item1:
+                //Go to LOG screen
+                Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
+                startActivity(nextActivityItem1);
+                return true;
+            case R.id.item2:
+                //Go to settings screen
+                Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(nextActivityItem2);
+                return true;
+            case R.id.item3:
+                //Go to info screen
+                Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(nextActivity);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
     /**
-     * method called daily to show the right health risk status
+     * At first start of the app the user has to accept the data protection regulations before he can
+     * use the app
      */
-    public static void showRiskStatus(){
-        String language = Locale.getDefault().getLanguage();
-        int riskValue = LocalSafer.getRiskLevel();
-        if(riskValue <= 33) {
-            if(language == "de") {
-                riskStatus.setText(riskValue + ": Geringes Risiko");
-            }
-            else{
-                riskStatus.setText(riskValue + ": Low Risk");
-            }
-        }
-        else if(riskValue <=70) {
-            if(language == "de") {
-                riskStatus.setText(riskValue + ": Moderates Risiko");
-            }
-            else{
-                riskStatus.setText(riskValue + ": Moderate Risk");
-            }
-        }
-        else {
-            if(language == "de") {
-                riskStatus.setText(riskValue + ": Hohes Risiko");
-            }
-            else{
-                riskStatus.setText(riskValue + ": High Risk");
-            }
-        }
-    }
+    public boolean firstAppStart() {
+        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
+        //generate and save the Date of the first app Start, maybe this code should be relocated.
+        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
 
-    public static Context getContext(){
-        return context;
+        requestKey();
+
+        if (preferences.getBoolean(prefDataProtection, true)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(prefDataProtection, false);
+            editor.commit();
+            return true;
+        } else {
+            return false;
+        }
     }
 }
+
+
