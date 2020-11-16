@@ -7,7 +7,7 @@ import de.hhn.frontend.risklevel.TypeOfExposureEnum;
 /**
  * This class has the method which is called once a day.
  *
- * @author Miftari, Leibl, Alessandrini
+ * @author Miftari, Leibl, Alessandrini, Klein
  * @version 2020-11-11
  */
 public class Alarm {
@@ -21,13 +21,13 @@ public class Alarm {
         LocalSafer.addNotificationToSavedNotifications(null);
 
         //update the information about the date of the first usage and the days since the app is used
-        // MainActivity.showDaysSinceUse();
+        MainActivity.showDateDisplay();
 
-        // check if user has had direct or indirect contact
+        // check if user has had direct or indirect contact and calculate and update the riskLevel
         MainActivity.requestInfectionStatus();
 
-        //calculate and update the riskLevel
-        RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.NO_CONTACT), true);
+        //activate or disable exchanging keys when the user is currently infected
+        RiskLevel.controlKeyExchange();
 
         //update current risk status (traffic light and risk status title) on main screen
         MainActivity.showTrafficLightStatus();
@@ -42,12 +42,23 @@ public class Alarm {
         MainActivity.requestKey();
     }
 
-    public static void ring() {
-        fifteenMinutesBusiness();
+    /**
+     * This method is called all five Minutes.
+     */
+    public static void fiveMinutesBusiness() {
+        LocalSafer.analyzeBufferFile();
+    }
 
+    public static void ring() {
+        fiveMinutesBusiness();
         int i = LocalSafer.getAlarmCounter();
         i++;
-        if (i == 96) {
+
+        if ((i % 3) == 0) {
+            fifteenMinutesBusiness();
+        }
+
+        if (i == 288) {
             dailyBusiness();
             i = 0;
         }

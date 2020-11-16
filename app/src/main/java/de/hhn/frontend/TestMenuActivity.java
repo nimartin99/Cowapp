@@ -2,11 +2,14 @@ package de.hhn.frontend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Arrays;
 
 import de.hhn.frontend.provider.LocalSafer;
 import de.hhn.frontend.provider.NotificationService;
@@ -20,6 +23,8 @@ import de.hhn.frontend.provider.NotificationService;
  */
 public class TestMenuActivity extends AppCompatActivity {
 
+    //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
+    protected static final String TAG = "TestMenuActivity";
     private static final int riskLevelTestValue = 50;
     private static boolean clickedTransmit = true;
     private static boolean clickedScan = true;
@@ -118,6 +123,29 @@ public class TestMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // try to check the infection status if the smartphone has a connection to the server
                 MainActivity.requestInfectionStatus();
+            }
+        });
+
+        // Log saved own keys listener
+        Button logOwnKeysListener = (Button)findViewById(R.id.Test5);
+
+        logOwnKeysListener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // log all own keys
+                Log.d(TAG, Arrays.toString(LocalSafer.getOwnKeys()));
+            }
+        });
+
+        // delete own keys listener
+        Button deleteOwnKeysListener = (Button)findViewById(R.id.Test6);
+
+        deleteOwnKeysListener.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // delete all own keys
+                Log.d(TAG, "own keys deleted");
+                LocalSafer.clearOwnKeyPairDataFile();
             }
         });
     }

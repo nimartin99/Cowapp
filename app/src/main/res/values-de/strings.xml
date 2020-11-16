@@ -2,11 +2,12 @@
 <resources>
     <string name="app_name">frontend</string>
     //Main
+    <string name="menu_log">LOG</string>
+    <string name="menu_settings">Einstellungen</string>
+    <string name="menu_info">Info</string>
     <string name="test_button">Test</string>
     <string name="report_infection_button">Infektion melden</string>
     <string name="suspicion_button">Verdacht? - Was tun?</string>
-    <string name="info_button">?</string>
-    <string name="log_button">LOG</string>
     <string name="risk_status_default">___ : ___ Risiko</string>
     <string name="daysSinceText">Sie helfen seit ___ Tagen, Corona einzudämmen.</string>
     //Data Protection
@@ -59,6 +60,8 @@
     <string name="test_button_2">Schlüsselgenerierung Test</string>
     <string name="test_button_3">Risikolevel Test</string>
     <string name="test_button_4">Infektionsstatus überprüfen Test</string>
+    <string name="test_button_5">Logge eigene Schlüssel Test</string>
+    <string name="test_button_6">Lösche eigene Schlüssel Test</string>
     <string name="reset_button_risklevel">Reset Risk Level</string>
     //Thank You Screen
     <string name="head_thank_you">Vielen Dank für die Meldung!</string>
