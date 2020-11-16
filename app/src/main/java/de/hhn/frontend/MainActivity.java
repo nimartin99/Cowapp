@@ -1,5 +1,6 @@
 package de.hhn.frontend;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.NotificationChannel;
@@ -19,6 +20,9 @@ import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -30,6 +34,7 @@ import org.altbeacon.beacon.BeaconManager;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +66,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-14
+ * @version 2020-11-16
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -99,7 +104,137 @@ public class MainActivity extends AppCompatActivity {
 
     String prefDataProtection = "ausstehend";
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
+        //traffic light image view and risk status text view
+        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
+        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
+        this.daysSinceFirstUseTextview = (TextView) this.findViewById(R.id.ViewDaysUse);
+
+        //Check bluetooth and location turned on
+        if(Constants.SCAN_AND_TRANSMIT) {
+            verifyBluetooth();
+        }
+        //Request needed permissions
+        requestPermissions();
+
+        // init retrofit
+        retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        retrofitService = retrofit.create(RetrofitService.class);
+
+        // get context for using context in static methods
+        context = this.getApplicationContext();
+
+        //Create channel for push up notifications
+        createNotificationChannel();
+
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
+
+        //show current Info about days since usage.
+        //showDaysSinceUse();
+
+
+        //If the app is opened for the first time the user has to accept the data protection regulations
+        if (firstAppStart()) {
+            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
+            startActivity(nextActivity);
+        } else {
+            //Test menu button listener
+            Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
+
+            testMenuButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to test menu screen
+                    Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //Report infection button listener
+            Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
+
+            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to report infection
+                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //suspicion button listener
+            Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
+
+            suspicionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to inform what to do with infection suspicion
+                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+        }
+
+        //Register AlarmManager Broadcast receive.
+        firingCal = Calendar.getInstance();
+        firingCal.set(Calendar.HOUR, 0); // alarm hour
+        firingCal.set(Calendar.MINUTE, 5); // alarm minute
+        firingCal.set(Calendar.SECOND, 0); // and alarm second
+        long intendedTime = firingCal.getTimeInMillis();
+
+        registerMyAlarmBroadcast();
+
+        alarmManager.setRepeating( AlarmManager.RTC_WAKEUP, intendedTime , (5 * 60 * 1000), myPendingIntent );
+
+    }
+
+    /**
+     * Creates the dropdown menu of the main screen
+     * @param menu the created menu
+     * @return true so the menu is shown
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_items, menu);
+        return true;
+    }
+
+    /**
+     * adds on click listeners to the dropdown menu
+     * @param item the item on which the user has clicked
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.item1:
+                //Go to LOG screen
+                Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
+                startActivity(nextActivityItem1);
+                return true;
+            case R.id.item2:
+                //Go to settings screen
+                Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(nextActivityItem2);
+                return true;
+            case R.id.item3:
+                //Go to info screen
+                Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
+                startActivity(nextActivity);
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
+    }
 
     /**
      * This method supports the once-a-day-alarm-clock for deleting keys older then 3 weeks.
@@ -120,20 +255,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * generates the text used by the date display
+     * At first start of the app the user has to accept the data protection regulations before he can
+     * use the app
      */
+    public boolean firstAppStart() {
+        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
+        //generate and save the Date of the first app Start, maybe this code should be relocated.
+        LocalSafer.safeFirstStartDate(getCurrentDate());
 
-    public static String generateStringForDateDisplay() {
+        requestKey();
 
-        String daysSinceText;
-        String language = Locale.getDefault().getLanguage();
-
-        if (language == "de") {
-            daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + dateHelper.getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
+        if (preferences.getBoolean(prefDataProtection, true)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(prefDataProtection, false);
+            editor.commit();
+            return true;
         } else {
-            daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + dateHelper.getDateDiffSinceFirstUse() + " days to fight Corona.");
+            return false;
         }
-        return daysSinceText;
     }
 
     /**
@@ -315,7 +454,6 @@ public class MainActivity extends AppCompatActivity {
                     LocalSafer.safeOwnKey(Key.getKey());
                 }
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
@@ -531,6 +669,20 @@ public class MainActivity extends AppCompatActivity {
     public static void showDateDisplay() {
         dateDisplay.setText(generateStringForDateDisplay());
 
+    /**
+     * method called daily to show the right traffic light status (for current health risk)
+     */
+    public static void showTrafficLightStatus() {
+        int riskValue = LocalSafer.getRiskLevel();
+        if(riskValue <= 33) {
+            trafficLight.setImageResource(R.drawable.green_traffic_light);
+        }
+        else if(riskValue <=70) {
+            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
+        }
+        else {
+            trafficLight.setImageResource(R.drawable.red_traffic_light);
+        }
     }
 
     /**
@@ -539,16 +691,19 @@ public class MainActivity extends AppCompatActivity {
     public static void showRiskStatus() {
         String language = Locale.getDefault().getLanguage();
         int riskValue = LocalSafer.getRiskLevel();
-        if (riskValue <= 33) {
-            if (language == "de") {
+        if(riskValue <= 33) {
+            if(language == "de") {
                 riskStatus.setText(riskValue + ": Geringes Risiko");
-            } else {
+            }
+            else{
                 riskStatus.setText(riskValue + ": Low Risk");
             }
-        } else if (riskValue <= 70) {
-            if (language == "de") {
+        }
+        else if(riskValue <=70) {
+            if(language == "de") {
                 riskStatus.setText(riskValue + ": Moderates Risiko");
-            } else {
+            }
+            else{
                 riskStatus.setText(riskValue + ": Moderate Risk");
             }
         } else if (riskValue > 70 && riskValue < 100) {
@@ -558,179 +713,12 @@ public class MainActivity extends AppCompatActivity {
                 riskStatus.setText(riskValue + ": High Risk");
             }
         } else if (riskValue == 100) {
-            if (language == "de") {
-                riskStatus.setText("Bestehende Infektion");
-            } else {
-                riskStatus.setText("infection present");
-            }
+                if (language == "de") {
+                    riskStatus.setText("Bestehende Infektion");
+                } else {
+                    riskStatus.setText("infection present");
+                }
         }
-    }
-
-    /**
-     * method called daily to show the right traffic light status (for current health risk)
-     */
-    public static void showTrafficLightStatus() {
-        int riskValue = LocalSafer.getRiskLevel();
-        if (riskValue <= 33) {
-            trafficLight.setImageResource(R.drawable.green_traffic_light);
-        } else if (riskValue <= 70) {
-            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
-        } else {
-            trafficLight.setImageResource(R.drawable.red_traffic_light);
-        }
-    }
-
-    /**
-     * At first start of the app the user has to accept the data protection regulations before he can
-     * use the app
-     */
-    public boolean firstAppStart() {
-        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
-
-        //generate and save the Date of the first app Start, maybe this code should be relocated.
-
-        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
-
-        requestKey();
-
-        if (preferences.getBoolean(prefDataProtection, true)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(prefDataProtection, false);
-            editor.commit();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        //traffic light image view and risk status text view
-        this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
-        this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
-        this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
-
-
-        //Check bluetooth and location turned on
-        if (Constants.SCAN_AND_TRANSMIT) {
-            verifyBluetooth();
-        }
-        //Request needed permissions
-        requestPermissions();
-
-        // init retrofit
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        retrofitService = retrofit.create(RetrofitService.class);
-
-        // get context for using context in static methods
-        context = this.getApplicationContext();
-
-        //Create channel for push up notifications
-        createNotificationChannel();
-
-        //show current risk level (updated once a day)
-        showTrafficLightStatus();
-        showRiskStatus();
-
-        //show current Info about days since usage.
-        showDateDisplay();
-
-
-        //If the app is opened for the first time the user has to accept the data protection regulations
-        if (firstAppStart()) {
-            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
-            startActivity(nextActivity);
-        } else {
-            //Info button listener
-            Button infoButton = (Button) findViewById(R.id.InfoButton);
-
-            infoButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to info screen
-                    Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Settings button listener
-            ImageButton settingsButton = (ImageButton) findViewById(R.id.EinstellungenButton);
-
-            settingsButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to settings screen
-                    Intent nextActivity = new Intent(MainActivity.this, SettingsActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //LOG button listener
-            Button logButton = (Button) findViewById(R.id.LOGButton);
-
-            logButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to LOG screen
-                    Intent nextActivity = new Intent(MainActivity.this, LogActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Test menu button listener
-            Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
-
-            testMenuButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to test menu screen
-                    Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //Report infection button listener
-            Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
-
-            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to report infection
-                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //suspicion button listener
-            Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
-
-            suspicionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to inform what to do with infection suspicion
-                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-        }
-
-        //Register AlarmManager Broadcast receive.
-        firingCal = Calendar.getInstance();
-        firingCal.set(Calendar.HOUR, 0); // alarm hour
-        firingCal.set(Calendar.MINUTE, 5); // alarm minute
-        firingCal.set(Calendar.SECOND, 0); // and alarm second
-        long intendedTime = firingCal.getTimeInMillis();
-
-        registerMyAlarmBroadcast();
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
-
     }
 
     public static Context getContext() {
