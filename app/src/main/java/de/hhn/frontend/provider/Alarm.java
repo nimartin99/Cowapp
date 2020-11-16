@@ -23,11 +23,8 @@ public class Alarm {
         //update the information about the date of the first usage and the days since the app is used
         MainActivity.showDateDisplay();
 
-        // check if user has had direct or indirect contact
+        // check if user has had direct or indirect contact and calculate and update the riskLevel
         MainActivity.requestInfectionStatus();
-
-        //calculate and update the riskLevel
-        RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.NO_CONTACT), true);
 
         //update current risk status (traffic light and risk status title) on main screen
         MainActivity.showTrafficLightStatus();

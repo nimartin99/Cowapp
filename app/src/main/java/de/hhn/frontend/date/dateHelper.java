@@ -99,6 +99,23 @@ public class dateHelper {
         return date;
     }
 
+    /**
+     * generates the text used by the date display
+     */
+
+    public static String generateStringForDateDisplay() {
+
+        String daysSinceText;
+        String language = Locale.getDefault().getLanguage();
+
+        if (language == "de") {
+            daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + dateHelper.getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
+        } else {
+            daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + dateHelper.getDateDiffSinceFirstUse() + " days to fight Corona.");
+        }
+        return daysSinceText;
+    }
+
 
     /**
      * Methode calculates how much time passed since the first start of the app
