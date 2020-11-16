@@ -3,13 +3,15 @@ package de.hhn.frontend.risklevel;
 import de.hhn.frontend.provider.LocalSafer;
 
 /**
- * Classe with all operations needed for the risk level
- * the risk level is a value between 0 and 100 and represents the risk of a possible infection
+ * Classe with all operations needed for the risk level.
+ * the risk level is a value between 0 and 100 and represents the risk of a possible infection.
+ * <p>
+ * risk level of 100 corresponds to a present infection of the user.
  *
  * @author jonas
- * @version 14.11.2020
+ * @version 16.11.2020
  */
-
+//TODO letzte Aktion, keine schlüssel wenn infektion vorhanden, ist aber nur an der richtigen stelle if risklevel == 100
 
 public class RiskLevel {
 
@@ -21,23 +23,40 @@ public class RiskLevel {
      */
     public static void updateRiskLevel(int newRiskLevel, boolean isDailyUpdate) {
 
-        checkDaysSinceLastContact();
+        checkForResetDaysSinceLastContact();
 
+        //check if risklevel has a legal value
         if (newRiskLevel < 0 || newRiskLevel > 100) {
             throw new IllegalArgumentException("Illegal Risk Level: must be an int value between 0 and 100!");
 
-        } else if (LocalSafer.getRiskLevel() > newRiskLevel && isDailyUpdate) {
-
+            //no risk of infection
+        } else if (newRiskLevel == 0) {
             increaseDaysSinceLastContact();
 
+            //new risk level is lower than the current, checks if old risk level is outdated, if that is the case old one gets overwritten
+        } else if (LocalSafer.getRiskLevel() > newRiskLevel && isDailyUpdate) {
+            if (checkIfRiskLevelIsOutdated()) {
+                LocalSafer.safeRiskLevel(newRiskLevel);
+                resetDaysSinceLastContact();
+            } else {
+                increaseDaysSinceLastContact();
+            }
+
+            //increase of the risk level through the daily update
         } else if (LocalSafer.getRiskLevel() < newRiskLevel && isDailyUpdate) {
             setRiskLevel(newRiskLevel);
             resetDaysSinceLastContact();
 
-
+            //increase of the risk level but not due to daily update
         } else if (LocalSafer.getRiskLevel() < newRiskLevel && !isDailyUpdate) {
             setRiskLevel(newRiskLevel);
             resetDaysSinceLastContact();
+
+            //infection has been reported
+        } else if (newRiskLevel == 100) {
+            setRiskLevel(newRiskLevel);
+            resetDaysSinceLastContact();
+
         }
     }
 
@@ -53,7 +72,7 @@ public class RiskLevel {
 
         if (action == TypeOfExposureEnum.NO_CONTACT) {
             localRiskLevel = 0;
-            checkDaysSinceLastContact();
+            checkForResetDaysSinceLastContact();
         } else if (action == TypeOfExposureEnum.INDIRECT_CONTACT) {
             localRiskLevel = 60;
 
@@ -104,11 +123,11 @@ public class RiskLevel {
 
 
         } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.FEW) {
-            localRiskLevel = 96;
+            localRiskLevel = 94;
         } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.SOME) {
-            localRiskLevel = 98;
+            localRiskLevel = 96;
         } else if (action == TypeOfExposureEnum.LONG_EXPOSURE_DIRECT_CONTACT && amount == AmountOfContactsEnum.MANY) {
-            localRiskLevel = 100;
+            localRiskLevel = 98;
         }
 
         return localRiskLevel;
@@ -135,13 +154,25 @@ public class RiskLevel {
         LocalSafer.safeDaysSinceLastContact(0);
     }
 
-    public static void checkDaysSinceLastContact() {
-        int daysSinceLastUpdate = LocalSafer.getDaysSinceLastContact();
+    public static void checkForResetDaysSinceLastContact() {
 
-        if (daysSinceLastUpdate > 14) {
+        if (LocalSafer.getDaysSinceLastContact() > 14) {
+            setDaysSinceLastUpdate(0);
             LocalSafer.safeRiskLevel(0);
 
         }
+    }
+
+    public static boolean checkIfRiskLevelIsOutdated() {
+        boolean riskLevelIsOutdated = false;
+
+        if (LocalSafer.getDaysSinceLastContact() >= 14) {
+            riskLevelIsOutdated = true;
+        } else if (LocalSafer.getDaysSinceLastContact() < 14) {
+            riskLevelIsOutdated = false;
+        }
+
+        return riskLevelIsOutdated;
     }
 
 }

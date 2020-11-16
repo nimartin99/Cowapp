@@ -14,6 +14,9 @@ import de.hhn.frontend.provider.LocalSafer;
 
 /**
  * Class with all operations to help using dates
+ *
+ * @author jonas
+ * @version 16.11.2020
  */
 
 public class dateHelper {
@@ -92,7 +95,6 @@ public class dateHelper {
 
     public static Date getCurrentDate() {
 
-        //return Calendar.getInstance().getTime();
         Date date = new Date();
         return date;
     }
@@ -108,10 +110,7 @@ public class dateHelper {
 
     public static long getDateDiffSinceFirstUse() {
 
-        SimpleDateFormat format = getDateFormat();
-
         Date firstAppStartDate = convertStringToDate(LocalSafer.getFirstStartDate());
-
 
         Date currentDate = new Date();
         long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();

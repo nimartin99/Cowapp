@@ -99,10 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     String prefDataProtection = "ausstehend";
 
-    public static void showDateDisplay() {
-        dateDisplay.setText(generateStringForDateDisplay());
 
-    }
 
     /**
      * This method supports the once-a-day-alarm-clock for deleting keys older then 3 weeks.
@@ -128,10 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static String generateStringForDateDisplay() {
 
-        String daysSinceText = "Text wurde noch nicht überschrieben";
-
+        String daysSinceText;
         String language = Locale.getDefault().getLanguage();
-
 
         if (language == "de") {
             daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + dateHelper.getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
@@ -530,13 +525,91 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sets the content of the date display on the mainscreen of the app
+     */
+    public static void showDateDisplay() {
+        dateDisplay.setText(generateStringForDateDisplay());
+
+    }
+
+    /**
+     * method called daily to show the right health risk status
+     */
+    public static void showRiskStatus() {
+        String language = Locale.getDefault().getLanguage();
+        int riskValue = LocalSafer.getRiskLevel();
+        if (riskValue <= 33) {
+            if (language == "de") {
+                riskStatus.setText(riskValue + ": Geringes Risiko");
+            } else {
+                riskStatus.setText(riskValue + ": Low Risk");
+            }
+        } else if (riskValue <= 70) {
+            if (language == "de") {
+                riskStatus.setText(riskValue + ": Moderates Risiko");
+            } else {
+                riskStatus.setText(riskValue + ": Moderate Risk");
+            }
+        } else if (riskValue > 70 && riskValue < 100) {
+            if (language == "de") {
+                riskStatus.setText(riskValue + ": Hohes Risiko");
+            } else {
+                riskStatus.setText(riskValue + ": High Risk");
+            }
+        } else if (riskValue == 100) {
+            if (language == "de") {
+                riskStatus.setText("Bestehende Infektion");
+            } else {
+                riskStatus.setText("infection present");
+            }
+        }
+    }
+
+    /**
+     * method called daily to show the right traffic light status (for current health risk)
+     */
+    public static void showTrafficLightStatus() {
+        int riskValue = LocalSafer.getRiskLevel();
+        if (riskValue <= 33) {
+            trafficLight.setImageResource(R.drawable.green_traffic_light);
+        } else if (riskValue <= 70) {
+            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
+        } else {
+            trafficLight.setImageResource(R.drawable.red_traffic_light);
+        }
+    }
+
+    /**
+     * At first start of the app the user has to accept the data protection regulations before he can
+     * use the app
+     */
+    public boolean firstAppStart() {
+        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
+
+        //generate and save the Date of the first app Start, maybe this code should be relocated.
+
+        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+
+        requestKey();
+
+        if (preferences.getBoolean(prefDataProtection, true)) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(prefDataProtection, false);
+            editor.commit();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //traffic light image view and risk status text view
-        //this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
+        this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
         this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
         this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
 
@@ -658,71 +731,6 @@ public class MainActivity extends AppCompatActivity {
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
 
-    }
-
-    /**
-     * At first start of the app the user has to accept the data protection regulations before he can
-     * use the app
-     */
-    public boolean firstAppStart() {
-        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
-
-        //generate and save the Date of the first app Start, maybe this code should be relocated.
-
-        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
-
-        requestKey();
-
-        if (preferences.getBoolean(prefDataProtection, true)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(prefDataProtection, false);
-            editor.commit();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
-     * method called daily to show the right traffic light status (for current health risk)
-     */
-    public static void showTrafficLightStatus() {
-        int riskValue = LocalSafer.getRiskLevel();
-        if (riskValue <= 33) {
-            trafficLight.setImageResource(R.drawable.green_traffic_light);
-        } else if (riskValue <= 70) {
-            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
-        } else {
-            trafficLight.setImageResource(R.drawable.red_traffic_light);
-        }
-    }
-
-    /**
-     * method called daily to show the right health risk status
-     */
-    public static void showRiskStatus() {
-        String language = Locale.getDefault().getLanguage();
-        int riskValue = LocalSafer.getRiskLevel();
-        if (riskValue <= 33) {
-            if (language == "de") {
-                riskStatus.setText(riskValue + ": Geringes Risiko");
-            } else {
-                riskStatus.setText(riskValue + ": Low Risk");
-            }
-        } else if (riskValue <= 70) {
-            if (language == "de") {
-                riskStatus.setText(riskValue + ": Moderates Risiko");
-            } else {
-                riskStatus.setText(riskValue + ": Moderate Risk");
-            }
-        } else {
-            if (language == "de") {
-                riskStatus.setText(riskValue + ": Hohes Risiko");
-            } else {
-                riskStatus.setText(riskValue + ": High Risk");
-            }
-        }
     }
 
     public static Context getContext() {

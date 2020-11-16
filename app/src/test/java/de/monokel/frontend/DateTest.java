@@ -18,64 +18,6 @@ import static org.junit.Assert.assertEquals;
 
 public class DateTest {
 
-
-    public static void main(String[] args) {
-
-        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
-
-        String dateString = dateHelper.getCurrentDateString();
-        System.out.println("1. Ausgabe: ");
-        System.out.println(dateString);
-
-        Date dateCal = Calendar.getInstance().getTime();
-        System.out.println("2. Ausgabe: ");
-        System.out.println(dateCal);
-
-
-        // richtige formatierung von Date -> String
-        System.out.println("3. Ausgabe: ");
-        String strDate = format.format(dateCal);
-        System.out.println(strDate);
-
-        Date date2 = dateHelper.getCurrentDate();
-        System.out.println("4. Ausgabe: ");
-        System.out.println(date2);
-
-
-        //Date date = new Date();
-        Date date = null;
-        try {
-            date = format.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.d("Jonas", "Parse gone wrong in Test class!");
-            System.out.println("Parse gone wrong!!");
-        }
-        System.out.println("5. Ausgabe: ");
-        System.out.println(date.toString());
-
-        System.out.println("6. Ausgabe: ");
-        //System.out.println(LocalSafer.getFirstStartDate());
-
-
-        Date datex = new Date();
-        String stringx = dateHelper.convertDateToString(datex);
-
-
-        Date datexx = dateHelper.convertStringToDate(stringx);
-        String a = dateHelper.convertDateToString(datexx);
-        System.out.println("7. Ausgabe: ");
-        System.out.println(stringx);
-        System.out.println("8. Ausgabe: ");
-        System.out.println(dateHelper.convertDateToString(datexx));
-
-
-        System.out.println("9. Ausgabe: ");
-        System.out.println(LocalSafer.getFirstStartDate());
-
-
-    }
-
     @Test
     public void calculateIntervalTest() {
         Date date1 = new Date(2020, 11, 1);
@@ -120,7 +62,6 @@ public class DateTest {
 
         long dateDiffInDays = dateHelper.calculateTimeIntervalBetweenTwoDays(date1, date3);
         assertEquals(dateDiffInDays, 10);
-
 
     }
 }

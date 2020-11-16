@@ -39,7 +39,7 @@ public class LocalSafer {
      * @param value    The String.
      */
     public static void safeStringAtDatafile(String datafile, String value) {
-        //Log.d(TAG, "safeStringAtDatafile -> String: " + value + " at data file: " + datafile);
+        Log.d(TAG, "safeStringAtDatafile -> String: " + value + " at data file: " + datafile);
         try {
             FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput(datafile,
                     Context.MODE_PRIVATE);
@@ -275,7 +275,7 @@ public class LocalSafer {
      * @param date days Since last contact as int.
      */
     public static void safeFirstStartDate(String date) {
-        //Log.d(TAG, "safeFirstStartDate() was called with " + date);
+        Log.d(TAG, "safeFirstStartDate() was called with " + date);
         safeStringAtDatafile(DATAFILE05, date);
     }
 
