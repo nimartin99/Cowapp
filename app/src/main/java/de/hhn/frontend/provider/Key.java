@@ -66,12 +66,12 @@ public class Key {
             case('6'): return '7';
             case('7'): return '8';
             case('8'): return '9';
-            case('9'): return 'A';
-            case('A'): return 'B';
-            case('B'): return 'C';
-            case('C'): return 'D';
-            case('D'): return 'E';
-            case('E'): return 'F';
+            case('9'): return 'a';
+            case('a'): return 'b';
+            case('b'): return 'c';
+            case('c'): return 'd';
+            case('d'): return 'e';
+            case('e'): return 'f';
             default: return '0';
         }
     }
