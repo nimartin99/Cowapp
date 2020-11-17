@@ -1,6 +1,7 @@
 package de.hhn.frontend;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.NotificationChannel;
@@ -62,8 +63,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Philipp Alessandrini
  * @author Mergim Miftari
  * @author Nico Martin
- * @author Jonas
- * @version 2020-11-16
+ * @author Jonas Klein
+ * @version 2020-11-17
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -103,6 +104,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //logo of the app in the action bar
+        ActionBar actionBar= getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.mipmap.ic_cowapp);
         setContentView(R.layout.activity_main);
 
         //traffic light image view and risk status text view
@@ -143,18 +148,6 @@ public class MainActivity extends AppCompatActivity {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
         } else {
-            //Test menu button listener
-            Button testMenuButton = (Button) findViewById(R.id.TestMenuButton);
-
-            testMenuButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to test menu screen
-                    Intent nextActivity = new Intent(MainActivity.this, TestMenuActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
             //Report infection button listener
             Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
 
@@ -227,6 +220,11 @@ public class MainActivity extends AppCompatActivity {
                 //Go to info screen
                 Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
                 startActivity(nextActivity);
+                return true;
+            case R.id.item4:
+                //Go to test menu screen
+                Intent testActivity = new Intent(MainActivity.this, TestMenuActivity.class);
+                startActivity(testActivity);
                 return true;
             default: return super.onOptionsItemSelected(item);
         }
@@ -652,15 +650,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
     /**
      * Getter of the current date when this method is used
      *
-     * @return
+     * @return current date as String
      */
-
     public static String getCurrentDate() {
 
         Date currentDate = Calendar.getInstance().getTime();

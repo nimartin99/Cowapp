@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">frontend</string>
+    <string name="app_name">COWapp</string>
     //Main
     <string name="menu_log">LOG</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_info">Info</string>
-    <string name="test_button">Test</string>
+    <string name="menu_test">Test</string>
     <string name="report_infection_button">Report Infection</string>
     <string name="suspicion_button">Suspicion?</string>
     <string name="risk_status_default">___ : ___ risk</string>

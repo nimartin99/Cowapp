@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -12,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini
- * @version 2020-11-10
+ * @version 2020-11-17
  */
 public class ReportInfectionActivity extends AppCompatActivity {
     // tag class name for logging
@@ -21,6 +22,10 @@ public class ReportInfectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //logo of the app in the action bar
+        ActionBar actionBar= getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.mipmap.ic_cowapp);
         setContentView(R.layout.activity_report_infection);
 
         //Yes button listener
