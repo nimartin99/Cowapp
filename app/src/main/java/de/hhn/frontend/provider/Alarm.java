@@ -1,8 +1,11 @@
 package de.hhn.frontend.provider;
 
 import de.hhn.frontend.MainActivity;
+import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.risklevel.RiskLevel;
 import de.hhn.frontend.risklevel.TypeOfExposureEnum;
+
+import static de.hhn.frontend.keytransfer.BeaconBackgroundService.updateTransmissionBeaconKey;
 
 /**
  * This class has the method which is called once a day.
@@ -40,6 +43,7 @@ public class Alarm {
     public static void fifteenMinutesBusiness() {
         // request a new key
         MainActivity.requestKey();
+        BeaconBackgroundService.updateTransmissionBeaconKey();
     }
 
     /**

@@ -172,6 +172,32 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         beaconTransmitter.stopAdvertising();
     }
 
+    public static void updateTransmissionBeaconKey() {
+        if(beaconTransmitter != null) {
+            Log.d(TAG, "Stop Transmitting Exposure Notification");
+            beaconTransmitter.stopAdvertising();
+        }
+
+        if(Constants.SCAN_AND_TRANSMIT) {
+            String ownKey = LocalSafer.getOwnKey();
+            if(!ownKey.isEmpty()) {
+                Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + ownKey);
+                Beacon beacon = new Beacon.Builder()
+                        .setId1(ownKey)
+                        .setDataFields(Arrays.asList(new Long[]{0l}))
+                        .build();
+
+                BeaconParser beaconParser = new BeaconParser()
+                        .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17,d:18-21");
+                beaconTransmitter = new
+                        BeaconTransmitter(BeaconBackgroundService.getAppContext(), beaconParser);
+                beaconTransmitter.startAdvertising(beacon);
+            } else {
+                Log.d(TAG, "Key is empty. No transmission started!");
+            }
+        }
+    }
+
     /**
      * Callback when an Beacon enters the specified region
      *

@@ -10,6 +10,6 @@ public class Constants {
     public static final Long BACKGROUND_SCAN_PERIOD = 1100L;
     public static final Long FOREGROUND_SCAN_PERIOD = 1100L;
 
-    public static final String cowappBeaconIdentifier = "A32Dffb3";
+    public static final String cowappBeaconIdentifier = "a32dffb3";
     public static final String testid1 = "A32Dffb3-FFFF-ffff-090a-222222222222";
 }
