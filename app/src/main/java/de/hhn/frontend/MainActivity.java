@@ -672,11 +672,6 @@ public class MainActivity extends AppCompatActivity {
         dateDisplay.setText(dateHelper.generateStringForDateDisplay());
     }
 
-    public static void showDaysSinceUse() {
-        daysSinceFirstUseTextview.setText(generateStringDaysSince());
-    }
-
-
     /**
      * method called daily to show the right traffic light status (for current health risk)
      */
@@ -697,34 +692,32 @@ public class MainActivity extends AppCompatActivity {
     public static void showRiskStatus() {
         String language = Locale.getDefault().getLanguage();
         int riskValue = LocalSafer.getRiskLevel();
-        if(riskValue <= 33) {
-            if(language == "de") {
+        if (riskValue <= 33) {
+            if (language == "de") {
                 riskStatus.setText("Geringes Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
-            else{
+            else {
                riskStatus.setText(" Low Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
-        }
-        else if(riskValue <=70) {
-            if(language == "de") {
+        } else if (riskValue <= 70) {
+            if (language == "de") {
                 riskStatus.setText("Moderates Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
-            else{
+            else {
                 riskStatus.setText("Moderate Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
-        }
-        else {
-            if(language == "de") {
+        } else if (riskValue > 70 && riskValue < 100) {
+            if (language == "de") {
                 riskStatus.setText("Hohes Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
-            else{
+            else {
                 riskStatus.setText(" High Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         } else if (riskValue == 100) {
             if (language == "de") {
-                riskStatus.setText("Bestehende Infektion");
+                riskStatus.setText("\n \n Bestehende Infektion");
             } else {
-                riskStatus.setText("current infection");
+                riskStatus.setText("\n \n Current infection");
             }
         }
     }
