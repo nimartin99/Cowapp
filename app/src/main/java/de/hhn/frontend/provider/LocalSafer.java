@@ -37,8 +37,9 @@ public class LocalSafer {
     /**
      * This methods saves a String under a datafileName.
      * If there is not such datafile, it will be created, when you call this methode.
+     *
      * @param datafile The Name of the datafile.
-     * @param value The String.
+     * @param value    The String.
      */
     public static void safeStringAtDatafile(String datafile, String value) {
         Log.d(TAG, "safeStringAtDatafile -> String: " + value + " at data file: " + datafile);
@@ -54,6 +55,7 @@ public class LocalSafer {
 
     /**
      * Returns the value of a Datafile. If there is no such datafile, the returnvalue is an empty string.
+     *
      * @param datafileName the name of the datafile.
      * @return the value of the datafile.
      */
@@ -63,9 +65,9 @@ public class LocalSafer {
             FileInputStream datafile = BeaconBackgroundService.getAppContext().openFileInput(datafileName);
             List<Byte> data = new ArrayList<Byte>();
 
-            while(true) {
+            while (true) {
                 int b = datafile.read();
-                if(b == -1) {
+                if (b == -1) {
                     break; // end of the datafile.
                 } else {
                     data.add((byte) b);
@@ -74,19 +76,20 @@ public class LocalSafer {
             // Bytes to words
             byte[] bytes = new byte[data.size()];
 
-            for(int i = 0; i < bytes.length; i++) {
+            for (int i = 0; i < bytes.length; i++) {
                 bytes[i] = data.get(i);
             }
 
             String text = new String(bytes);
             return text;
-        } catch(Exception ex) { //datafile not found
+        } catch (Exception ex) { //datafile not found
             return "";
         }
     }
 
     /**
      * Returns true if the date is older than 2 weeks.
+     *
      * @param date
      * @return
      */
@@ -108,6 +111,7 @@ public class LocalSafer {
      * This Method returns an Array of Strings.
      * The format of the Strings is the following:
      * value + "----" + new Date().toString()
+     *
      * @return A list of Strings. If there are no saved keys, the return-value is null.
      */
     private static String[] getValuesAsArray(String datafileName) {
@@ -144,6 +148,7 @@ public class LocalSafer {
 
     /**
      * safes the given key and the time of the method-call. If the parameter is null, the method deleteOldKeyPairs() is called.
+     *
      * @param contactKey The Key of the contact
      */
     public synchronized static void addKeyPairToSavedKeyPairs(String contactKey) {
@@ -196,11 +201,12 @@ public class LocalSafer {
      * This Method returns an Array of Strings.
      * The format of the Strings is the following:
      * contactKey + "----" + new Date().toString()
+     *
      * @return A list of Strings. If there are no saved keys, the return-value is null.
      */
     public static String[] getKeyPairs() {
         Log.d(TAG, "getKeyPairs() was called.");
-        String [] result = getValuesAsArray(DATAFILE01);
+        String[] result = getValuesAsArray(DATAFILE01);
         if (result != null) {
             return result;
         } else {
@@ -210,6 +216,7 @@ public class LocalSafer {
 
     /**
      * safes the given notification and the time of the method-call. If the parameter is null, the method deleteOldNotifications() is called.
+     *
      * @param notification The new notification as String
      */
     public synchronized static void addNotificationToSavedNotifications(String notification) {
@@ -236,6 +243,7 @@ public class LocalSafer {
      * This Method returns an Array of Strings (the notifications).
      * The format of the Strings is the following:
      * Notification + "----" + new Date().toString()
+     *
      * @return A list of Strings. If there are no saved notifications, the return-value is null.
      */
     public static String[] getNotifications() {
@@ -245,6 +253,7 @@ public class LocalSafer {
 
     /**
      * Safes the risk Level.
+     *
      * @param riskLevel risk level as int
      */
     public static void safeRiskLevel(int riskLevel) {
@@ -254,19 +263,21 @@ public class LocalSafer {
 
     /**
      * Getter for the risk level.
+     *
      * @return risk level as int.
      */
     public static int getRiskLevel() {
         Log.d(TAG, "getRiskLevel() was called.");
         try {
             return Integer.valueOf(readDataFile(DATAFILE03));
-        } catch(Exception ex) { //datafile not found
+        } catch (Exception ex) { //datafile not found
             return 0;
         }
     }
 
     /**
      * Safes the daysSinceLastContact.
+     *
      * @param daysSinceLastContact days Since last contact as int.
      */
     public static void safeDaysSinceLastContact(int daysSinceLastContact) {
@@ -276,19 +287,21 @@ public class LocalSafer {
 
     /**
      * Getter for the daysSinceLastContact.
+     *
      * @return the days since last Contact as int.
      */
     public static int getDaysSinceLastContact() {
         Log.d(TAG, "getDaysSinceLastContact()");
         try {
             return Integer.valueOf(readDataFile(DATAFILE04));
-        } catch(Exception ex) { //datafile not found
+        } catch (Exception ex) { //datafile not found
             return 0;
         }
     }
 
     /**
      * Safes the date of the first start.
+     *
      * @param date days Since last contact as int.
      */
     public static void safeFirstStartDate(String date) {
@@ -298,6 +311,7 @@ public class LocalSafer {
 
     /**
      * Getter for the date of the first start.
+     *
      * @return the days since last Contact as int.
      */
     public static String getFirstStartDate() {
@@ -307,6 +321,7 @@ public class LocalSafer {
 
     /**
      * Safes the own key
+     *
      * @param key the own key as String
      */
     public static void safeOwnKey(String key) {
@@ -318,12 +333,13 @@ public class LocalSafer {
 
     /**
      * Getter for the own key
+     *
      * @return the own key as String
      */
     public static String getOwnKey() {
         Log.d(TAG, "getOwnKey was called");
         String key = readDataFile(DATAFILE06);
-        if(!key.isEmpty()) {
+        if (!key.isEmpty()) {
             String result = Constants.cowappBeaconIdentifier + "-" + readDataFile(DATAFILE06);
             return result;
         } else {
@@ -333,6 +349,7 @@ public class LocalSafer {
 
     /**
      * safes the given key and the time of the method-call. If the parameter is null, the method deleteOldKeyPairs() is called.
+     *
      * @param ownKey The Key of the contact
      */
     public synchronized static void addKeyToOwnKeys(String ownKey) {
@@ -358,6 +375,7 @@ public class LocalSafer {
      * This Method returns an Array of the own Strings.
      * Attention: The first eight characters are the identifier of our application.
      * To reduce the length of the string, the identifier are left out of the keys in this methode.
+     *
      * @return A list of the own Strings without the first eight characters. If there are no saved keys, the return-value is null.
      */
     public static String[] getOwnKeys() {
@@ -372,6 +390,7 @@ public class LocalSafer {
 
     /**
      * Safes the current alarm count
+     *
      * @param count current alarm count as int.
      */
     public static void safeAlarmCounter(int count) {
@@ -381,6 +400,7 @@ public class LocalSafer {
 
     /**
      * Getter for the current alarm count
+     *
      * @return the current alarm count as int
      */
     public static int getAlarmCounter() {
@@ -394,6 +414,7 @@ public class LocalSafer {
 
     /**
      * This method adds the received Key to an buffer-datafile, so we can work with it.
+     *
      * @param key the received key
      */
     public synchronized static void addReceivedKey(String key) {

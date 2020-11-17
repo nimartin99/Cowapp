@@ -1,4 +1,4 @@
-package de.hhn.frontend;
+package de.monokel.frontend;
 
 import org.junit.Test;
 
