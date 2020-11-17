@@ -735,26 +735,26 @@ public class MainActivity extends AppCompatActivity {
         int riskValue = LocalSafer.getRiskLevel();
         if(riskValue <= 33) {
             if(language == "de") {
-                riskStatus.setText(riskValue + ": Geringes Risiko");
+                riskStatus.setText("Geringes Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
             else{
-                riskStatus.setText(riskValue + ": Low Risk");
+               riskStatus.setText(" Low Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         }
         else if(riskValue <=70) {
             if(language == "de") {
-                riskStatus.setText(riskValue + ": Moderates Risiko");
+                riskStatus.setText("Moderates Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
             else{
-                riskStatus.setText(riskValue + ": Moderate Risk");
+                riskStatus.setText("Moderate Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         }
         else {
             if(language == "de") {
-                riskStatus.setText(riskValue + ": Hohes Risiko");
+                riskStatus.setText("Hohes Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
             else{
-                riskStatus.setText(riskValue + ": High Risk");
+                riskStatus.setText(" High Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         }
     }

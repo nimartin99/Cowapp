@@ -41,18 +41,19 @@
 
     <TextView
         android:id="@+id/RiskView"
-        android:layout_width="375dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="182dp"
+        android:layout_height="186dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="104dp"
         android:layout_marginEnd="20dp"
         android:text="@string/risk_status_default"
+        android:textAlignment="center"
         android:textColor="#000000"
+        android:textDirection="firstStrongRtl"
         android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/trafficLightView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trafficLightView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ViewDaysUse"
@@ -75,9 +76,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="84dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.82"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/green_traffic_light" />
