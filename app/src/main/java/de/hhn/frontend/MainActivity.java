@@ -26,7 +26,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -68,7 +67,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-17
+ * @version 2020-11-18
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -103,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     //To display the first use date and the elapsed time since the app is used.
     private static TextView dateDisplay;
 
-
+    //data protection has still to be accepted
     String prefDataProtection = "ausstehend";
 
   @Override
