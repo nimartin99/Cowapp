@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">COWapp</string>
+    <string name="app_name">CoWApp</string>
     //Main
     <string name="menu_log">LOG</string>
     <string name="menu_settings">Settings</string>

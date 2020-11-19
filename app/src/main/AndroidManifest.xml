@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_cowapp"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_cowapp_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
@@ -21,7 +21,7 @@
         <service
             android:name="de.hhn.frontend.provider.NotificationService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
 
         <activity android:name="de.hhn.frontend.MainActivity">
             <intent-filter>
