@@ -10,6 +10,7 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import de.hhn.frontend.LogActivity;
 import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.R;
 
@@ -57,6 +58,7 @@ public class NotificationService extends Service {
     private void displayNotification(String title, String text, Class intentClass, boolean shouldBeLogged){
         if (shouldBeLogged) {
             LocalSafer.addNotificationToSavedNotifications(title + " - " + text);
+            LogActivity.renewTheLog();
         }
         Intent pushIntent;
         PendingIntent pushPendingIntent;
