@@ -38,22 +38,35 @@ public class LogActivity extends AppCompatActivity {
         initScrollbar();
     }
 
-
+    /**
+     * Creates the Scrollbar with the notifications.
+     */
     private void initScrollbar() {
-        TextView textView = findViewById(R.id.templatenotification);
-        if (textView != null) {
-            template = textView;
-        }
-
-        try {
-            notificationLayout.removeView(textView);
-        } catch (Exception e) {
-            return;
-        }
+        template = findViewById(R.id.templatenotification);
+        notificationLayout.removeView(template);
 
         String [] notifications = LocalSafer.getNotifications();
 
-        if (notificationViews != null && !notificationViews.isEmpty()) {
+        notificationViews = new ArrayList<TextView>();
+
+        if (notifications != null) {
+            for (String string : notifications) {
+                TextView notification = new TextView(this);
+                notification.setText(string);
+                notification.setLayoutParams(template.getLayoutParams());
+                notificationViews.add(notification);
+                notificationLayout.addView(notification, 0);
+            }
+        }
+    }
+
+    /**
+     * Updates the Scrollbar with the notifications.
+     */
+    private void updateScrollbar() {
+        String [] notifications = LocalSafer.getNotifications();
+
+        if (notificationViews != null) {
             for (TextView textView1 : notificationViews) {
                 notificationLayout.removeView(textView1);
             }
@@ -70,14 +83,20 @@ public class LogActivity extends AppCompatActivity {
                 notificationLayout.addView(notification, 0);
             }
         }
-
     }
 
+    /**
+     * Calles the updateScrollBar, if there is already a Scrollbar.
+     */
     public static void renewTheLog() {
-        try {
-            logActivity.initScrollbar();
-        } catch (Exception e) {
-            return;
+        if (logActivity != null) {
+            logActivity.updateScrollbar();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        logActivity = null;
     }
 }
