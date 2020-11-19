@@ -703,7 +703,8 @@ public class MainActivity extends AppCompatActivity {
                         + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
                 riskStatus.setText(risk);
         } else if (riskValue == 100) {
-                riskStatus.setText(riskStatus.getResources().getString(R.string.current_infection));
+            String risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
+                riskStatus.setText(risk);
         }
     }
 
