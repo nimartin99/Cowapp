@@ -9,34 +9,36 @@
 
     <Button
         android:id="@+id/AcceptButton"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="80dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="#27496D"
         android:text="@string/accept_button"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/DeclineButton"
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="80dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="#27496D"
         android:text="@string/decline_button"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/TextDataProtection"
-        android:layout_width="361dp"
-        android:layout_height="519dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="15dp"
         android:text="@string/text_data_protection"
@@ -45,20 +47,18 @@
         app:layout_constraintBottom_toTopOf="@+id/AcceptButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/HeadDataProtection" />
 
     <TextView
         android:id="@+id/HeadDataProtection"
-        android:layout_width="365dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
         android:text="@string/head_data_protection"
         android:textColor="#142850"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/TextDataProtection"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

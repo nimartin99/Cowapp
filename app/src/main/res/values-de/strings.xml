@@ -15,7 +15,7 @@
     <string name="decline_button">Ablehnen</string>
     <string name="head_data_protection">Nutzungsbedingungen</string>
     <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres
-        Mobilgerätes aktivieren und darüber Daten (generierte Schlüssel mit Zeitstempel und Standort
+        Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel und Standort
         sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich
         damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch
         wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.\nNur so ist die Funktion der
@@ -63,6 +63,8 @@
     <string name="test_button_5">Logge eigene Schlüssel Test</string>
     <string name="test_button_6">Lösche eigene Schlüssel Test</string>
     <string name="reset_button_risklevel">Reset Risk Level</string>
+    <string name="test_button_7">Übertragung an/aus</string>
+    <string name="test_button_8">Scannen an/aus</string>
     //Thank You Screen
     <string name="head_thank_you">Vielen Dank für die Meldung!</string>
     <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt

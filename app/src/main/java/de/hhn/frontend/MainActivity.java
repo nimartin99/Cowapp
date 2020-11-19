@@ -693,30 +693,30 @@ public class MainActivity extends AppCompatActivity {
         int riskValue = LocalSafer.getRiskLevel();
         if (riskValue <= 33) {
             if (language == "de") {
-                riskStatus.setText("Geringes Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
+                riskStatus.setText("Geringes \n Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
             else {
                riskStatus.setText(" Low Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         } else if (riskValue <= 70) {
             if (language == "de") {
-                riskStatus.setText("Moderates Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
+                riskStatus.setText("Moderates \n Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
             else {
-                riskStatus.setText("Moderate Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
+                riskStatus.setText("Moderate \n Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         } else if (riskValue > 70 && riskValue < 100) {
             if (language == "de") {
-                riskStatus.setText("Hohes Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
+                riskStatus.setText("Hohes \n Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
             else {
                 riskStatus.setText(" High Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         } else if (riskValue == 100) {
             if (language == "de") {
-                riskStatus.setText("\n \n Bestehende Infektion");
+                riskStatus.setText("\n \n Bestehende \n Infektion");
             } else {
-                riskStatus.setText("\n \n Current infection");
+                riskStatus.setText("\n \n Current \n infection");
             }
         }
     }
