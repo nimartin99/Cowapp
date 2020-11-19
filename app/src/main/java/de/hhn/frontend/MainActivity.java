@@ -461,15 +461,18 @@ public class MainActivity extends AppCompatActivity {
                 responsePushNotification.putExtra("TITLE", "Direkten Kontakt zu einer infizierten Person festgestellt");
                 responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
                 responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                responsePushNotification.putExtra("LOG", true);
                 break;
             case "INDIRECT_CONTACT_NOTIFICATION":
                 responsePushNotification.putExtra("TITLE", "Indirekten Kontakt zu einer infizierten Person festgestellt");
                 responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
                 responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                responsePushNotification.putExtra("LOG", true);
                 break;
             case "NO_CONNECTION_NOTIFICATION":
                 responsePushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
                 responsePushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+                responsePushNotification.putExtra("LOG", false);
                 break;
             default:
                 Log.w(TAG, "NO DEFINED NOTIFICATION_TYPE");
