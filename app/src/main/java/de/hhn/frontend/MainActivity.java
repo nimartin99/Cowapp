@@ -689,35 +689,21 @@ public class MainActivity extends AppCompatActivity {
      * method called daily to show the right health risk status
      */
     public static void showRiskStatus() {
-        String language = Locale.getDefault().getLanguage();
         int riskValue = LocalSafer.getRiskLevel();
         if (riskValue <= 33) {
-            if (language == "de") {
-                riskStatus.setText("Geringes \n Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
-            }
-            else {
-               riskStatus.setText(" Low Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
-            }
+                String risk = riskStatus.getResources().getString(R.string.risk_status_low)
+                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                riskStatus.setText(risk);
         } else if (riskValue <= 70) {
-            if (language == "de") {
-                riskStatus.setText("Moderates \n Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
-            }
-            else {
-                riskStatus.setText("Moderate \n Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
-            }
+                String risk = riskStatus.getResources().getString(R.string.risk_status_moderate)
+                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                riskStatus.setText(risk);
         } else if (riskValue > 70 && riskValue < 100) {
-            if (language == "de") {
-                riskStatus.setText("Hohes \n Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
-            }
-            else {
-                riskStatus.setText(" High Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
-            }
+                String risk = riskStatus.getResources().getString(R.string.risk_status_high)
+                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                riskStatus.setText(risk);
         } else if (riskValue == 100) {
-            if (language == "de") {
-                riskStatus.setText("\n \n Bestehende \n Infektion");
-            } else {
-                riskStatus.setText("\n \n Current \n infection");
-            }
+                riskStatus.setText(riskStatus.getResources().getString(R.string.current_infection));
         }
     }
 

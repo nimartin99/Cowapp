@@ -68,11 +68,12 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/green_traffic_light" />
+        app:srcCompat="@drawable/green_traffic_light"
+        android:contentDescription="@string/traffic_light_description" />
 
     <TextView
         android:id="@+id/RiskView"
-        android:layout_width="wrap_content"
+        android:layout_width="160dp"
         android:layout_height="0dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="70dp"

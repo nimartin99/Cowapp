@@ -8,8 +8,15 @@
     <string name="menu_test">Test</string>
     <string name="report_infection_button">Infektion melden</string>
     <string name="suspicion_button">Verdacht? - Was tun?</string>
-    <string name="risk_status_default">___ : ___ Risiko</string>
+    <string name="traffic_light_description">Anzeige, die das aktuelle Risikolevel durch eine Ampel veranschaulicht.</string>
     <string name="daysSinceText">Sie helfen seit ___ Tagen, Corona einzudämmen.</string>
+    //Main risk status
+    <string name="risk_status_default">Aktuelles Risiko</string>
+    <string name="risk_status_low">Geringes Risiko</string>
+    <string name="risk_status_moderate">Moderates Risiko</string>
+    <string name="risk_status_high">Hohes Risiko</string>
+    <string name="risk_level">Risikolevel: %1$d von 100</string>
+    <string name="current_infection">Bestehende Infektion</string>
     //Data Protection
     <string name="accept_button">Akzeptieren</string>
     <string name="decline_button">Ablehnen</string>
