@@ -216,11 +216,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
                 startActivity(nextActivityItem1);
                 return true;
-            case R.id.item2:
+                //TODO settings menu - auch in menu_item.xml wieder einfügen wenn Verwendung
+            //case R.id.item2:
                 //Go to settings screen
-                Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(nextActivityItem2);
-                return true;
+                //Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
+                //startActivity(nextActivityItem2);
+                //return true;
             case R.id.item3:
                 //Go to info screen
                 Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
