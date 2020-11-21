@@ -20,6 +20,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,7 +71,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Jonas Klein
  * @version 2020-11-17
  */
-public class MainActivity extends AppCompatActivity {
+public class  MainActivity extends AppCompatActivity {
 
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
@@ -140,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
+            LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+            requestKey();
         } else {
             //Report infection button listener
             Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
@@ -166,19 +169,23 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+        boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), PendingIntent.FLAG_NO_CREATE) != null);
 
+        if (alarmUp == false) {
+            Log.i(TAG, "onCreate: Alarm is set");
+            //Register AlarmManager Broadcast receive.
+            firingCal = Calendar.getInstance();
+            firingCal.set(Calendar.HOUR, 0); // alarm hour
+            firingCal.set(Calendar.MINUTE, 5); // alarm minute
+            firingCal.set(Calendar.SECOND, 0); // and alarm second
+            long intendedTime = firingCal.getTimeInMillis();
 
-        //Register AlarmManager Broadcast receive.
-        firingCal = Calendar.getInstance();
-        firingCal.set(Calendar.HOUR, 0); // alarm hour
-        firingCal.set(Calendar.MINUTE, 5); // alarm minute
-        firingCal.set(Calendar.SECOND, 0); // and alarm second
-        long intendedTime = firingCal.getTimeInMillis();
+            registerMyAlarmBroadcast();
 
-        registerMyAlarmBroadcast();
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
-
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
+        } else {
+            Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
+        }
     }
 
     @Override
@@ -261,9 +268,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
-
-        requestKey();
 
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -471,15 +475,18 @@ public class MainActivity extends AppCompatActivity {
                 responsePushNotification.putExtra("TITLE", "Direkten Kontakt zu einer infizierten Person festgestellt");
                 responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
                 responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                responsePushNotification.putExtra("LOG", true);
                 break;
             case "INDIRECT_CONTACT_NOTIFICATION":
                 responsePushNotification.putExtra("TITLE", "Indirekten Kontakt zu einer infizierten Person festgestellt");
                 responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
                 responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                responsePushNotification.putExtra("LOG", true);
                 break;
             case "NO_CONNECTION_NOTIFICATION":
                 responsePushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
                 responsePushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+                responsePushNotification.putExtra("LOG", false);
                 break;
             default:
                 Log.w(TAG, "NO DEFINED NOTIFICATION_TYPE");
