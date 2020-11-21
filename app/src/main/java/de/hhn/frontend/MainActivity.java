@@ -282,7 +282,7 @@ public class  MainActivity extends AppCompatActivity {
    /**
      * Request a new key from the server.
      */
-    public static void requestKey() {
+    public static boolean requestKey() {
         Call<RequestedObject> call = retrofitService.requestKey();
         RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
             @Override
@@ -293,8 +293,12 @@ public class  MainActivity extends AppCompatActivity {
                     Key.setKey(Key.increaseKey(requestedKey.getKey()));
                     // send new key to the db
                     sendKey();
+                    // key is successfully requested
+                    Key.setKeyRequested(true);
                 } else if (response.code() == 404) {
                     Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
+                    // key is not successfully requested
+                    Key.setKeyRequested(false);
                 }
             }
 
@@ -302,8 +306,12 @@ public class  MainActivity extends AppCompatActivity {
             public void onFailure(Call<RequestedObject> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                 serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                // key is not successfully requested
+                Key.setKeyRequested(false);
             }
         });
+
+        return Key.isKeyRequested();
     }
 
    /**
