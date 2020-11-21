@@ -9,12 +9,22 @@ package de.hhn.frontend.provider;
 public class Key {
     private static String key;
 
+    private static boolean keyRequested;
+
     public static String getKey() {
         return key;
     }
 
     public static void setKey(String value) {
         key = value;
+    }
+
+    public static void setKeyRequested(boolean status) {
+        keyRequested = status;
+    }
+
+    public static boolean isKeyRequested() {
+        return keyRequested;
     }
 
     /**
