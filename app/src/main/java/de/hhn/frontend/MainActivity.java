@@ -166,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
+
+
         //Register AlarmManager Broadcast receive.
         firingCal = Calendar.getInstance();
         firingCal.set(Calendar.HOUR, 0); // alarm hour
@@ -179,7 +181,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-  	/**
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
+    }
+
+    /**
      * Creates the dropdown menu of the main screen
      *
      * @param menu the created menu
