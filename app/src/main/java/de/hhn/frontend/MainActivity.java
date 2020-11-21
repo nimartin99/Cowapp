@@ -141,6 +141,8 @@ public class  MainActivity extends AppCompatActivity {
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
+            LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+            requestKey();
         } else {
             //Report infection button listener
             Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
@@ -258,9 +260,6 @@ public class  MainActivity extends AppCompatActivity {
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
-
-        requestKey();
 
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
