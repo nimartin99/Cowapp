@@ -11,7 +11,7 @@ import retrofit2.http.POST;
  * Interface for Retrofit which provides operations for client-server-communication.
  *
  * @author Philipp Alessandrini
- * @version 2020-11-10
+ * @version 2020-11-22
  */
 public interface RetrofitService {
     /**
@@ -20,7 +20,7 @@ public interface RetrofitService {
      * @return a unique key
      */
     @GET("/request_key")
-    Call<RequestedObject> requestKey();
+    Call<String> requestKey();
 
     /**
      * POST-request to to send all contact keys to the server.
@@ -46,5 +46,5 @@ public interface RetrofitService {
      *         possible values: "DIRECT_CONTACT", "INDIRECT_CONTACT"
      */
     @POST("/request_infection_status")
-    Call<String> requestInfectionStatus(@Body HashMap<String, String> ownUserKeysMap);
+    Call<RequestedObject> requestInfectionStatus(@Body HashMap<String, String> ownUserKeysMap);
 }

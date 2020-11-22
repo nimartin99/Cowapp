@@ -69,7 +69,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-17
+ * @version 2020-11-22
  */
 public class  MainActivity extends AppCompatActivity {
 
@@ -103,7 +103,7 @@ public class  MainActivity extends AppCompatActivity {
 
     String prefDataProtection = "ausstehend";
 
-  @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //logo of the app in the action bar
@@ -243,7 +243,7 @@ public class  MainActivity extends AppCompatActivity {
         }
     }
 
-  	/**
+    /**
      * This method supports the once-a-day-alarm-clock for deleting keys older then 3 weeks.
      */
     private void registerMyAlarmBroadcast() {
@@ -261,7 +261,7 @@ public class  MainActivity extends AppCompatActivity {
         alarmManager = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
     }
 
-   /**
+    /**
      * At first start of the app the user has to accept the data protection regulations before he can
      * use the app
      */
@@ -279,18 +279,18 @@ public class  MainActivity extends AppCompatActivity {
         }
     }
 
-   /**
+    /**
      * Request a new key from the server.
      */
     public static boolean requestKey() {
-        Call<RequestedObject> call = retrofitService.requestKey();
-        RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
+        Call<String> call = retrofitService.requestKey();
+        RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
             @Override
-            public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.code() == 200) {
-                    RequestedObject requestedKey = response.body();
+                    String requestedKey = response.body();
                     // set the key
-                    Key.setKey(Key.increaseKey(requestedKey.getKey()));
+                    Key.setKey(Key.increaseKey(requestedKey));
                     // send new key to the db
                     sendKey();
                     // key is successfully requested
@@ -303,7 +303,7 @@ public class  MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<RequestedObject> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                 serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                 // key is not successfully requested
@@ -314,7 +314,7 @@ public class  MainActivity extends AppCompatActivity {
         return Key.isKeyRequested();
     }
 
-   /**
+    /**
      * Report an infection by sending the current key to the server.
      */
     public static void reportInfection(final String contactType) {
@@ -370,7 +370,7 @@ public class  MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-   /**
+    /**
      * Request the infection status of the user from the server.
      */
     public static void requestInfectionStatus() {
@@ -396,28 +396,25 @@ public class  MainActivity extends AppCompatActivity {
                     ownKeysMap.put("userKey", contactKey.toString());
 
                     // send user keys to the server
-                    Call<String> call = retrofitService.requestInfectionStatus(ownKeysMap);
-                    RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
+                    Call<RequestedObject> call = retrofitService.requestInfectionStatus(ownKeysMap);
+                    RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
                         @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
+                        public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
                             if (response.code() == 200) {
                                 // get infection status
-                                String infectionStatus = response.body();
-                                if (infectionStatus.equals("DIRECT_CONTACT")) {
+                                RequestedObject infection = response.body();
+                                if (infection.getStatus().equals("DIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had direct contact with an infected person");
                                     // send own contacts as indirect contacts to the server
                                     reportInfection("INDIRECT");
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
-
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
                                     RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.DIRECT_CONTACT), true);
-
-                                } else if (infectionStatus.equals("INDIRECT_CONTACT")) {
+                                } else if (infection.getStatus().equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
-
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
                                     RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.INDIRECT_CONTACT), true);
                                 } else {
@@ -434,7 +431,7 @@ public class  MainActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                        public void onFailure(Call<RequestedObject> call, Throwable t) {
                             Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                             serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                         }
@@ -475,7 +472,7 @@ public class  MainActivity extends AppCompatActivity {
         });
     }
 
-      // standard notification if there is no connection to the server
+    // standard notification if there is no connection to the server
     private static void serverResponseNotification(String notificationType) {
         Intent responsePushNotification = new Intent(context, NotificationService.class);
         switch (notificationType) {
@@ -504,7 +501,7 @@ public class  MainActivity extends AppCompatActivity {
 
 
 
-  /**
+    /**
      * create channel for the notification to be delivered as heads-up notification
      */
     private void createNotificationChannel() {
@@ -555,7 +552,7 @@ public class  MainActivity extends AppCompatActivity {
                 riskStatus.setText("Geringes Risiko \n \n" + "Risikolevel: \n" + riskValue + " von 100");
             }
             else {
-               riskStatus.setText(" Low Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
+                riskStatus.setText(" Low Risk \n \n" + "Risk Level: \n" + riskValue + " of 100");
             }
         } else if (riskValue <= 70) {
             if (language == "de") {

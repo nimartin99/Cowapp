@@ -3,7 +3,7 @@
  *
  * @author Mergim Miftari
  * @author Philipp Alessandrini
- * @version 2020-11-12
+ * @version 2020-11-22
  */
 
 // init web framework
@@ -30,10 +30,8 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
         app.get('/request_key', (req, res) => {
             keyCollection.findOne({}, (err, result) => {
                 if (err) throw err;
-                // get current key value from mongodb
-                const requestedKey = { key: result.key };
                 // send key to the client
-                res.status(200).send(JSON.stringify(requestedKey));
+                res.status(200).send(JSON.stringify(result.key));
             });
         });
         // send new key to mongodb
@@ -88,6 +86,11 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                     userDate: req.body.userDate.split("|"),
                     userKey: req.body.userKey.split("|")
                 }
+                // init all relevant direct and indirect contact keys as an array
+                let directKeyCollections = [];
+                let directKeys = [];
+                let indirectKeyCollections = [];
+                let indirectKeys = [];
                 // count the number of direct and indirect contacts
                 let directContactNbr = 0;
                 let indirectContactNbr = 0;
@@ -97,20 +100,60 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                     // check if user has had direct contact to an infected person and count the contacts
                     await result.forEach(function(key, keyIndex) {
                         directContactNbr++;
+                        directKeyCollections.push(key.contactKey);
                     });
+                    // init variables to sum up the collections as one array
+                    let currentKeyList = [];
+                    let i;
+                    let j;
                     // user has had direct contact
                     if (directContactNbr > 0) {
-                        res.status(200).send(JSON.stringify("DIRECT_CONTACT"));
+                        // init all relevant direct contact keys as an array
+                        for (i = 0; i < directKeyCollections.length; i++) {
+                            for (j = 0; j < directKeyCollections[i].length; j++) {
+                                currentKeyList = directKeyCollections[i];
+                                directKeys.push(currentKeyList[j]);
+                            }
+                        }
+                        // calculate identical values
+                        let intersectionDirectKeys = (userReport.userKey).filter(x => directKeys.includes(x));
+                        // use the intersection to calculate the number of non infected keys in userReport
+                        let notInfectedKeysNbr = (userReport.userKey).length - intersectionDirectKeys.length;
+                        // create a status report with infection status, contact persons and number of not infected keys
+                        const directInfectionStatus = {
+                            status: "DIRECT_CONTACT",
+                            contactNbr: directContactNbr.toString(),
+                            lastInfectionTime: notInfectedKeysNbr.toString()
+                        }
+                        res.status(200).send(JSON.stringify(directInfectionStatus));
                     } else { // else check if user has had indirect contact
                         indirectContactsCollection.find({ contactKey: {$in: userReport.userKey}}, async function(err, result) {
                             if (err) throw err;
                             // check if user has had direct contact to an infected person and count the contacts
                             await result.forEach(function(key, keyIndex) {
                                 indirectContactNbr++;
+                                indirectKeyCollections.push(key.contactKey);
                             });
                             // user has had indirect contact
                             if (indirectContactNbr > 0) {
-                                res.status(200).send(JSON.stringify("INDIRECT_CONTACT"));
+                                // init all relevant indirect contact keys as an array
+                                for (i = 0; i < indirectKeyCollections.length; i++) {
+                                    for (j = 0; j < indirectKeyCollections[i].length; j++) {
+                                        currentKeyList = indirectKeyCollections[i];
+                                        indirectKeys.push(currentKeyList[j]);
+                                    }
+                                }
+                                // calculate identical values
+                                let intersectionIndirectKeys = (userReport.userKey).filter(x => indirectKeys.includes(x));
+                                // use the intersection to calculate the number of non infected keys in userReport
+                                let notInfectedKeysNbr = (userReport.userKey).length - intersectionIndirectKeys.length;
+                                // create a status report with infection status, contact persons and number of not infected keys
+                                const indirectInfectionStatus = {
+                                    status: "INDIRECT_CONTACT",
+                                    contactNbr: indirectContactNbr.toString(),
+                                    lastInfectionTime: notInfectedKeysNbr.toString()
+                                }
+                                res.status(200).send(JSON.stringify(indirectInfectionStatus));
                             } else { // user has had no contact to an infected person
                                 res.status(400).send();
                             }
