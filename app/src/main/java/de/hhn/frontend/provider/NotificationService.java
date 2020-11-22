@@ -10,6 +10,7 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import de.hhn.frontend.LogActivity;
 import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.R;
 
@@ -41,6 +42,7 @@ public class NotificationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId){
         notificationTitle = intent.getStringExtra("TITLE");
         notificationText = intent.getStringExtra("TEXT");
+        boolean shouldBeLogged = intent.getBooleanExtra("LOG", true);
         try {
             notificationClass = (Class<Activity>)intent.getSerializableExtra("CLASS");
         } catch (Exception e) {
@@ -48,13 +50,16 @@ public class NotificationService extends Service {
         }
 
         notificationManagerCom = NotificationManagerCompat.from(this);
-        displayNotification(notificationTitle, notificationText, notificationClass);
+        displayNotification(notificationTitle, notificationText, notificationClass, shouldBeLogged);
         stopSelf();
         return super.onStartCommand(intent, flags, startId);
     }
 
-    private void displayNotification(String title, String text, Class intentClass){
-        LocalSafer.addNotificationToSavedNotifications(title + " - " + text);
+    private void displayNotification(String title, String text, Class intentClass, boolean shouldBeLogged){
+        if (shouldBeLogged) {
+            LocalSafer.addNotificationToSavedNotifications(title + " - " + text);
+            LogActivity.renewTheLog();
+        }
         Intent pushIntent;
         PendingIntent pushPendingIntent;
         // check if the notification leads to another activity

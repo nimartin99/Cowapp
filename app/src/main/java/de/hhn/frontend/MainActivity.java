@@ -20,21 +20,31 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
+import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.date.dateHelper;
 import de.hhn.frontend.provider.Alarm;
 import de.hhn.frontend.provider.Key;
@@ -59,7 +69,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-18
+ * @version 2020-11-22
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -78,10 +88,6 @@ public class MainActivity extends AppCompatActivity {
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
     private String PHONE_URL = "http://" + Personal_Constants.OWN_IP + ":3000";
 
-    //Expected Permission Values
-    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
-    private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
-
     //For the once-a-day-alarm-clock for deleting keys that are older than 3 weeks
     private PendingIntent myPendingIntent;
     private AlarmManager alarmManager;
@@ -97,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     //data protection has still to be accepted
     String prefDataProtection = "ausstehend";
 
-  @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //logo of the app in the action bar
@@ -111,16 +117,9 @@ public class MainActivity extends AppCompatActivity {
         this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
         this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
 
-        //Check bluetooth and location turned on
-        if (Constants.SCAN_AND_TRANSMIT) {
-            verifyBluetooth();
-        }
-        //Request needed permissions
-        requestPermissions();
-
         // init retrofit
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(PHONE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
@@ -142,6 +141,8 @@ public class MainActivity extends AppCompatActivity {
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
+            LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+            requestKey();
         } else {
             //Report infection button listener
             Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
@@ -168,20 +169,34 @@ public class MainActivity extends AppCompatActivity {
             });
         }
 
-        //Register AlarmManager Broadcast receive.
-        firingCal = Calendar.getInstance();
-        firingCal.set(Calendar.HOUR, 0); // alarm hour
-        firingCal.set(Calendar.MINUTE, 5); // alarm minute
-        firingCal.set(Calendar.SECOND, 0); // and alarm second
-        long intendedTime = firingCal.getTimeInMillis();
+        boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), PendingIntent.FLAG_NO_CREATE) != null);
 
-        registerMyAlarmBroadcast();
+        if (alarmUp == false) {
+            Log.i(TAG, "onCreate: Alarm is set");
+            //Register AlarmManager Broadcast receive.
+            firingCal = Calendar.getInstance();
+            firingCal.set(Calendar.HOUR, 0); // alarm hour
+            firingCal.set(Calendar.MINUTE, 5); // alarm minute
+            firingCal.set(Calendar.SECOND, 0); // and alarm second
+            long intendedTime = firingCal.getTimeInMillis();
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
+            registerMyAlarmBroadcast();
 
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
+        } else {
+            Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
+        }
     }
 
-  	/**
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //show current risk level (updated once a day)
+        showTrafficLightStatus();
+        showRiskStatus();
+    }
+
+    /**
      * Creates the dropdown menu of the main screen
      *
      * @param menu the created menu
@@ -229,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-  	/**
+    /**
      * This method supports the once-a-day-alarm-clock for deleting keys older then 3 weeks.
      */
     private void registerMyAlarmBroadcast() {
@@ -247,16 +262,13 @@ public class MainActivity extends AppCompatActivity {
         alarmManager = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
     }
 
-   /**
+    /**
      * At first start of the app the user has to accept the data protection regulations before he can
      * use the app
      */
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
         //generate and save the Date of the first app Start, maybe this code should be relocated.
-        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
-
-        requestKey();
 
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -268,34 +280,42 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-   /**
+    /**
      * Request a new key from the server.
      */
-    public static void requestKey() {
-        Call<RequestedObject> call = retrofitService.requestKey();
-        RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
+    public static boolean requestKey() {
+        Call<String> call = retrofitService.requestKey();
+        RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
             @Override
-            public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
+            public void onResponse(Call<String> call, Response<String> response) {
                 if (response.code() == 200) {
-                    RequestedObject requestedKey = response.body();
+                    String requestedKey = response.body();
                     // set the key
-                    Key.setKey(Key.increaseKey(requestedKey.getKey()));
+                    Key.setKey(Key.increaseKey(requestedKey));
                     // send new key to the db
                     sendKey();
+                    // key is successfully requested
+                    Key.setKeyRequested(true);
                 } else if (response.code() == 404) {
                     Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
+                    // key is not successfully requested
+                    Key.setKeyRequested(false);
                 }
             }
 
             @Override
-            public void onFailure(Call<RequestedObject> call, Throwable t) {
+            public void onFailure(Call<String> call, Throwable t) {
                 Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                 serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                // key is not successfully requested
+                Key.setKeyRequested(false);
             }
         });
+
+        return Key.isKeyRequested();
     }
 
-   /**
+    /**
      * Report an infection by sending the current key to the server.
      */
     public static void reportInfection(final String contactType) {
@@ -351,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-   /**
+    /**
      * Request the infection status of the user from the server.
      */
     public static void requestInfectionStatus() {
@@ -377,28 +397,25 @@ public class MainActivity extends AppCompatActivity {
                     ownKeysMap.put("userKey", contactKey.toString());
 
                     // send user keys to the server
-                    Call<String> call = retrofitService.requestInfectionStatus(ownKeysMap);
-                    RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
+                    Call<RequestedObject> call = retrofitService.requestInfectionStatus(ownKeysMap);
+                    RetryCallUtil.enqueueWithRetry(call, new Callback<RequestedObject>() {
                         @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
+                        public void onResponse(Call<RequestedObject> call, Response<RequestedObject> response) {
                             if (response.code() == 200) {
                                 // get infection status
-                                String infectionStatus = response.body();
-                                if (infectionStatus.equals("DIRECT_CONTACT")) {
+                                RequestedObject infection = response.body();
+                                if (infection.getStatus().equals("DIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had direct contact with an infected person");
                                     // send own contacts as indirect contacts to the server
                                     reportInfection("INDIRECT");
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
-
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
                                     RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.DIRECT_CONTACT), true);
-
-                                } else if (infectionStatus.equals("INDIRECT_CONTACT")) {
+                                } else if (infection.getStatus().equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
-
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
                                     RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.INDIRECT_CONTACT), true);
                                 } else {
@@ -415,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
+                        public void onFailure(Call<RequestedObject> call, Throwable t) {
                             Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                             serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                         }
@@ -456,7 +473,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-      // standard notification if there is no connection to the server
+    // standard notification if there is no connection to the server
     private static void serverResponseNotification(String notificationType) {
         Intent responsePushNotification = new Intent(context, NotificationService.class);
         switch (notificationType) {
@@ -464,15 +481,18 @@ public class MainActivity extends AppCompatActivity {
                 responsePushNotification.putExtra("TITLE", "Direkten Kontakt zu einer infizierten Person festgestellt");
                 responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
                 responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                responsePushNotification.putExtra("LOG", true);
                 break;
             case "INDIRECT_CONTACT_NOTIFICATION":
                 responsePushNotification.putExtra("TITLE", "Indirekten Kontakt zu einer infizierten Person festgestellt");
                 responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
                 responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                responsePushNotification.putExtra("LOG", true);
                 break;
             case "NO_CONNECTION_NOTIFICATION":
                 responsePushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
                 responsePushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+                responsePushNotification.putExtra("LOG", false);
                 break;
             default:
                 Log.w(TAG, "NO DEFINED NOTIFICATION_TYPE");
@@ -480,165 +500,9 @@ public class MainActivity extends AppCompatActivity {
         context.startService(responsePushNotification);
     }
 
-   /**
-     * Request all needed permissions based on SDK Version
-     * (Permission already requested in Manifest -> double check)
-     */
-    private void requestPermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (this.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    if (this.checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("This app needs background location access");
-                            builder.setMessage("Please grant location access so this app can detect beacons in the background.");
-                            builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
-                                @TargetApi(23)
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    requestPermissions(new String[]{Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                                            PERMISSION_REQUEST_BACKGROUND_LOCATION);
-                                }
 
-                            });
-                            builder.show();
-                        } else {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("Functionality limited");
-                            builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
-                            builder.setPositiveButton(android.R.string.ok, null);
-                            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                }
-
-                            });
-                            builder.show();
-                        }
-                    }
-                }
-            } else {
-                if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
-                                    Manifest.permission.ACCESS_BACKGROUND_LOCATION},
-                            PERMISSION_REQUEST_FINE_LOCATION);
-                } else {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.");
-                    builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
-                    });
-                    builder.show();
-                }
-
-            }
-        }
-    }
-
-  	/**
-     * Verify if Bluetooth is turned on and if BLE is supported
-     */
-    private void verifyBluetooth() {
-        try {
-            if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Bluetooth not enabled");
-                builder.setMessage("Please enable bluetooth in settings and restart this application.");
-                builder.setPositiveButton(android.R.string.ok, null);
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        //finish();
-                        //System.exit(0);
-                    }
-                });
-                builder.show();
-            }
-        } catch (RuntimeException e) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Bluetooth LE not available");
-            builder.setMessage("Sorry, this device does not support Bluetooth LE.");
-            builder.setPositiveButton(android.R.string.ok, null);
-            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    //finish();
-                    //System.exit(0);
-                }
-
-            });
-            builder.show();
-
-        }
-
-    }
-
-  /**
-     * Permission dialog result catch to follow further steps if not granted
-     *
-     * @param requestCode
-     * @param permissions
-     * @param grantResults
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_FINE_LOCATION: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "fine location permission granted");
-                } else {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.");
-                    builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
-                    });
-                    builder.show();
-                }
-                return;
-            }
-            case PERMISSION_REQUEST_BACKGROUND_LOCATION: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "background location permission granted");
-                } else {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons when in the background.");
-                    builder.setPositiveButton(android.R.string.ok, null);
-                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-
-                        @Override
-                        public void onDismiss(DialogInterface dialog) {
-                        }
-
-                    });
-                    builder.show();
-                }
-                return;
-            }
-        }
-    }
-
-  /**
+    /**
      * create channel for the notification to be delivered as heads-up notification
      */
     private void createNotificationChannel() {

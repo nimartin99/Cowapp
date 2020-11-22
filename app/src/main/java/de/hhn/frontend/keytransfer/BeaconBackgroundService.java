@@ -147,9 +147,9 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
     }
 
     public static void transmitAsBeacon() {
-        if(Constants.SCAN_AND_TRANSMIT) {
+        if (Constants.SCAN_AND_TRANSMIT) {
             String ownKey = LocalSafer.getOwnKey();
-            if(!ownKey.isEmpty()) {
+            if (!ownKey.isEmpty()) {
                 Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + ownKey);
                 Beacon beacon = new Beacon.Builder()
                         .setId1(ownKey)
@@ -168,8 +168,36 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
     }
 
     public static void stopTransmittingAsBeacon() {
-        Log.d(TAG, "Stop Transmitting Exposure Notification");
-        beaconTransmitter.stopAdvertising();
+        if (Constants.SCAN_AND_TRANSMIT) {
+            Log.d(TAG, "Stop Transmitting Exposure Notification");
+            beaconTransmitter.stopAdvertising();
+        }
+    }
+
+    public static void updateTransmissionBeaconKey() {
+        if (Constants.SCAN_AND_TRANSMIT) {
+            if (beaconTransmitter != null) {
+                Log.d(TAG, "Stop Transmitting Exposure Notification");
+                beaconTransmitter.stopAdvertising();
+            }
+
+            String ownKey = LocalSafer.getOwnKey();
+            if (!ownKey.isEmpty()) {
+                Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + ownKey);
+                Beacon beacon = new Beacon.Builder()
+                        .setId1(ownKey)
+                        .setDataFields(Arrays.asList(new Long[]{0l}))
+                        .build();
+
+                BeaconParser beaconParser = new BeaconParser()
+                        .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17,d:18-21");
+                beaconTransmitter = new
+                        BeaconTransmitter(BeaconBackgroundService.getAppContext(), beaconParser);
+                beaconTransmitter.startAdvertising(beacon);
+            } else {
+                Log.d(TAG, "Key is empty. No transmission started!");
+            }
+        }
     }
 
     /**
@@ -234,7 +262,7 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
                     // Comment out to send Notification
                     // sendNotification(context);
                 } else {
-                    Log.d(TAG, "Found an unknown Beacon: "+ beaconid1);
+                    Log.d(TAG, "Found an unknown Beacon: " + beaconid1);
                 }
             }
         }
