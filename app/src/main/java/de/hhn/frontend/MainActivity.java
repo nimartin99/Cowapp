@@ -31,18 +31,10 @@ import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
-import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.date.dateHelper;
 import de.hhn.frontend.provider.Alarm;
 import de.hhn.frontend.provider.Key;
@@ -224,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 //return true;
             case R.id.item3:
                 //Go to info screen
-                Intent nextActivity = new Intent(MainActivity.this, InfoActivity.class);
+                Intent nextActivity = new Intent(MainActivity.this, InfoMenuActivity.class);
                 startActivity(nextActivity);
                 return true;
             case R.id.item4:

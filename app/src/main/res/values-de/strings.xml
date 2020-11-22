@@ -27,15 +27,14 @@
         damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch
         wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.\nNur so ist die Funktion der
         Corona-Warn-App gegeben.</string>
-    //Info
-    <string name="head_info">Allg. Informationen</string>
-    <string name="text_info">Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann,
-        das Coronavirus weiter einzudämmen.Mit dieser kann potenzieller Kontakt zu Corona-infizierten Personen
-        im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und
-        eines Risikowerts von 1 bis 100 dargestellt werden. Des weiteren
-        erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen,
-        wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen.Unter Verdacht? - Was tun? erhalten Sie
-        Informationen, was Sie bei einem Infektionsverdacht tun können.</string>
+    //Info Menu and pages
+    <string name="head_info_menu">Weitere Informationen</string>
+    <string name="head_general_info">Allg. Informationen</string>
+    <string name="text_general_info">Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann, das Coronavirus weiter einzudämmen.Mit dieser kann potenzieller Kontakt zu Corona-infizierten Personen im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und eines Risikowerts von 1 bis 100 dargestellt werden. Des weiteren erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen, wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen.Unter Verdacht? - Was tun? erhalten Sie Informationen, was Sie bei einem Infektionsverdacht tun können.</string>
+    <string name="head_risklevel_info">Risikolevelberechnung</string>
+    <string name="text_risklevel_info">Ticket 96</string>
+    <string name="head_infection_info">Akute Infektion - Wie verhalte ich mich?</string>
+    <string name="text_infection_info">Bei akuter Infektion sind Sie verpflichtet, sich umgehend in Quarantäne zu begeben und 14 Tage oder bis Erhalt eines negativen PCR-Testergebnisses in Quarantäne zu bleiben. Des weiteren sind Sie verpflichtet, ihr örtliches Gesundheitsamt zu benachrichtigen. Eventuelle Mitbewohner sollten sich ebenfalls umgehend testen lassen und Sie sind angehalten, sich von diesen zu distanzieren. Weitere Informationen unter: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen</string>
     //LOG
     <string name="text_log">Notification Log</string>
     <string name="log">Dies ist eine Benachrichtigung</string>

@@ -21,9 +21,14 @@
     <string name="decline_button">Decline</string>
     <string name="head_data_protection">Terms of Use</string>
     <string name="text_data_protection">You agree that CoWApp is allowed to activate the Bluetooth of your device and send or receive data via it (generated keys with time stamp     and location as well as information about your current infection status). Furthermore you agree that the app may run as a background process     on your mobile device at any time and is allowed to send your generated and collected anonymous keys to the server if there is an existing infection and you push notifications, too. This is the only way the correct function of the     Corona-Warn-App is given.</string>
-    //Info
-    <string name="head_info">General Information</string>
-    <string name="text_info">The CoWApp (Corona Warning App) is an application that anyone can use to further contain the spread of the coronavirus.     With it potential contact with corona-infected people can be determined in everyday life and an infection risk can be calculated. It is and     displayed by the traffic light principle and a risk value of 1 to 100. You will also receive a push notification when a potential health risk     has been identified so you know how to act correctly to protect yourself and those around you.     Under Suspicion? you can receive information on what to do if you suspect an infection.</string>
+    //Info Menu and pages
+    <string name="head_info_menu">Further Information</string>
+    <string name="head_general_info">General Information</string>
+    <string name="text_general_info">The CoWApp (Corona Warning App) is an application that anyone can use to further contain the spread of the coronavirus.     With it potential contact with corona-infected people can be determined in everyday life and an infection risk can be calculated. It is and     displayed by the traffic light principle and a risk value of 1 to 100. You will also receive a push notification when a potential health risk     has been identified so you know how to act correctly to protect yourself and those around you.     Under Suspicion? you can receive information on what to do if you suspect an infection.</string>
+    <string name="head_risklevel_info">Risk Level Calculation</string>
+    <string name="text_risklevel_info">Ticket 96</string>
+    <string name="head_infection_info">Current Infection - How to act?</string>
+    <string name="text_infection_info">In the event of an acute infection, you are obliged to go into quarantine immediately and remain in quarantine for 14 days or until you receive a negative PCR test result. You are also obliged to notify your local health department. Any roommates should also be tested immediately and you are encouraged to distance yourself from them. Further information at the page of the federal government or the WHO: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen for German speaking people or https://www.who.int/health-topics/coronavirus#tab=tab_1 for general information.</string>
     //LOG
     <string name="text_log">Notification Log</string>
     <string name="log">This is a notification</string>
