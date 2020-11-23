@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     private static ImageView trafficLight;
     private static TextView riskStatus;
     //To display the first use date and the elapsed time since the app is used.
-    private static TextView dateDisplay;
+    public static TextView dateDisplay;
 
     //data protection has still to be accepted
     String prefDataProtection = "ausstehend";
