@@ -47,6 +47,9 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
 
     private static final String TAG = "BeaconBackgroundService";
     private static RegionBootstrap regionBootstrap;
+    // Don't delete this Reference
+    // Holding a reference to it will automatically cause the BeaconLibrary to save battery whenever the application
+    // is not visible.  This reduces bluetooth power usage by about 60%
     private BackgroundPowerSaver backgroundPowerSaver;
     private BeaconManager beaconManager;
     private static BeaconTransmitter beaconTransmitter;
@@ -77,8 +80,8 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             // in exchange for showing an icon at the top of the screen and a always-on notification to
             // communicate to users that your app is using resources in the background.
             Notification.Builder builder = new Notification.Builder(this);
-            builder.setSmallIcon(R.drawable.ic_launcher);
-            builder.setContentTitle("Scanning for Beacons");
+            builder.setSmallIcon(R.mipmap.ic_cowapp);
+            builder.setContentTitle(getString(R.string.foreground_Notificaiton));
             Intent intent = new Intent(this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
@@ -113,19 +116,6 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             // class will automatically cause the BeaconLibrary to save battery whenever the application
             // is not visible.  This reduces bluetooth power usage by about 60%
             backgroundPowerSaver = new BackgroundPowerSaver(this);
-
-            /*// This code block starts beacon transmission
-            Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + Constants.id1);
-            Beacon beacon = new Beacon.Builder()
-                    .setId1(Constants.id1)
-                    .setDataFields(Arrays.asList(new Long[]{0l}))
-                    .build();
-
-            BeaconParser beaconParser = new BeaconParser()
-                    .setBeaconLayout("s:0-1=fd6f,p:0-0:-63,i:2-17,d:18-21");
-            BeaconTransmitter beaconTransmitter = new
-                    BeaconTransmitter(getApplicationContext(), beaconParser);
-            beaconTransmitter.startAdvertising(beacon);*/
         } else {
             Log.d(TAG, "SCAN_AND_TRANSMIT: false");
         }
@@ -174,18 +164,18 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         }
     }
 
-    public static void updateTransmissionBeaconKey() {
+    public static void updateTransmissionBeaconKey(String key) {
         if (Constants.SCAN_AND_TRANSMIT) {
             if (beaconTransmitter != null) {
                 Log.d(TAG, "Stop Transmitting Exposure Notification");
                 beaconTransmitter.stopAdvertising();
             }
 
-            String ownKey = LocalSafer.getOwnKey();
-            if (!ownKey.isEmpty()) {
-                Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + ownKey);
+            if (!key.isEmpty()) {
+                String completeKey = Constants.cowappBeaconIdentifier + "-" + key;
+                Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + completeKey);
                 Beacon beacon = new Beacon.Builder()
-                        .setId1(ownKey)
+                        .setId1(completeKey)
                         .setDataFields(Arrays.asList(new Long[]{0l}))
                         .build();
 

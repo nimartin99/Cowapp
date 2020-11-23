@@ -296,6 +296,8 @@ public class MainActivity extends AppCompatActivity {
                     sendKey();
                     // key is successfully requested
                     Key.setKeyRequested(true);
+                    //Update the Transmission
+                    BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
                 } else if (response.code() == 404) {
                     Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
                     // key is not successfully requested
