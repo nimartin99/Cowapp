@@ -108,8 +108,8 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
 
             Log.d(TAG, "setting up background monitoring for beacons and power saving");
             // wake up the app when a beacon is seen
-//            Region region = new Region("backgroundRegion", null, null, null);
-//            regionBootstrap = new RegionBootstrap(this, region);
+            // Region region = new Region("backgroundRegion", null, null, null);
+            // regionBootstrap = new RegionBootstrap(this, region);
 
             beaconManager.bind(this);
             // simply constructing this class and holding a reference to it in your custom Application
@@ -121,21 +121,29 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         }
     }
 
-    public void enableMonitoring() {
-        Log.d(TAG, "Scanning: ON");
-        Region region = new Region("backgroundRegion",
-                null, null, null);
-        regionBootstrap = new RegionBootstrap(this, region);
-    }
-
-    public void disableMonitoring() {
-        Log.d(TAG, "Scanning: OFF");
-        if (regionBootstrap != null) {
-            regionBootstrap.disable();
-            regionBootstrap = null;
+    /**
+     * Changes the state of monitoring (Scanning)
+     * @param state true if monitoring should be enabled, false if disabled
+     */
+    public void changeMonitoringState(boolean state) {
+        if (state && regionBootstrap == null) {
+            Log.d(TAG, "Scanning: ON");
+            Region region = new Region("backgroundRegion",
+                    null, null, null);
+            regionBootstrap = new RegionBootstrap(this, region);
+        } else if (!state) {
+            Log.d(TAG, "Scanning: OFF");
+            if (regionBootstrap != null) {
+                regionBootstrap.disable();
+                regionBootstrap = null;
+            }
         }
     }
 
+    /**
+     * Start the transmitting as a Beacon with the Key that is saved in the LocalSafer Class and
+     * received with getOwnKey()
+     */
     public static void transmitAsBeacon() {
         if (Constants.SCAN_AND_TRANSMIT) {
             String ownKey = LocalSafer.getOwnKey();
@@ -157,6 +165,9 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         }
     }
 
+    /**
+     * Stop transmitting as a Beacon
+     */
     public static void stopTransmittingAsBeacon() {
         if (Constants.SCAN_AND_TRANSMIT) {
             Log.d(TAG, "Stop Transmitting Exposure Notification");
@@ -164,6 +175,10 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         }
     }
 
+    /**
+     * Start a Transmission with the Constants.cowappBeaconIdentifier + the key parameter given
+     * @param key the key that will be transmitted
+     */
     public static void updateTransmissionBeaconKey(String key) {
         if (Constants.SCAN_AND_TRANSMIT) {
             if (beaconTransmitter != null) {

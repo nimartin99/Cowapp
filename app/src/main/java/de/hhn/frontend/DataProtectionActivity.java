@@ -44,7 +44,7 @@ public class DataProtectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Start the scanning on the first opening of the app
                 BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
-                application.enableMonitoring();
+                application.changeMonitoringState(true);
                 //Go to main screen
                 Intent nextActivity = new Intent(DataProtectionActivity.this,MainActivity.class);
                 startActivity(nextActivity);

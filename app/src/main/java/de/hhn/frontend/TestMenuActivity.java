@@ -108,10 +108,10 @@ public class TestMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
                 if(clickedScan) {
-                    application.enableMonitoring();
+                    application.changeMonitoringState(true);
                     clickedScan = false;
                 } else {
-                    application.disableMonitoring();
+                    application.changeMonitoringState(false);
                     clickedScan = true;
                 }
             }

@@ -181,13 +181,13 @@ public class RiskLevel {
         if (LocalSafer.getRiskLevel() == 100) {
             //disable scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-            application.disableMonitoring();
+            application.changeMonitoringState(false);
             BeaconBackgroundService.stopTransmittingAsBeacon();
 
         } else if (LocalSafer.getRiskLevel() != 100) {
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-            application.enableMonitoring();
+            application.changeMonitoringState(true);
             BeaconBackgroundService.transmitAsBeacon();
         }
 

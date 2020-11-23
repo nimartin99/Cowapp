@@ -302,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
                     // key is not successfully requested
                     Key.setKeyRequested(false);
+                    BeaconBackgroundService.stopTransmittingAsBeacon();
                 }
             }
 
