@@ -414,7 +414,19 @@ public class LocalSafer {
             }
 
             for (String string : strings) {
-                addKeyPairToSavedKeyPairs(string);
+                int factor = 0;
+
+                for (String value : bufferValues) {
+                    if (string.equals(value)) {
+                        factor++;
+                    }
+                }
+
+                factor = (factor / 20) + 1;
+
+                for (int i = 0; i != factor; i++) {
+                    addKeyPairToSavedKeyPairs(string);
+                }
             }
         }
     }
