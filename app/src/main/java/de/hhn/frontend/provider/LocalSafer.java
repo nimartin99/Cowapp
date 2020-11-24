@@ -31,7 +31,6 @@ public class LocalSafer {
     private static String DATAFILE05 = "cowappfirstdate.txt";
     private static String DATAFILE06 = "cowappownkey.txt";
     private static String DATAFILE07 = "cowappownkeys.txt";
-    private static String DATAFILE08 = "cowappalarm.txt";
     private static String DATAFILE09 = "cowappkeybuffer.txt";
 
     /**
@@ -385,30 +384,6 @@ public class LocalSafer {
             return result;
         } else {
             return null;
-        }
-    }
-
-    /**
-     * Safes the current alarm count
-     *
-     * @param count current alarm count as int.
-     */
-    public static void safeAlarmCounter(int count) {
-        Log.d(TAG, "safeAlarmCounter() was called " + count);
-        safeStringAtDatafile(DATAFILE08, String.valueOf(count));
-    }
-
-    /**
-     * Getter for the current alarm count
-     *
-     * @return the current alarm count as int
-     */
-    public static int getAlarmCounter() {
-        Log.d(TAG, "getAlarmCounter() was called.");
-        try {
-            return Integer.valueOf(readDataFile(DATAFILE08));
-        } catch (Exception e) {
-            return 0;
         }
     }
 

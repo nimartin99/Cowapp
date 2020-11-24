@@ -12,9 +12,11 @@ import de.hhn.frontend.risklevel.RiskLevel;
 public class Alarm {
 
     /**
-     * This method is called once a day.
+     * This method is called all fifteen Minutes.
      */
-    public static void dailyBusiness() {
+    public static void fifteenMinutesBusiness() {
+        LocalSafer.analyzeBufferFile();
+
         //delete all keys older then 3 weeks.
         LocalSafer.addKeyPairToSavedKeyPairs(null);
         LocalSafer.addNotificationToSavedNotifications(null);
@@ -25,42 +27,15 @@ public class Alarm {
         // check if user has had direct or indirect contact and calculate and update the riskLevel
         MainActivity.requestInfectionStatus();
 
-        //activate or disable exchanging keys when the user is currently infected
-        RiskLevel.controlKeyExchange();
-
         //update current risk status (traffic light and risk status title) on main screen
         MainActivity.showTrafficLightStatus();
         MainActivity.showRiskStatus();
-    }
 
-    /**
-     * This method is called all fifteen Minutes.
-     */
-    public static void fifteenMinutesBusiness() {
         // request a new key
         MainActivity.requestKey();
     }
 
-    /**
-     * This method is called all five Minutes.
-     */
-    public static void fiveMinutesBusiness() {
-        LocalSafer.analyzeBufferFile();
-    }
-
     public static void ring() {
-        fiveMinutesBusiness();
-        int i = LocalSafer.getAlarmCounter();
-        i++;
-
-        if ((i % 3) == 0) {
-            fifteenMinutesBusiness();
-        }
-
-        if (i == 288) {
-            dailyBusiness();
-            i = 0;
-        }
-        LocalSafer.safeAlarmCounter(i);
+        fifteenMinutesBusiness();
     }
 }
