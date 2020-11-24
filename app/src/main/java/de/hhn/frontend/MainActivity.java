@@ -284,38 +284,42 @@ public class MainActivity extends AppCompatActivity {
      * Request a new key from the server.
      */
     public static boolean requestKey() {
-        Call<String> call = retrofitService.requestKey();
-        RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.code() == 200) {
-                    String requestedKey = response.body();
-                    // set the key
-                    Key.setKey(Key.increaseKey(requestedKey));
-                    // send new key to the db
-                    sendKey();
-                    // key is successfully requested
-                    Key.setKeyRequested(true);
-                    //Update the Transmission
-                    BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
-                } else if (response.code() == 404) {
-                    Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
+        if (LocalSafer.getRiskLevel() != 100) {
+            Call<String> call = retrofitService.requestKey();
+            RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.code() == 200) {
+                        String requestedKey = response.body();
+                        // set the key
+                        Key.setKey(Key.increaseKey(requestedKey));
+                        // send new key to the db
+                        sendKey();
+                        // key is successfully requested
+                        Key.setKeyRequested(true);
+                        //Update the Transmission
+                        BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
+                    } else if (response.code() == 404) {
+                        Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
+                        // key is not successfully requested
+                        Key.setKeyRequested(false);
+                        BeaconBackgroundService.stopTransmittingAsBeacon();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                    serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                     // key is not successfully requested
                     Key.setKeyRequested(false);
-                    BeaconBackgroundService.stopTransmittingAsBeacon();
                 }
-            }
+            });
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
-                // key is not successfully requested
-                Key.setKeyRequested(false);
-            }
-        });
-
-        return Key.isKeyRequested();
+            return Key.isKeyRequested();
+        } else {
+            return false;
+        }
     }
 
     /**
