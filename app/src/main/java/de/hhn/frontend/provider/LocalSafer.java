@@ -31,7 +31,9 @@ public class LocalSafer {
     private static String DATAFILE05 = "cowappfirstdate.txt";
     private static String DATAFILE06 = "cowappownkey.txt";
     private static String DATAFILE07 = "cowappownkeys.txt";
+    private static String DATAFILE08 = "cowappindirectcontacts.txt";
     private static String DATAFILE09 = "cowappkeybuffer.txt";
+    private static String DATAFILE10 = "cowappdirectcontacts.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -415,5 +417,36 @@ public class LocalSafer {
                 addKeyPairToSavedKeyPairs(string);
             }
         }
+    }
+
+    public synchronized static void safeIndirectContacts(String[] indirectContacts) {
+        if (indirectContacts == null) {
+            safeStringAtDatafile(DATAFILE08, "");
+        } else {
+            String value = "-<>-";
+            for (String string: indirectContacts) {
+                value = value + string + "-<>-";
+            }
+            safeStringAtDatafile(DATAFILE08, value);
+        }
+    }
+    public synchronized static void safeDirectContacts(String[] directContacts) {
+        if (directContacts == null) {
+            safeStringAtDatafile(DATAFILE10, "");
+        } else {
+            String value = "-<>-";
+            for (String string: directContacts) {
+                value = value + string + "-<>-";
+            }
+            safeStringAtDatafile(DATAFILE10, value);
+        }
+    }
+
+    public synchronized static String[] getIndirectContacts() {
+        return getValuesAsArray(DATAFILE08);
+    }
+
+    public synchronized static String[] getdirectContacts() {
+        return getValuesAsArray(DATAFILE10);
     }
 }
