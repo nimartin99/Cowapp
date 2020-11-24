@@ -10,15 +10,17 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import de.hhn.frontend.MainActivity;
+import de.hhn.frontend.R;
 import de.hhn.frontend.provider.LocalSafer;
 
 /**
  * Class with all operations to help using dates
  *
- * @author jonas
- * @version 16.11.2020
+ * @author Jonas Klein
+ * @author Tabea Leibl
+ * @version 2020-11-23
  */
-
 public class dateHelper {
 
     /**
@@ -26,7 +28,6 @@ public class dateHelper {
      * @param date2 later in time date
      * @return calculated difference in days between both mentioned dates
      */
-
     public static long calculateTimeIntervalBetweenTwoDays(Date date1, Date date2) {
 
         long diffInMillis = date2.getTime() - date1.getTime();
@@ -36,7 +37,6 @@ public class dateHelper {
     /**
      * This method returns a date format, matching to the currently used locale setting
      */
-
     public static SimpleDateFormat getDateFormat() {
         // returns default Locale set by the Java Virtual Machine
         String language = Locale.getDefault().getLanguage();
@@ -102,17 +102,8 @@ public class dateHelper {
     /**
      * generates the text used by the date display
      */
-
     public static String generateStringForDateDisplay() {
-
-        String daysSinceText;
-        String language = Locale.getDefault().getLanguage();
-
-        if (language == "de") {
-            daysSinceText = ("Seit dem " + LocalSafer.getFirstStartDate() + " helfen Sie, seit " + dateHelper.getDateDiffSinceFirstUse() + " Tagen, Corona einzudämmen.");
-        } else {
-            daysSinceText = ("Since " + LocalSafer.getFirstStartDate() + " you are helping for " + dateHelper.getDateDiffSinceFirstUse() + " days to fight Corona.");
-        }
+        String daysSinceText = MainActivity.dateDisplay.getResources().getString(R.string.daysSinceText, LocalSafer.getFirstStartDate(), dateHelper.getDateDiffSinceFirstUse());
         return daysSinceText;
     }
 
@@ -123,8 +114,6 @@ public class dateHelper {
      * @return difference in days
      * @throws ParseException Signals that an error has been reached unexpectedly while parsing.
      */
-
-
     public static long getDateDiffSinceFirstUse() {
 
         Date firstAppStartDate = convertStringToDate(LocalSafer.getFirstStartDate());

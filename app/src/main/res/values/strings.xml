@@ -8,7 +8,6 @@
     <string name="report_infection_button">Report Infection</string>
     <string name="suspicion_button">Suspicion?</string>
     <string name="traffic_light_description">View to show the current risk status via traffic light status.</string>
-    <string name="daysSinceText">You have been helping to contain the coronavirus for __ days.</string>
     //Main risk status
     <string name="risk_status_default">current risk</string>
     <string name="risk_status_low">Low Risk</string>
@@ -16,6 +15,8 @@
     <string name="risk_status_high">High Risk</string>
     <string name="risk_level">Risk Level: %1$d of 100</string>
     <string name="current_infection">Current Infection</string>
+    //Date and days since use
+    <string name="daysSinceText">Since %1$s you are helping for %2$d days to fight the coronavirus.</string>
     //Data Protection
     <string name="accept_button">Accept</string>
     <string name="decline_button">Decline</string>
