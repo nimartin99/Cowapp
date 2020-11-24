@@ -422,7 +422,8 @@ public class LocalSafer {
                     }
                 }
 
-                factor = (factor / 20) + 1;
+                factor = (factor / 20);
+                if (factor == 0) { factor = 1; }
 
                 for (int i = 0; i != factor; i++) {
                     addKeyPairToSavedKeyPairs(string);
