@@ -8,41 +8,25 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.altbeacon.beacon.BeaconManager;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.date.dateHelper;
@@ -69,7 +53,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-22
+ * @version 2020-11-25
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -119,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         // init retrofit
         retrofit = new Retrofit.Builder()
-                .baseUrl(PHONE_URL)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
@@ -290,13 +274,16 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
                     if (response.code() == 200) {
-                        String requestedKey = response.body();
-                        // set the key
-                        Key.setKey(Key.increaseKey(requestedKey));
-                        // send new key to the db
-                        sendKey();
+                        // log newest key
+                        Log.d(TAG, "Key: " + response.body());
                         // key is successfully requested
                         Key.setKeyRequested(true);
+                        // reference requested key
+                        String requestedKey = response.body();
+                        // set the key
+                        Key.setKey(requestedKey);
+                        // safe new key
+                        LocalSafer.safeOwnKey(Key.getKey());
                         //Update the Transmission
                         BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
                     } else if (response.code() == 404) {
@@ -453,33 +440,6 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-    // Send the key to inform the database about the new key
-    private static void sendKey() {
-        // prepare users key for report
-        HashMap<String, String> sendKeyMap = new HashMap<>();
-        sendKeyMap.put("key", Key.getKey());
-
-        // send values to the server
-        Call<Void> call = retrofitService.sendKey(sendKeyMap);
-        RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 200) {
-                    // log newest key
-                    Log.d(TAG, "Key: " + Key.getKey());
-                    // safe new key
-                    LocalSafer.safeOwnKey(Key.getKey());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
-            }
-        });
-    }
-
     // standard notification if there is no connection to the server
     private static void serverResponseNotification(String notificationType) {
         Intent responsePushNotification = new Intent(context, NotificationService.class);
@@ -506,8 +466,6 @@ public class MainActivity extends AppCompatActivity {
         }
         context.startService(responsePushNotification);
     }
-
-
 
     /**
      * create channel for the notification to be delivered as heads-up notification
