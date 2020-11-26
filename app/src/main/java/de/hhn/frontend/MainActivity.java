@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.item4:
                 //Go to test menu screen
-                Intent testActivity = new Intent(MainActivity.this, TestMenuActivity.class);
+                Intent testActivity = new Intent(MainActivity.this, DebugActivity.class);
                 startActivity(testActivity);
                 return true;
             default:

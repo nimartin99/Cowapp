@@ -65,4 +65,7 @@
     <string name="text_thank_you">The app warns your surroundings. Please inform your local health department and immediately go into 14-day quarantine.</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Contact-Tracing is active</string>
+    <string name="actions">Test-Actions</string>
+    <string name="logs">Debug-Log-Settings</string>
+    <string name="debuglog">Debug-Log</string>
 </resources>

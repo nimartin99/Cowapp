@@ -78,4 +78,7 @@
         und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Kontaktverfolgung aktiv</string>
+    <string name="actions">Test-Aktionen</string>
+    <string name="logs">Debug-Log-Einstellungen</string>
+    <string name="debuglog">Debug-Log</string>
 </resources>
