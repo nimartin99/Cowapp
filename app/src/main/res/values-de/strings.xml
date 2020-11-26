@@ -81,4 +81,11 @@
     <string name="actions">Test-Aktionen</string>
     <string name="logs">Debug-Log-Einstellungen</string>
     <string name="debuglog">Debug-Log</string>
+    <string name="debug_settings_headline">Was möchten Sie loggen?</string>
+    <string name="debug_settings_delete">DEBUG LOG LEEREN</string>
+    <string name="debug_settings_update">EINSTELLUNGEN AKTUALISIEREN</string>
+    <string name="debug_settings_alarm">wenn der Alarm anschlägt</string>
+    <string name="debug_settings_alarmset">wenn der Alarm gestellt wird</string>
+    <string name="debug_settings_keytransmit">wenn ein Key übertragen wird</string>
+    <string name="debug_settings_keysafe">wenn ein Key gespeichert wird</string>
 </resources>

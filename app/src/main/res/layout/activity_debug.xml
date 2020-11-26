@@ -23,19 +23,26 @@
             android:id="@+id/testActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/actions" />
+            android:layout_marginBottom="20sp"
+            android:text="@string/actions"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/debugLogSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/logs" />
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp"
+            android:text="@string/logs"
+            android:textSize="20sp" />
 
         <Button
             android:id="@+id/debugLog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/debuglog" />
+            android:layout_marginTop="20sp"
+            android:text="@string/debuglog"
+            android:textSize="20sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

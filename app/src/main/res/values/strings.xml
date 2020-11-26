@@ -68,4 +68,11 @@
     <string name="actions">Test-Actions</string>
     <string name="logs">Debug-Log-Settings</string>
     <string name="debuglog">Debug-Log</string>
+    <string name="debug_settings_headline">What do you want to log?</string>
+    <string name="debug_settings_delete">CLEAR DEBUG LOG</string>
+    <string name="debug_settings_update">UPDATE SETTINGS</string>
+    <string name="debug_settings_alarm">when the alarm rings</string>
+    <string name="debug_settings_alarmset">when the alarm is set</string>
+    <string name="debug_settings_keytransmit">when a key is transmitted</string>
+    <string name="debug_settings_keysafe">when a key is safed</string>
 </resources>
