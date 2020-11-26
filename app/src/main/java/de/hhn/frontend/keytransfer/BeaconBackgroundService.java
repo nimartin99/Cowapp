@@ -264,6 +264,10 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
                     String context = "Beacon found: id1=" + beaconid1;
                     Log.d(TAG, context);
                     LocalSafer.addReceivedKey(beaconid1);
+
+                    if (LocalSafer.isKeyTransmitLogged()) {
+                        LocalSafer.addLogValueToDebugLog("Received a Key : " + beaconid1);
+                    }
                     // Comment out to send Notification
                     // sendNotification(context);
                 } else {

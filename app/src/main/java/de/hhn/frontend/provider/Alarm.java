@@ -37,5 +37,8 @@ public class Alarm {
 
     public static void ring() {
         fifteenMinutesBusiness();
+        if (LocalSafer.isAlarmRingLogged()) {
+            LocalSafer.addLogValueToDebugLog("Alarm ring. ");
+        }
     }
 }

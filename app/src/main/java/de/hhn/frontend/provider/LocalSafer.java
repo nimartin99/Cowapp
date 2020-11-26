@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import de.hhn.frontend.Constants;
+import de.hhn.frontend.DebugLog;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 
 /**
@@ -36,6 +37,10 @@ public class LocalSafer {
     private static final String DATAFILE10 = "cowappdirectcontacts.txt";
     private static final String DATAFILE11 = "cowappnotificationcount.txt";
     private static final String DATAFILE12 = "cowappdebuglogger.txt";
+    private static final String DATAFILE13 = "cowappalisalarmringlogged.txt";
+    private static final String DATAFILE14 = "cowappisalarmsetlogged.txt";
+    private static final String DATAFILE15 = "cowappniskeytransmitlogged.txt";
+    private static final String DATAFILE16 = "cowappiskeysafelogged.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -162,6 +167,10 @@ public class LocalSafer {
             String alreadySavedKeyPairs = readDataFile(DATAFILE01);
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey.substring(9) + "----" + new Date().toString();
             safeStringAtDatafile(DATAFILE01, allKeyPairsToSafe);
+
+            if (isKeySafeLogged()) {
+                addLogValueToDebugLog("Key was saved: " + contactKey);
+            }
         }
     }
 
@@ -498,11 +507,13 @@ public class LocalSafer {
         Log.d(TAG, "addLogValueToDebugLog() was called with LogValue: " + logValue);
         if (logValue == null) {
             deleteOldValues(DATAFILE12);
+            DebugLog.renewTheLog();
         } else {
             String alreadySavedlogValues = readDataFile(DATAFILE12);
             String alllogValueToSafe = alreadySavedlogValues + "-<>-" + logValue + "----" + new Date().toString();
 
             safeStringAtDatafile(DATAFILE12, alllogValueToSafe);
+            DebugLog.renewTheLog();
         }
     }
 
@@ -512,6 +523,7 @@ public class LocalSafer {
     public static void clearDebugLog() {
         Log.d(TAG, "clearDebugLog() was called.");
         safeStringAtDatafile(DATAFILE12, "");
+        DebugLog.renewTheLog();
     }
 
     /**
@@ -524,5 +536,53 @@ public class LocalSafer {
     public static String[] getDebugValues() {
         Log.d(TAG, "getDebugValues was called.");
         return getValuesAsArray(DATAFILE12);
+    }
+
+    public static void setIsAlarmRingLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE13, String.valueOf(value));
+    }
+
+    public static boolean isAlarmRingLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE13));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void setIsAlarmSetLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE14, String.valueOf(value));
+    }
+
+    public static boolean isAlarmSetLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE14));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void setIsKeyTransmitLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE15, String.valueOf(value));
+    }
+
+    public static boolean isKeyTransmitLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE15));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void setIsKeySafeLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE16, String.valueOf(value));
+    }
+
+    public static boolean isKeySafeLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE16));
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
