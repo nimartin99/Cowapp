@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (15 * 60 * 1000), myPendingIntent);
 
-            if (LocalSafer.isAlarmSetLogged()) {
+            if (Constants.DEBUG_MODE && LocalSafer.isAlarmSetLogged()) {
                 LocalSafer.addLogValueToDebugLog(getString(R.string.alarm_set));
             }
         } else {

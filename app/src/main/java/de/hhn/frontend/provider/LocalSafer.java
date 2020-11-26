@@ -171,7 +171,7 @@ public class LocalSafer {
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey.substring(9) + "----" + new Date().toString();
             safeStringAtDatafile(DATAFILE01, allKeyPairsToSafe);
 
-            if (isKeySafeLogged()) {
+            if (Constants.DEBUG_MODE && isKeySafeLogged()) {
                 addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.key_was_saved) + contactKey);
             }
         }
