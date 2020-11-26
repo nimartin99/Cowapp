@@ -3,10 +3,13 @@ package de.hhn.frontend;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import de.hhn.frontend.provider.LocalSafer;
 
@@ -44,7 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocalSafer.clearDebugLog();
+                askForPermission();
             }
         });
 
@@ -54,6 +57,11 @@ public class SettingsActivity extends AppCompatActivity {
                 doTheUpdate();
             }
         });
+
+        keyTransmit.setChecked(LocalSafer.isKeyTransmitLogged());
+        keySafe.setChecked(LocalSafer.isKeySafeLogged());
+        alarmRing.setChecked(LocalSafer.isAlarmRingLogged());
+        alarmSet.setChecked(LocalSafer.isAlarmSetLogged());
     }
 
     public void doTheUpdate() {
@@ -61,5 +69,41 @@ public class SettingsActivity extends AppCompatActivity {
             LocalSafer.setIsAlarmSetLogged(alarmSet.isChecked());
             LocalSafer.setIsKeySafeLogged(keySafe.isChecked());
             LocalSafer.setIsKeyTransmitLogged(keyTransmit.isChecked());
+            Toast toast = Toast.makeText(getApplicationContext(),
+                "Your Settings were saved.",
+                Toast.LENGTH_SHORT);
+            toast.show();
+    }
+
+    public void askForPermission() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle("You are about to clear the Debug-Log");
+        builder.setMessage("Are you sure you want to clear the Debug-Log");
+        builder.setPositiveButton("Confirm",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LocalSafer.clearDebugLog();
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "The Debug-Log was cleared.",
+                                Toast.LENGTH_SHORT);
+
+                        toast.show();
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Action canceled",
+                        Toast.LENGTH_SHORT);
+
+                toast.show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
