@@ -189,6 +189,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_items, menu);
+        if (!Constants.DEBUG_MODE) {
+            menu.removeItem(2131165353); //its the ID of the Test-menu for some reason
+        }
         return true;
     }
 
