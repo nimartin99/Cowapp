@@ -24,16 +24,17 @@ import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 public class LocalSafer {
     private static final String TAG = "LocalSafer";
 
-    private static String DATAFILE01 = "cowappkeys.txt";
-    private static String DATAFILE02 = "cowappnotifications.txt";
-    private static String DATAFILE03 = "cowapprisklevel.txt";
-    private static String DATAFILE04 = "cowappdaysslc.txt";
-    private static String DATAFILE05 = "cowappfirstdate.txt";
-    private static String DATAFILE06 = "cowappownkey.txt";
-    private static String DATAFILE07 = "cowappownkeys.txt";
-    private static String DATAFILE08 = "cowappindirectcontacts.txt";
-    private static String DATAFILE09 = "cowappkeybuffer.txt";
-    private static String DATAFILE10 = "cowappdirectcontacts.txt";
+    private static final String DATAFILE01 = "cowappkeys.txt";
+    private static final String DATAFILE02 = "cowappnotifications.txt";
+    private static final String DATAFILE03 = "cowapprisklevel.txt";
+    private static final String DATAFILE04 = "cowappdaysslc.txt";
+    private static final String DATAFILE05 = "cowappfirstdate.txt";
+    private static final String DATAFILE06 = "cowappownkey.txt";
+    private static final String DATAFILE07 = "cowappownkeys.txt";
+    private static final String DATAFILE08 = "cowappindirectcontacts.txt";
+    private static final String DATAFILE09 = "cowappkeybuffer.txt";
+    private static final String DATAFILE10 = "cowappdirectcontacts.txt";
+    private static final String DATAFILE11 = "cowappnotificationcount.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -461,5 +462,29 @@ public class LocalSafer {
 
     public synchronized static String[] getdirectContacts() {
         return getValuesAsArray(DATAFILE10);
+    }
+
+    /**
+     * Setter for the notificationCount
+     *
+     * @param notificationCount notificationCount as int
+     */
+    public static void safeNotificationCounter(int notificationCount) {
+        Log.d(TAG, "safeNotificationCounter was called with: " + notificationCount);
+        safeStringAtDatafile(DATAFILE11, String.valueOf(notificationCount));
+    }
+
+    /**
+     * Getter for the NotificationCounter.
+     *
+     * @return the NotificationCounter as int.
+     */
+    public static int getNotificationCounter() {
+        Log.d(TAG, "getNotificationCount()");
+        try {
+            return Integer.valueOf(readDataFile(DATAFILE11));
+        } catch (Exception ex) { //datafile not found
+            return 0;
+        }
     }
 }
