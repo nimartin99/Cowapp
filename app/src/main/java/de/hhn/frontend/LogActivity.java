@@ -15,6 +15,7 @@ import de.hhn.frontend.provider.LocalSafer;
  * Log activity for CoWApp
  *
  * @author Tabea leibl
+ * @author Mergim Miftari
  * @version 2020-11-17
  */
 public class LogActivity extends AppCompatActivity {
