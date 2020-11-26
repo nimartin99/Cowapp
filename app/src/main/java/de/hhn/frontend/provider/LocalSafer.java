@@ -35,6 +35,7 @@ public class LocalSafer {
     private static final String DATAFILE09 = "cowappkeybuffer.txt";
     private static final String DATAFILE10 = "cowappdirectcontacts.txt";
     private static final String DATAFILE11 = "cowappnotificationcount.txt";
+    private static final String DATAFILE12 = "cowappdebuglogger.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -486,5 +487,42 @@ public class LocalSafer {
         } catch (Exception ex) { //datafile not found
             return 0;
         }
+    }
+
+    /**
+     * safes the given LogValue and the time of the method-call. If the parameter is null, the method deleteOldNotifications() is called.
+     *
+     * @param logValue The new logValue as String
+     */
+    public synchronized static void addLogValueToDebugLog(String logValue) {
+        Log.d(TAG, "addLogValueToDebugLog() was called with LogValue: " + logValue);
+        if (logValue == null) {
+            deleteOldValues(DATAFILE12);
+        } else {
+            String alreadySavedlogValues = readDataFile(DATAFILE12);
+            String alllogValueToSafe = alreadySavedlogValues + "-<>-" + logValue + "----" + new Date().toString();
+
+            safeStringAtDatafile(DATAFILE12, alllogValueToSafe);
+        }
+    }
+
+    /**
+     * This method clears the DebugLog-Datafile.
+     */
+    public static void clearDebugLog() {
+        Log.d(TAG, "clearDebugLog() was called.");
+        safeStringAtDatafile(DATAFILE12, "");
+    }
+
+    /**
+     * This Method returns an Array of Strings (the logValues).
+     * The format of the Strings is the following:
+     * logValue + "----" + new Date().toString()
+     *
+     * @return A list of Strings. If there are no saved logValues, the return-value is null.
+     */
+    public static String[] getDebugValues() {
+        Log.d(TAG, "getDebugValues was called.");
+        return getValuesAsArray(DATAFILE12);
     }
 }
