@@ -88,4 +88,14 @@
     <string name="debug_settings_alarmset">wenn der Alarm gestellt wird</string>
     <string name="debug_settings_keytransmit">wenn ein Key übertragen wird</string>
     <string name="debug_settings_keysafe">wenn ein Key gespeichert wird</string>
+    <string name="key_was_saved">Key wurde gespeichert:</string>
+    <string name="received_a_key">Key wurde empfangen :</string>
+    <string name="alarm_ringed">Alarm hat geringt.</string>
+    <string name="alarm_set">Alarm wurd eingestellt.</string>
+    <string name="settings_were_saved">Einstellungen gespeichert.</string>
+    <string name="you_are_clearing">Du bist dabei den DebugLog zu leeren.</string>
+    <string name="are_you_sure_to_clear">Bist du sicher, dass du den DebugLog leeren willst?</string>
+    <string name="confirm">BESTÄTIGEN</string>
+    <string name="debug_log_was_cleared">Der DebugLog wurde geleert.</string>
+    <string name="action_canceled">Aktion abgebrochen</string>
 </resources>

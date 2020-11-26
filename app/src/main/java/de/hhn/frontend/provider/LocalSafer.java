@@ -3,6 +3,8 @@ package de.hhn.frontend.provider;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.StringRes;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,6 +16,7 @@ import java.util.List;
 
 import de.hhn.frontend.Constants;
 import de.hhn.frontend.DebugLog;
+import de.hhn.frontend.R;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 
 /**
@@ -169,7 +172,7 @@ public class LocalSafer {
             safeStringAtDatafile(DATAFILE01, allKeyPairsToSafe);
 
             if (isKeySafeLogged()) {
-                addLogValueToDebugLog("Key was saved: " + contactKey);
+                addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.key_was_saved) + contactKey);
             }
         }
     }

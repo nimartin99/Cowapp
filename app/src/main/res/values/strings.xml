@@ -75,4 +75,14 @@
     <string name="debug_settings_alarmset">when the alarm is set</string>
     <string name="debug_settings_keytransmit">when a key is transmitted</string>
     <string name="debug_settings_keysafe">when a key is safed</string>
+    <string name="key_was_saved">Key was saved:</string>
+    <string name="received_a_key">Received a Key :</string>
+    <string name="alarm_ringed">Alarm ring.</string>
+    <string name="alarm_set">Alarm set.</string>
+    <string name="settings_were_saved">Your Settings were saved.</string>
+    <string name="you_are_clearing">You are about to clear the Debug-Log</string>
+    <string name="are_you_sure_to_clear">Are you sure you want to clear the Debug-Log?</string>
+    <string name="confirm">confirm</string>
+    <string name="debug_log_was_cleared">The Debug-Log was cleared.</string>
+    <string name="action_canceled">Action canceled</string>
 </resources>

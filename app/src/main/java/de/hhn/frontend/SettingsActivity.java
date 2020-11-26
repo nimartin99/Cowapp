@@ -70,7 +70,7 @@ public class SettingsActivity extends AppCompatActivity {
             LocalSafer.setIsKeySafeLogged(keySafe.isChecked());
             LocalSafer.setIsKeyTransmitLogged(keyTransmit.isChecked());
             Toast toast = Toast.makeText(getApplicationContext(),
-                "Your Settings were saved.",
+                getString(R.string.settings_were_saved),
                 Toast.LENGTH_SHORT);
             toast.show();
     }
@@ -78,15 +78,15 @@ public class SettingsActivity extends AppCompatActivity {
     public void askForPermission() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
-        builder.setTitle("You are about to clear the Debug-Log");
-        builder.setMessage("Are you sure you want to clear the Debug-Log");
-        builder.setPositiveButton("Confirm",
+        builder.setTitle(getString(R.string.you_are_clearing));
+        builder.setMessage(getString(R.string.are_you_sure_to_clear));
+        builder.setPositiveButton(getString(R.string.confirm),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         LocalSafer.clearDebugLog();
                         Toast toast = Toast.makeText(getApplicationContext(),
-                                "The Debug-Log was cleared.",
+                                getString(R.string.debug_log_was_cleared),
                                 Toast.LENGTH_SHORT);
 
                         toast.show();
@@ -96,7 +96,7 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "Action canceled",
+                        getString(R.string.action_canceled),
                         Toast.LENGTH_SHORT);
 
                 toast.show();

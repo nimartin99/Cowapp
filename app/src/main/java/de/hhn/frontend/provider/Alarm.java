@@ -1,6 +1,8 @@
 package de.hhn.frontend.provider;
 
 import de.hhn.frontend.MainActivity;
+import de.hhn.frontend.R;
+import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.risklevel.RiskLevel;
 
 /**
@@ -38,7 +40,7 @@ public class Alarm {
     public static void ring() {
         fifteenMinutesBusiness();
         if (LocalSafer.isAlarmRingLogged()) {
-            LocalSafer.addLogValueToDebugLog("Alarm ring. ");
+            LocalSafer.addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.alarm_ringed));
         }
     }
 }

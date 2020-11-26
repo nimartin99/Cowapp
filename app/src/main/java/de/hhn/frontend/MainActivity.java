@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (15 * 60 * 1000), myPendingIntent);
 
             if (LocalSafer.isAlarmSetLogged()) {
-                LocalSafer.addLogValueToDebugLog("Alarm set. ");
+                LocalSafer.addLogValueToDebugLog(getString(R.string.alarm_set));
             }
         } else {
             Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
