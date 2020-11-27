@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.Context;
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
@@ -193,8 +194,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_items, menu);
+
         if (!Constants.DEBUG_MODE) {
-            menu.removeItem(2131165353); //its the ID of the Test-menu for some reason
+            MenuItem it = menu.getItem(2);
+            menu.removeItem(it.getItemId()); //its the ID of the Test-menu for some reason
         }
         return true;
     }
