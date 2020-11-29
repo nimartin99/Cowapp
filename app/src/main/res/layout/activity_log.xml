@@ -20,11 +20,11 @@
                 android:id="@+id/TextLog"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginStart="@dimen/log_head_marginStart"
+                android:layout_marginTop="@dimen/log_head_marginTop"
                 android:text="@string/text_log"
                 android:textColor="#000000"
-                android:textSize="30sp" />
+                android:textSize="@dimen/log_textSize" />
 
         </LinearLayout>
 
@@ -43,12 +43,12 @@
                     android:id="@+id/templatenotification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_marginTop="20sp"
-                    android:layout_marginRight="20sp"
-                    android:layout_marginBottom="20sp"
+                    android:layout_marginLeft="@dimen/log_notification_margins"
+                    android:layout_marginTop="@dimen/log_notification_margins"
+                    android:layout_marginRight="@dimen/log_notification_margins"
+                    android:layout_marginBottom="@dimen/log_notification_margins"
                     android:text="@string/log"
-                    android:textSize="30sp" />
+                    android:textSize="@dimen/log_textSize" />
 
             </LinearLayout>
         </ScrollView>

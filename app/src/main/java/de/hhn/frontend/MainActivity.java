@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
     public static TextView dateDisplay;
 
     //data protection has still to be accepted
-    String prefDataProtection = "ausstehend";
+    private String prefDataProtection = "ausstehend";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
