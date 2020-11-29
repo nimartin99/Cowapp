@@ -20,7 +20,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".RiskLevelInfoActivity"></activity>
+        <activity android:name=".DebugLog"></activity>
+        <activity android:name=".DebugActivity" />
+        <activity android:name=".RiskLevelInfoActivity" />
         <activity android:name=".InfectionActivity" />
 
         <service

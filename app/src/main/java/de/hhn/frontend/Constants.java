@@ -2,7 +2,7 @@ package de.hhn.frontend;
 
 public class Constants {
     // Debug flag for testing purposes
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG_MODE = true;
     // Flag for controlling background scanning and transmitting (BLE Beacon)
     // Set false if you try to run the app on a virtual device (emulator)
     public static final boolean SCAN_AND_TRANSMIT = true;

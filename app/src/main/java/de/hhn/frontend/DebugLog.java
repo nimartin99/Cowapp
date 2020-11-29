@@ -11,18 +11,12 @@ import java.util.ArrayList;
 
 import de.hhn.frontend.provider.LocalSafer;
 
-/**
- * Log activity for CoWApp
- *
- * @author Tabea leibl
- * @author Mergim Miftari
- * @version 2020-11-17
- */
-public class LogActivity extends AppCompatActivity {
+public class DebugLog extends AppCompatActivity {
 
-    private LinearLayout notificationLayout;
-    private static LogActivity logActivity;
-    private ArrayList<TextView> notificationViews;
+
+    private LinearLayout debugValueLayout;
+    private static DebugLog logActivity;
+    private ArrayList<TextView> valueViews;
     private  TextView template;
 
     @Override
@@ -33,9 +27,9 @@ public class LogActivity extends AppCompatActivity {
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.ic_cowapp);
-        setContentView(R.layout.activity_log);
+        setContentView(R.layout.activity_debug_log);
 
-        notificationLayout = findViewById(R.id.notificationlayout);
+        debugValueLayout = findViewById(R.id.debugValueLayout);
         initScrollbar();
     }
 
@@ -43,20 +37,20 @@ public class LogActivity extends AppCompatActivity {
      * Creates the Scrollbar with the notifications.
      */
     private void initScrollbar() {
-        template = findViewById(R.id.templatenotification);
-        notificationLayout.removeView(template);
+        template = findViewById(R.id.templatenotification02);
+        debugValueLayout.removeView(template);
 
-        String [] notifications = LocalSafer.getNotifications();
+        String [] values = LocalSafer.getDebugValues();
 
-        notificationViews = new ArrayList<TextView>();
+        valueViews = new ArrayList<TextView>();
 
-        if (notifications != null) {
-            for (String string : notifications) {
+        if (values != null) {
+            for (String string : values) {
                 TextView notification = new TextView(this);
                 notification.setText(string);
                 notification.setLayoutParams(template.getLayoutParams());
-                notificationViews.add(notification);
-                notificationLayout.addView(notification, 0);
+                valueViews.add(notification);
+                debugValueLayout.addView(notification, 0);
             }
         }
     }
@@ -65,23 +59,23 @@ public class LogActivity extends AppCompatActivity {
      * Updates the Scrollbar with the notifications.
      */
     private void updateScrollbar() {
-        String [] notifications = LocalSafer.getNotifications();
+        String [] notifications = LocalSafer.getDebugValues();
 
-        if (notificationViews != null) {
-            for (TextView textView1 : notificationViews) {
-                notificationLayout.removeView(textView1);
+        if (valueViews != null) {
+            for (TextView textView1 : valueViews) {
+                debugValueLayout.removeView(textView1);
             }
         }
 
-        notificationViews = new ArrayList<TextView>();
+        valueViews = new ArrayList<TextView>();
 
         if (notifications != null) {
             for (String string : notifications) {
                 TextView notification = new TextView(this);
                 notification.setText(string);
                 notification.setLayoutParams(template.getLayoutParams());
-                notificationViews.add(notification);
-                notificationLayout.addView(notification, 0);
+                valueViews.add(notification);
+                debugValueLayout.addView(notification, 0);
             }
         }
     }

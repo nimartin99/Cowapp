@@ -3,6 +3,8 @@ package de.hhn.frontend.provider;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.StringRes;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import de.hhn.frontend.Constants;
+import de.hhn.frontend.DebugLog;
+import de.hhn.frontend.R;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 
 /**
@@ -24,14 +28,22 @@ import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 public class LocalSafer {
     private static final String TAG = "LocalSafer";
 
-    private static String DATAFILE01 = "cowappkeys.txt";
-    private static String DATAFILE02 = "cowappnotifications.txt";
-    private static String DATAFILE03 = "cowapprisklevel.txt";
-    private static String DATAFILE04 = "cowappdaysslc.txt";
-    private static String DATAFILE05 = "cowappfirstdate.txt";
-    private static String DATAFILE06 = "cowappownkey.txt";
-    private static String DATAFILE07 = "cowappownkeys.txt";
-    private static String DATAFILE09 = "cowappkeybuffer.txt";
+    private static final String DATAFILE01 = "cowappkeys.txt";
+    private static final String DATAFILE02 = "cowappnotifications.txt";
+    private static final String DATAFILE03 = "cowapprisklevel.txt";
+    private static final String DATAFILE04 = "cowappdaysslc.txt";
+    private static final String DATAFILE05 = "cowappfirstdate.txt";
+    private static final String DATAFILE06 = "cowappownkey.txt";
+    private static final String DATAFILE07 = "cowappownkeys.txt";
+    private static final String DATAFILE08 = "cowappindirectcontacts.txt";
+    private static final String DATAFILE09 = "cowappkeybuffer.txt";
+    private static final String DATAFILE10 = "cowappdirectcontacts.txt";
+    private static final String DATAFILE11 = "cowappnotificationcount.txt";
+    private static final String DATAFILE12 = "cowappdebuglogger.txt";
+    private static final String DATAFILE13 = "cowappalisalarmringlogged.txt";
+    private static final String DATAFILE14 = "cowappisalarmsetlogged.txt";
+    private static final String DATAFILE15 = "cowappniskeytransmitlogged.txt";
+    private static final String DATAFILE16 = "cowappiskeysafelogged.txt";
 
     /**
      * This methods saves a String under a datafileName.
@@ -158,6 +170,10 @@ public class LocalSafer {
             String alreadySavedKeyPairs = readDataFile(DATAFILE01);
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey.substring(9) + "----" + new Date().toString();
             safeStringAtDatafile(DATAFILE01, allKeyPairsToSafe);
+
+            if (Constants.DEBUG_MODE && isKeySafeLogged()) {
+                addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.key_was_saved) + contactKey);
+            }
         }
     }
 
@@ -412,8 +428,164 @@ public class LocalSafer {
             }
 
             for (String string : strings) {
-                addKeyPairToSavedKeyPairs(string);
+                int factor = 0;
+
+                for (String value : bufferValues) {
+                    if (string.equals(value)) {
+                        factor++;
+                    }
+                }
+
+                factor = (factor / 20);
+                if (factor == 0) { factor = 1; }
+
+                for (int i = 0; i != factor; i++) {
+                    addKeyPairToSavedKeyPairs(string);
+                }
             }
+        }
+    }
+
+    public synchronized static void safeIndirectContacts(String[] indirectContacts) {
+        if (indirectContacts == null) {
+            safeStringAtDatafile(DATAFILE08, "");
+        } else {
+            String value = "-<>-";
+            for (String string: indirectContacts) {
+                value = value + string + "-<>-";
+            }
+            safeStringAtDatafile(DATAFILE08, value);
+        }
+    }
+    public synchronized static void safeDirectContacts(String[] directContacts) {
+        if (directContacts == null) {
+            safeStringAtDatafile(DATAFILE10, "");
+        } else {
+            String value = "-<>-";
+            for (String string: directContacts) {
+                value = value + string + "-<>-";
+            }
+            safeStringAtDatafile(DATAFILE10, value);
+        }
+    }
+
+    public synchronized static String[] getIndirectContacts() {
+        return getValuesAsArray(DATAFILE08);
+    }
+
+    public synchronized static String[] getdirectContacts() {
+        return getValuesAsArray(DATAFILE10);
+    }
+
+    /**
+     * Setter for the notificationCount
+     *
+     * @param notificationCount notificationCount as int
+     */
+    public static void safeNotificationCounter(int notificationCount) {
+        Log.d(TAG, "safeNotificationCounter was called with: " + notificationCount);
+        safeStringAtDatafile(DATAFILE11, String.valueOf(notificationCount));
+    }
+
+    /**
+     * Getter for the NotificationCounter.
+     *
+     * @return the NotificationCounter as int.
+     */
+    public static int getNotificationCounter() {
+        Log.d(TAG, "getNotificationCount()");
+        try {
+            return Integer.valueOf(readDataFile(DATAFILE11));
+        } catch (Exception ex) { //datafile not found
+            return 0;
+        }
+    }
+
+    /**
+     * safes the given LogValue and the time of the method-call. If the parameter is null, the method deleteOldNotifications() is called.
+     *
+     * @param logValue The new logValue as String
+     */
+    public synchronized static void addLogValueToDebugLog(String logValue) {
+        Log.d(TAG, "addLogValueToDebugLog() was called with LogValue: " + logValue);
+        if (logValue == null) {
+            deleteOldValues(DATAFILE12);
+            DebugLog.renewTheLog();
+        } else {
+            String alreadySavedlogValues = readDataFile(DATAFILE12);
+            String alllogValueToSafe = alreadySavedlogValues + "-<>-" + logValue + "----" + new Date().toString();
+
+            safeStringAtDatafile(DATAFILE12, alllogValueToSafe);
+            DebugLog.renewTheLog();
+        }
+    }
+
+    /**
+     * This method clears the DebugLog-Datafile.
+     */
+    public static void clearDebugLog() {
+        Log.d(TAG, "clearDebugLog() was called.");
+        safeStringAtDatafile(DATAFILE12, "");
+        DebugLog.renewTheLog();
+    }
+
+    /**
+     * This Method returns an Array of Strings (the logValues).
+     * The format of the Strings is the following:
+     * logValue + "----" + new Date().toString()
+     *
+     * @return A list of Strings. If there are no saved logValues, the return-value is null.
+     */
+    public static String[] getDebugValues() {
+        Log.d(TAG, "getDebugValues was called.");
+        return getValuesAsArray(DATAFILE12);
+    }
+
+    public static void setIsAlarmRingLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE13, String.valueOf(value));
+    }
+
+    public static boolean isAlarmRingLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE13));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void setIsAlarmSetLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE14, String.valueOf(value));
+    }
+
+    public static boolean isAlarmSetLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE14));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void setIsKeyTransmitLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE15, String.valueOf(value));
+    }
+
+    public static boolean isKeyTransmitLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE15));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public static void setIsKeySafeLogged(boolean value) {
+        safeStringAtDatafile(DATAFILE16, String.valueOf(value));
+    }
+
+    public static boolean isKeySafeLogged() {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE16));
+        } catch (Exception e) {
+            return false;
         }
     }
 }

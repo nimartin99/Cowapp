@@ -3,7 +3,7 @@
  *
  * @author Mergim Miftari
  * @author Philipp Alessandrini
- * @version 2020-11-22
+ * @version 2020-11-25
  */
 
 // init web framework
@@ -12,6 +12,8 @@ const app = express();
 // init mongoDB
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb+srv://admin:zyI8ZX5zmAyfjaVt@cowapp.9hh4n.mongodb.net/CoWApp?retryWrites=true&w=majority";
+// init own util module
+const util = require('./modules/util');
 // enable json parsing
 app.use(express.json());
 
@@ -30,21 +32,18 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
         app.get('/request_key', (req, res) => {
             keyCollection.findOne({}, (err, result) => {
                 if (err) throw err;
-                // send key to the client
-                res.status(200).send(JSON.stringify(result.key));
+                // calculate new key
+                let newKey = util.calculateNewKey(result.key);
+                let keyToUpdate = { $set: {key: newKey} }
+                // find and update new unique key in mongodb
+                keyCollection.updateOne({}, keyToUpdate, (err, result) => {
+                    if (err) throw err;
+                    // send key to the client
+                    res.status(200).send(JSON.stringify(newKey));
+                });
             });
         });
-        // send new key to mongodb
-        app.post('/send_key', (req, res) => {
-            const newKey = req.body.key;
-            const keyToUpdate = { $set: {key: newKey} }
-            // find and update new unique key in mongodb
-            keyCollection.updateOne({}, keyToUpdate, (err, result) => {
-                if (err) throw err;
-                // send key to the client
-                res.status(200).send();
-            });
-        });
+
         // send infected key to mongodb
         app.post('/report_infection', (req, res) => {
             // delete contact keys collections after 21 days
@@ -77,6 +76,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                 res.status(404).send();
             }
         });
+
         // send user keys to mongodb
         app.post('/request_infection_status', (req, res) => {
             // check if user has keys
@@ -109,12 +109,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                     // user has had direct contact
                     if (directContactNbr > 0) {
                         // init all relevant direct contact keys as an array
-                        for (i = 0; i < directKeyCollections.length; i++) {
-                            for (j = 0; j < directKeyCollections[i].length; j++) {
-                                currentKeyList = directKeyCollections[i];
-                                directKeys.push(currentKeyList[j]);
-                            }
-                        }
+                        directKeys = util.pushKeyArray(directKeyCollections, currentKeyList);
                         // calculate identical values
                         let intersectionDirectKeys = (userReport.userKey).filter(x => directKeys.includes(x));
                         // use the intersection to calculate the number of non infected keys in userReport
@@ -137,12 +132,7 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                             // user has had indirect contact
                             if (indirectContactNbr > 0) {
                                 // init all relevant indirect contact keys as an array
-                                for (i = 0; i < indirectKeyCollections.length; i++) {
-                                    for (j = 0; j < indirectKeyCollections[i].length; j++) {
-                                        currentKeyList = indirectKeyCollections[i];
-                                        indirectKeys.push(currentKeyList[j]);
-                                    }
-                                }
+                                indirectKeys = util.pushKeyArray(indirectKeyCollections, currentKeyList);
                                 // calculate identical values
                                 let intersectionIndirectKeys = (userReport.userKey).filter(x => indirectKeys.includes(x));
                                 // use the intersection to calculate the number of non infected keys in userReport
