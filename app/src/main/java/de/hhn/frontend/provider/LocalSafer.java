@@ -26,8 +26,8 @@ import de.hhn.frontend.risklevel.IndirectContact;
 /**
  * This is the class for persistent saving of data at the client-side.
  *
- * @author Miftari
- * @version Nov 2020
+ * @author Miftari, Leibl
+ * @version 2020-11-30
  */
 public class LocalSafer {
     private static final String TAG = "LocalSafer";
@@ -725,15 +725,17 @@ public class LocalSafer {
     }
 
     /**
-     *
-     * @param context
-     * @return
+     * method to ask whether the terms of use have been accepted or not
+     * @param context the app
+     * @return true if the terms of use haven't been accepted, false if they have already been accepted
      */
     public static boolean isFirstAppStart(Context context) {
-        try {
-            return Boolean.valueOf(readDataFile(DATAFILE17, context));
-        } catch (Exception e) {
+        String dataFile = readDataFile(DATAFILE17, context);
+        if(dataFile.isEmpty()){
             return true;
+        }
+        else{
+            return false;
         }
     }
 }

@@ -87,10 +87,6 @@ public class MainActivity extends AppCompatActivity {
     //To display the first use date and the elapsed time since the app is used.
     public static TextView dateDisplay;
 
-    //TODO
-    //data protection has still to be accepted
-    public String prefDataProtection = "required";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,13 +125,9 @@ public class MainActivity extends AppCompatActivity {
         showDateDisplay();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
-        //TODO
-        //if (firstAppStart()) {
         if (LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), null);
-            requestKey();
         } else {
             //Report infection button listener
             Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
@@ -209,8 +201,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //TODO
-        //if (firstAppStart()) {
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
@@ -287,26 +277,6 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(myBroadcastReceiver, new IntentFilter("com.alarm.example"));
         myPendingIntent = PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), 0);
         alarmManager = (AlarmManager) (this.getSystemService(Context.ALARM_SERVICE));
-    }
-
-    /**
-     * At first start of the app the user has to accept the data protection regulations before he can
-     * use the app
-     */
-    //TODO
-    public boolean firstAppStart() {
-        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
-
-        if (preferences.getBoolean(prefDataProtection, true)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(prefDataProtection, false);
-            //TODO war davor commit
-            editor.apply();
-            return true;
-        } else {
-            return false;
-        }
-        //LokalSafer.isFirstAppStart();
     }
 
     /**

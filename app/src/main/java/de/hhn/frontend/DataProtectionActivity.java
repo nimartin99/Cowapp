@@ -249,18 +249,17 @@ public class DataProtectionActivity extends AppCompatActivity {
                      //just shows the data protection screen again
                     }
                 });
-        //TODO App soll komplett geschlossen werden bei Buttonklick
         //button to exit the app
-        //builder.setNegativeButton(getString(R.string.exit_app),
-        //        new DialogInterface.OnClickListener() {
-         //   @Override
-         //   public void onClick(DialogInterface dialog, int which) {
-         //       //app is finished, user is on the home screen again
-         //       finishAffinity();
-         //       main.finish();
-         //       System.exit(0);
-        //    }
-        //});
+        builder.setNegativeButton(getString(R.string.exit_app),
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //app is finished, user is on the home screen again
+                finishAffinity();
+                main.finish();
+                System.exit(0);
+            }
+        });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
