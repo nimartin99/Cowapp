@@ -8,6 +8,8 @@ import androidx.annotation.StringRes;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +20,8 @@ import de.hhn.frontend.Constants;
 import de.hhn.frontend.DebugLog;
 import de.hhn.frontend.R;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
+import de.hhn.frontend.risklevel.DirectContact;
+import de.hhn.frontend.risklevel.IndirectContact;
 
 /**
  * This is the class for persistent saving of data at the client-side.
@@ -44,7 +48,9 @@ public class LocalSafer {
     private static final String DATAFILE14 = "cowappisalarmsetlogged.txt";
     private static final String DATAFILE15 = "cowappniskeytransmitlogged.txt";
     private static final String DATAFILE16 = "cowappiskeysafelogged.txt";
-
+    private static final String DATAFILE21 = "cowappindirectcontacts.txt";
+    private static final String DATAFILE22 = "cowappdirectcontacts.txt";
+    private static final String DATAFILE23 = "cowappdateolri";
     /**
      * This methods saves a String under a datafileName.
      * If there is not such datafile, it will be created, when you call this methode.
@@ -587,5 +593,96 @@ public class LocalSafer {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Safes the list of indirect contacts.
+     *
+     * @author Klein
+     */
+
+    public synchronized static void safeListOfIndirectContacts(ArrayList<IndirectContact> indirectContactArrayList) {
+        try {
+            FileOutputStream fos = BeaconBackgroundService.getAppContext().openFileOutput(DATAFILE21, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(indirectContactArrayList);
+            oos.close();
+            fos.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    /**
+     * Returns the list of the indirect contacts
+     *
+     * @author Klein
+     */
+
+    public synchronized static ArrayList<IndirectContact> getListOfIndirectContacts() {
+
+        ArrayList<IndirectContact> indirectContactArrayList = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(DATAFILE21);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            indirectContactArrayList = (ArrayList) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("Class not found");
+            c.printStackTrace();
+
+        }
+
+        return indirectContactArrayList;
+    }
+
+    /**
+     * Safes the list of direct contacts.
+     *
+     * @author Klein
+     */
+
+    public synchronized static void safeListOfDirectContacts(ArrayList<DirectContact> directContactArrayList) {
+        try {
+
+            FileOutputStream fos = BeaconBackgroundService.getAppContext().openFileOutput(DATAFILE22, Context.MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(directContactArrayList);
+            oos.close();
+            fos.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    /**
+     * returns the list of direct contacts.
+     *
+     * @author Klein
+     */
+
+    public synchronized static ArrayList<DirectContact> getListOfDirectContacts() {
+
+        ArrayList<DirectContact> directContactArrayList = new ArrayList<>();
+        try {
+            FileInputStream fis = new FileInputStream(DATAFILE22);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+
+            directContactArrayList = (ArrayList) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (ClassNotFoundException c) {
+            System.out.println("Class not found");
+            c.printStackTrace();
+
+        }
+
+        return directContactArrayList;
     }
 }
