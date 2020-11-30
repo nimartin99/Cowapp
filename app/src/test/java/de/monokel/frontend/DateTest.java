@@ -1,7 +1,4 @@
 package de.monokel.frontend;
-
-import android.util.Log;
-
 import org.junit.Test;
 import java.util.Date;
 
