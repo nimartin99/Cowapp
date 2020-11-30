@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
-import de.hhn.frontend.date.dateHelper;
+import de.hhn.frontend.date.DateHelper;
 import de.hhn.frontend.provider.Alarm;
 import de.hhn.frontend.provider.Key;
 import de.hhn.frontend.provider.LocalSafer;
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-            LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString());
             requestKey();
         } else {
             //Report infection button listener
@@ -499,7 +499,7 @@ public class MainActivity extends AppCompatActivity {
      * Sets the content of the date display on the mainscreen of the app
      */
     public static void showDateDisplay() {
-        dateDisplay.setText(dateHelper.generateStringForDateDisplay());
+        dateDisplay.setText(DateHelper.generateStringForDateDisplay());
     }
 
     /**

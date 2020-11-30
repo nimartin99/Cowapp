@@ -685,4 +685,24 @@ public class LocalSafer {
 
         return directContactArrayList;
     }
+
+    /**
+     * Safes the date of last reported infection.
+     *
+     * @param date
+     */
+    public static void safeDateOfLastReportedInfection(String date) {
+        Log.d(TAG, "safeDateOfLastReportedInfection() was called with " + date);
+        safeStringAtDatafile(DATAFILE23, date);
+    }
+
+    /**
+     * Getter for the date of the last reported infection.
+     *
+     * @return
+     */
+    public static String getDateOfLastReportedInfection() {
+        Log.d(TAG, "getDateOfLastReportedInfection() was called.");
+        return readDataFile(DATAFILE23);
+    }
 }
