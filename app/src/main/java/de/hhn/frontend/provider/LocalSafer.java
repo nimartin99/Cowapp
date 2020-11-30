@@ -36,13 +36,10 @@ public class LocalSafer {
     private static final String DATAFILE01 = "cowappkeys.txt";
     private static final String DATAFILE02 = "cowappnotifications.txt";
     private static final String DATAFILE03 = "cowapprisklevel.txt";
-    private static final String DATAFILE04 = "cowappdaysslc.txt";
     private static final String DATAFILE05 = "cowappfirstdate.txt";
     private static final String DATAFILE06 = "cowappownkey.txt";
     private static final String DATAFILE07 = "cowappownkeys.txt";
-    private static final String DATAFILE08 = "cowappindirectcontacts.txt";
     private static final String DATAFILE09 = "cowappkeybuffer.txt";
-    private static final String DATAFILE10 = "cowappdirectcontacts.txt";
     private static final String DATAFILE11 = "cowappnotificationcount.txt";
     private static final String DATAFILE12 = "cowappdebuglogger.txt";
     private static final String DATAFILE13 = "cowappalisalarmringlogged.txt";
@@ -121,7 +118,7 @@ public class LocalSafer {
      * @param date
      * @return
      */
-    private static boolean dateIsOld(Date date) {
+    public static boolean dateIsOld(Date date) {
         Log.d(TAG, "dateIsOld() was called");
 
         boolean result = false;
@@ -311,33 +308,9 @@ public class LocalSafer {
     }
 
     /**
-     * Safes the daysSinceLastContact.
-     *
-     * @param daysSinceLastContact days Since last contact as int.
-     */
-    public static void safeDaysSinceLastContact(int daysSinceLastContact, Context context) {
-        Log.d(TAG, "safeDaysSinceLastContact was called with: " + daysSinceLastContact);
-        safeStringAtDatafile(DATAFILE04, String.valueOf(daysSinceLastContact), context);
-    }
-
-    /**
-     * Getter for the daysSinceLastContact.
-     *
-     * @return the days since last Contact as int.
-     */
-    public static int getDaysSinceLastContact(Context context) {
-        Log.d(TAG, "getDaysSinceLastContact()");
-        try {
-            return Integer.valueOf(readDataFile(DATAFILE04, context));
-        } catch (Exception ex) { //datafile not found
-            return 0;
-        }
-    }
-
-    /**
      * Safes the date of the first start.
      *
-     * @param date days Since last contact as int.
+     * @param date first start date as string
      */
     public static void safeFirstStartDate(String date, Context context) {
         Log.d(TAG, "safeFirstStartDate() was called with " + date);
@@ -466,37 +439,6 @@ public class LocalSafer {
         }
     }
 
-    public synchronized static void safeIndirectContacts(String[] indirectContacts, Context context) {
-        if (indirectContacts == null) {
-            safeStringAtDatafile(DATAFILE08, "", context);
-        } else {
-            String value = "-<>-";
-            for (String string: indirectContacts) {
-                value = value + string + "-<>-";
-            }
-            safeStringAtDatafile(DATAFILE08, value, context);
-        }
-    }
-    public synchronized static void safeDirectContacts(String[] directContacts, Context context) {
-        if (directContacts == null) {
-            safeStringAtDatafile(DATAFILE10, "", context);
-        } else {
-            String value = "-<>-";
-            for (String string: directContacts) {
-                value = value + string + "-<>-";
-            }
-            safeStringAtDatafile(DATAFILE10, value, context);
-        }
-    }
-
-    public synchronized static String[] getIndirectContacts(Context context) {
-        return getValuesAsArray(DATAFILE08, context);
-    }
-
-    public synchronized static String[] getdirectContacts(Context context) {
-        return getValuesAsArray(DATAFILE10, context);
-    }
-
     /**
      * Setter for the notificationCount
      *
@@ -566,11 +508,11 @@ public class LocalSafer {
     }
 
     public static boolean isAlarmRingLogged(Context context) {
-        try {
-            return Boolean.valueOf(readDataFile(DATAFILE13, context));
-        } catch (Exception e) {
+        String value = readDataFile(DATAFILE13, context);
+        if (value.isEmpty()) {
             return false;
         }
+        return Boolean.valueOf(value);
     }
 
     public static void setIsAlarmSetLogged(boolean value, Context context) {
@@ -578,11 +520,11 @@ public class LocalSafer {
     }
 
     public static boolean isAlarmSetLogged(Context context) {
-        try {
-            return Boolean.valueOf(readDataFile(DATAFILE14, context));
-        } catch (Exception e) {
+        String value = readDataFile(DATAFILE14, context);
+        if (value.isEmpty()) {
             return false;
         }
+        return Boolean.valueOf(value);
     }
 
     public static void setIsKeyTransmitLogged(boolean value, Context context) {
@@ -590,11 +532,11 @@ public class LocalSafer {
     }
 
     public static boolean isKeyTransmitLogged(Context context) {
-        try {
-            return Boolean.valueOf(readDataFile(DATAFILE15, context));
-        } catch (Exception e) {
+        String value = readDataFile(DATAFILE15, context);
+        if (value.isEmpty()) {
             return false;
         }
+        return Boolean.valueOf(value);
     }
 
     public static void setIsKeySafeLogged(boolean value, Context context) {
@@ -602,11 +544,11 @@ public class LocalSafer {
     }
 
     public static boolean isKeySafeLogged(Context context) {
-        try {
-            return Boolean.valueOf(readDataFile(DATAFILE16, context));
-        } catch (Exception e) {
+        String value = readDataFile(DATAFILE16, context);
+        if (value.isEmpty()) {
             return false;
         }
+        return Boolean.valueOf(value);
     }
 
     /**
@@ -727,12 +669,10 @@ public class LocalSafer {
      * @return true if the terms of use haven't been accepted, false if they have already been accepted
      */
     public static boolean isFirstAppStart(Context context) {
-        String dataFile = readDataFile(DATAFILE17, context);
-        if(dataFile.isEmpty()){
+        String value = readDataFile(DATAFILE17, context);
+        if (value.isEmpty()) {
             return true;
         }
-        else{
-            return false;
-        }
+        return Boolean.valueOf(value);
     }
 }
