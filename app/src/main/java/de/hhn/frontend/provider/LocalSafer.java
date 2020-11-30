@@ -35,7 +35,6 @@ public class LocalSafer {
     private static final String DATAFILE01 = "cowappkeys.txt";
     private static final String DATAFILE02 = "cowappnotifications.txt";
     private static final String DATAFILE03 = "cowapprisklevel.txt";
-    private static final String DATAFILE04 = "cowappdaysslc.txt";
     private static final String DATAFILE05 = "cowappfirstdate.txt";
     private static final String DATAFILE06 = "cowappownkey.txt";
     private static final String DATAFILE07 = "cowappownkeys.txt";
@@ -118,7 +117,7 @@ public class LocalSafer {
      * @param date
      * @return
      */
-    private static boolean dateIsOld(Date date) {
+    public static boolean dateIsOld(Date date) {
         Log.d(TAG, "dateIsOld() was called");
 
         boolean result = false;
@@ -306,33 +305,9 @@ public class LocalSafer {
     }
 
     /**
-     * Safes the daysSinceLastContact.
-     *
-     * @param daysSinceLastContact days Since last contact as int.
-     */
-    public static void safeDaysSinceLastContact(int daysSinceLastContact, Context context) {
-        Log.d(TAG, "safeDaysSinceLastContact was called with: " + daysSinceLastContact);
-        safeStringAtDatafile(DATAFILE04, String.valueOf(daysSinceLastContact), context);
-    }
-
-    /**
-     * Getter for the daysSinceLastContact.
-     *
-     * @return the days since last Contact as int.
-     */
-    public static int getDaysSinceLastContact(Context context) {
-        Log.d(TAG, "getDaysSinceLastContact()");
-        try {
-            return Integer.valueOf(readDataFile(DATAFILE04, context));
-        } catch (Exception ex) { //datafile not found
-            return 0;
-        }
-    }
-
-    /**
      * Safes the date of the first start.
      *
-     * @param date days Since last contact as int.
+     * @param date first start date as string
      */
     public static void safeFirstStartDate(String date, Context context) {
         Log.d(TAG, "safeFirstStartDate() was called with " + date);
