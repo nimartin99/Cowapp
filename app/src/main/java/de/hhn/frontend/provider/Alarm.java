@@ -18,16 +18,16 @@ public class Alarm {
      * This method is called all fifteen Minutes.
      */
     public static void fifteenMinutesBusiness() {
-        LocalSafer.analyzeBufferFile();
+        LocalSafer.analyzeBufferFile(null);
 
         //delete all keys older then 3 weeks.
-        LocalSafer.addKeyPairToSavedKeyPairs(null);
-        LocalSafer.addNotificationToSavedNotifications(null);
+        LocalSafer.addKeyPairToSavedKeyPairs(null, null);
+        LocalSafer.addNotificationToSavedNotifications(null, null);
 
         //update the information about the date of the first usage and the days since the app is used
         MainActivity.showDateDisplay();
 
-        if (LocalSafer.getRiskLevel() != 100) {
+        if (LocalSafer.getRiskLevel(null) != 100) {
             MainActivity.requestInfectionStatus();
             NewRiskLevel.calculateRiskLevel();
         }
@@ -38,8 +38,8 @@ public class Alarm {
 
     public static void ring() {
         fifteenMinutesBusiness();
-        if (Constants.DEBUG_MODE && LocalSafer.isAlarmRingLogged()) {
-            LocalSafer.addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.alarm_ringed));
+        if (Constants.DEBUG_MODE && LocalSafer.isAlarmRingLogged(null)) {
+            LocalSafer.addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.alarm_ringed), null);
         }
     }
 }

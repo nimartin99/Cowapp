@@ -36,7 +36,7 @@ public class NewRiskLevel {
     public static synchronized void calculateRiskLevel() {
 
 
-        if (LocalSafer.getRiskLevel() != 100) {
+        if (LocalSafer.getRiskLevel(null) != 100) {
             newRiskLevelValue = 0;
             deleteOldContacts();
 
@@ -57,7 +57,7 @@ public class NewRiskLevel {
                 newRiskLevelValue = 95;
             }
 
-            LocalSafer.safeRiskLevel(newRiskLevelValue);
+            LocalSafer.safeRiskLevel(newRiskLevelValue, null);
             Log.d("Jonas", "calulated risk Level: " + newRiskLevelValue);
 
         }
@@ -118,7 +118,7 @@ public class NewRiskLevel {
 
     public static synchronized void controlKeyExchange() {
 
-        if (LocalSafer.getRiskLevel() == 100) {
+        if (LocalSafer.getRiskLevel(null) == 100) {
             //disable scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(false);
@@ -127,7 +127,7 @@ public class NewRiskLevel {
             Log.d("Jonas", "Due to a current infection the Key Exchange was stopped");
 
 
-        } else if (LocalSafer.getRiskLevel() != 100) {
+        } else if (LocalSafer.getRiskLevel(null) != 100) {
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(true);
@@ -143,8 +143,8 @@ public class NewRiskLevel {
      */
 
     public static void setRiskLevelToCurrentInfection() {
-        LocalSafer.safeRiskLevel(100);
-        LocalSafer.safeDateOfLastReportedInfection(DateHelper.getCurrentDateString());
+        LocalSafer.safeRiskLevel(100, null);
+        LocalSafer.safeDateOfLastReportedInfection(DateHelper.getCurrentDateString(), null);
         Log.d("Jonas", "risk level has been set to 100!");
 
         controlKeyExchange();
@@ -156,14 +156,14 @@ public class NewRiskLevel {
 
     public static void checkIfInfectionHasExpired() {
 
-        if (DateHelper.checkIfDateIsOld(DateHelper.convertStringToDate(LocalSafer.getDateOfLastReportedInfection()))) {
+        if (DateHelper.checkIfDateIsOld(DateHelper.convertStringToDate(LocalSafer.getDateOfLastReportedInfection(null)))) {
             Log.d("Jonas", "Infection is older than 14 days and was removed!");
-            LocalSafer.safeRiskLevel(0);
+            LocalSafer.safeRiskLevel(0, null);
             Log.d("Jonas", "Risk level was set to 0");
             calculateRiskLevel();
 
         } else {
-            if (!DateHelper.checkIfDateIsOld(DateHelper.convertStringToDate(LocalSafer.getDateOfLastReportedInfection()))) {
+            if (!DateHelper.checkIfDateIsOld(DateHelper.convertStringToDate(LocalSafer.getDateOfLastReportedInfection(null)))) {
                 Log.d("Jonas", "Infection is not older than 14 days");
             }
         }

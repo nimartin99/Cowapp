@@ -46,7 +46,7 @@ public class LogActivity extends AppCompatActivity {
         template = findViewById(R.id.templatenotification);
         notificationLayout.removeView(template);
 
-        String [] notifications = LocalSafer.getNotifications();
+        String [] notifications = LocalSafer.getNotifications(null);
 
         notificationViews = new ArrayList<TextView>();
 
@@ -65,7 +65,7 @@ public class LogActivity extends AppCompatActivity {
      * Updates the Scrollbar with the notifications.
      */
     private void updateScrollbar() {
-        String [] notifications = LocalSafer.getNotifications();
+        String [] notifications = LocalSafer.getNotifications(null);
 
         if (notificationViews != null) {
             for (TextView textView1 : notificationViews) {

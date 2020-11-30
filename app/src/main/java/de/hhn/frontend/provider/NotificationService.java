@@ -57,7 +57,7 @@ public class NotificationService extends Service {
 
     private void displayNotification(String title, String text, Class intentClass, boolean shouldBeLogged){
         if (shouldBeLogged) {
-            LocalSafer.addNotificationToSavedNotifications(title + " - " + text);
+            LocalSafer.addNotificationToSavedNotifications(title + " - " + text, null);
             LogActivity.renewTheLog();
         }
         Intent pushIntent;
