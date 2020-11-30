@@ -23,6 +23,10 @@
     <string name="decline_button">Decline</string>
     <string name="head_data_protection">Terms of Use</string>
     <string name="text_data_protection">You agree that CoWApp is allowed to activate the Bluetooth of your device and send or receive data via it (generated keys with time stamp     and location as well as information about your current infection status). Furthermore you agree that the app may run as a background process     on your mobile device at any time and is allowed to send your generated and collected anonymous keys to the server if there is an existing infection and you push notifications, too. This is the only way the correct function of the     Corona-Warn-App is given.</string>
+    <string name="decline_info_title">Agreement required </string>
+    <string name="decline_info_message">You have to accept the terms of use to use the application. </string>
+    <string name="decline_info_ok_button">Okay</string>
+    <string name="exit_app">Exit</string>
     //Info Menu and pages
     <string name="head_info_menu">Further Information</string>
     <string name="head_general_info">General Information</string>

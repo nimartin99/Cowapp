@@ -24,11 +24,13 @@ import de.hhn.frontend.provider.LocalSafer;
  * Data protection start screen activity for CoWApp
  *
  * @author Tabea leibl
- * @version 2020-10-18
+ * @version 2020-11-30
  */
 public class DataProtectionActivity extends AppCompatActivity {
 
     protected static final String TAG = "DataProtectionActivity";
+
+    public static MainActivity main;
 
     //Expected Permission Values
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
@@ -229,35 +231,31 @@ public class DataProtectionActivity extends AppCompatActivity {
         }
     }
 
-    //TODO noch schreiben
     public void deniedDataProtectionNotification() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
-        builder.setTitle(getString(R.string.you_are_clearing));
-        builder.setMessage(getString(R.string.are_you_sure_to_clear));
-        builder.setPositiveButton(getString(R.string.confirm),
+        builder.setTitle(getString(R.string.decline_info_title));
+        builder.setMessage(getString(R.string.decline_info_message));
+        //ok button
+        builder.setPositiveButton(getString(R.string.decline_info_ok_button),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        LocalSafer.clearDebugLog();
-                        Toast toast = Toast.makeText(getApplicationContext(),
-                                getString(R.string.debug_log_was_cleared),
-                                Toast.LENGTH_SHORT);
-
-                        toast.show();
+                     //just shows the data protection screen again
                     }
                 });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast toast = Toast.makeText(getApplicationContext(),
-                        getString(R.string.action_canceled),
-                        Toast.LENGTH_SHORT);
-
-                toast.show();
-            }
-        });
-
+        //TODO App soll komplett geschlossen werden bei Buttonklick
+        //button to exit the app
+        //builder.setNegativeButton(getString(R.string.exit_app),
+        //        new DialogInterface.OnClickListener() {
+         //   @Override
+         //   public void onClick(DialogInterface dialog, int which) {
+         //       //app is finished, user is on the home screen again
+         //       finishAffinity();
+         //       main.finish();
+         //       System.exit(0);
+        //    }
+        //});
         AlertDialog dialog = builder.create();
         dialog.show();
     }
