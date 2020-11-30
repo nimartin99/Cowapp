@@ -725,7 +725,7 @@ public class LocalSafer {
         try {
             return Boolean.valueOf(readDataFile(DATAFILE17, context));
         } catch (Exception e) {
-            return false;
+            return true;
         }
     }
 }
