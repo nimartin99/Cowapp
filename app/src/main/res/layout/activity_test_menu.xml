@@ -6,68 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".TestMenuActivity">
 
-    <Button
-        android:id="@+id/Test6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:text="@string/test_button_6"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
-        android:textSize="@dimen/test_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Test5" />
-
-    <Button
-        android:id="@+id/Test5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:text="@string/test_button_5"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
-        android:textSize="@dimen/test_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Test4" />
-
-    <Button
-        android:id="@+id/Test4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:text="@string/test_button_4"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
-        android:textSize="@dimen/test_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scan" />
-
-    <Button
-        android:id="@+id/Test3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:text="@string/test_button_3"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toStartOf="@+id/resetButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Test2" />
-
     <TextView
         android:id="@+id/headTestMenu"
         android:layout_width="match_parent"
@@ -84,74 +22,159 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/Test1"
+    <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_button1_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:text="@string/test_button_1"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
-        android:textSize="@dimen/test_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headTestMenu" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headTestMenu">
 
-    <Button
-        android:id="@+id/Test2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:text="@string/test_button_2"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#000000"
-        android:textSize="@dimen/test_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.454"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Test1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/resetButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:backgroundTint="#EA6262"
-        android:text="@string/reset_button_risklevel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Test2" />
+            <Button
+                android:id="@+id/pushNotificationTestButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#000000"
+                android:textSize="@dimen/test_buttons_textSize" />
 
-    <Button
-        android:id="@+id/transmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:text="@string/test_button_7"
-        android:textSize="@dimen/test_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Test3" />
+            <Button
+                android:id="@+id/keyGenerationTestButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_2"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#000000"
+                android:textSize="@dimen/test_buttons_textSize" />
 
-    <Button
-        android:id="@+id/scan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/test_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/test_buttons_marginTop"
-        android:layout_marginEnd="@dimen/test_buttons_marginStart_and_End"
-        android:text="@string/test_button_8"
-        android:textSize="@dimen/test_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/transmit" />
+            <Button
+                android:id="@+id/checkInfectionStatusButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_4"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#000000"
+                android:textSize="@dimen/test_buttons_textSize" />
+
+            <Button
+                android:id="@+id/logOwnKeysButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_5"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#000000"
+                android:textSize="@dimen/test_buttons_textSize" />
+
+            <Button
+                android:id="@+id/deleteOwnKeysTextButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_6"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/scan"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_8"
+                android:textAllCaps="false"
+                android:textSize="@dimen/test_buttons_textSize" />
+
+            <LinearLayout
+                style="buttonBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/Test3"
+                    style="buttonBarStyle"
+                    android:layout_width="305dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/test_button_3"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="#000000"
+                    android:textSize="24sp" />
+
+                <Button
+                    android:id="@+id/resetButton"
+                    style="buttonBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="#EA6262"
+                    android:text="@string/reset_button_risklevel" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/transmit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_7"
+                android:textAllCaps="false"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/addIndirectTestContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_button_14" />
+
+            <Button
+                android:id="@+id/addDirectTestContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_button_15" />
+
+            <Button
+                android:id="@+id/calculateRiskLevelByContacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_button_10"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/deleteTestContacts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_button_16" />
+
+            <Button
+                android:id="@+id/setInfectionOutdated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_button_12"
+                android:textAllCaps="false"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/checkOutdatedInfectionbutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_button_11"
+                android:textAllCaps="false"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/activate15MinuteBuisness"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/test_button_13"
+                android:textAllCaps="false"
+                android:textSize="24sp" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

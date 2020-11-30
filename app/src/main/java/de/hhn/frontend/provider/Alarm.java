@@ -1,5 +1,7 @@
 package de.hhn.frontend.provider;
 
+import android.util.Log;
+
 import de.hhn.frontend.Constants;
 import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.R;
@@ -31,12 +33,17 @@ public class Alarm {
         if (LocalSafer.getRiskLevel() != 100) {
             MainActivity.requestInfectionStatus();
             RiskLevel.calculateRiskLevel();
+        } else {
+            Log.d("Alarm", "due to a current infection no contacts were requested and no risk level was calculated");
         }
 
         //request a new key when the User is not infected.
         if (LocalSafer.getRiskLevel() != 100) {
             MainActivity.requestKey();
+        } else {
+            Log.d("Alarm", "due to a current infection no key was requested");
         }
+
     }
 
     public static void ring() {

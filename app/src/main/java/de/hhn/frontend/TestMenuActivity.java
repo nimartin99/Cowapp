@@ -6,13 +6,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import de.hhn.frontend.date.DateHelper;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
+import de.hhn.frontend.provider.Alarm;
 import de.hhn.frontend.provider.LocalSafer;
 import de.hhn.frontend.provider.NotificationService;
+import de.hhn.frontend.risklevel.DirectContact;
+import de.hhn.frontend.risklevel.IndirectContact;
+import de.hhn.frontend.risklevel.RiskLevel;
 
 /**
  * Developer menu to test functions for the CoWApp development
@@ -35,7 +44,7 @@ public class TestMenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_test_menu);
 
         //Push notification test button listener
-        Button pushTestButton = (Button)findViewById(R.id.Test1);
+        Button pushTestButton = (Button) findViewById(R.id.pushNotificationTestButton);
 
         pushTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +59,7 @@ public class TestMenuActivity extends AppCompatActivity {
         });
 
         // Generate key test button listener
-        Button generateKeyTestButton = (Button)findViewById(R.id.Test2);
+        Button generateKeyTestButton = (Button) findViewById(R.id.keyGenerationTestButton);
 
         generateKeyTestButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +127,7 @@ public class TestMenuActivity extends AppCompatActivity {
         });
 
         // Request infection status test button listener
-        Button requestInfectionStatusButton = (Button)findViewById(R.id.Test4);
+        Button requestInfectionStatusButton = (Button) findViewById(R.id.checkInfectionStatusButton);
 
         requestInfectionStatusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,7 +138,7 @@ public class TestMenuActivity extends AppCompatActivity {
         });
 
         // Log saved own keys listener
-        Button logOwnKeysListener = (Button)findViewById(R.id.Test5);
+        Button logOwnKeysListener = (Button) findViewById(R.id.logOwnKeysButton);
 
         logOwnKeysListener.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,7 +149,7 @@ public class TestMenuActivity extends AppCompatActivity {
         });
 
         // delete own keys listener
-        Button deleteOwnKeysListener = (Button)findViewById(R.id.Test6);
+        Button deleteOwnKeysListener = (Button) findViewById(R.id.deleteOwnKeysTextButton);
 
         deleteOwnKeysListener.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,5 +159,78 @@ public class TestMenuActivity extends AppCompatActivity {
                 LocalSafer.clearOwnKeyPairDataFile();
             }
         });
+
+        //Button to add List of contacts, used by the NewRiskLevel
+        Button addIndirectContactButton = (Button) findViewById(R.id.addIndirectTestContact);
+        addIndirectContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Date notOutDatedDate1 = new GregorianCalendar(2020, Calendar.NOVEMBER, 22).getTime();
+                RiskLevel.addContact(new IndirectContact(notOutDatedDate1));
+
+            }
+        });
+
+        Button addDirectContactButton = (Button) findViewById(R.id.addDirectTestContact);
+        addDirectContactButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date notOutDatedDate1 = new GregorianCalendar(2020, Calendar.NOVEMBER, 22).getTime();
+                RiskLevel.addContact(new DirectContact(notOutDatedDate1));
+
+
+            }
+        });
+
+        Button removeAllContactsButton = (Button) findViewById(R.id.deleteTestContacts);
+        removeAllContactsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RiskLevel.deleteAllContacts();
+            }
+        });
+
+
+        //Button to test the NewRiskLevel Class
+        Button calculateRiskLevelOfCurrentContactListButton = (Button) findViewById(R.id.calculateRiskLevelByContacts);
+
+        calculateRiskLevelOfCurrentContactListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RiskLevel.calculateRiskLevel();
+
+            }
+        });
+
+        Button resetRiskLevelButton = (Button) findViewById(R.id.checkOutdatedInfectionbutton);
+        resetRiskLevelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RiskLevel.checkIfInfectionHasExpired();
+            }
+        });
+
+        Button setInfectionOutdatedButton = (Button) findViewById(R.id.setInfectionOutdated);
+        setInfectionOutdatedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Date outDatedInfectionDate = new GregorianCalendar(2019, Calendar.JULY, 2).getTime();
+                LocalSafer.safeDateOfLastReportedInfection(DateHelper.convertDateToString(outDatedInfectionDate));
+                Log.d("Jonas", "Date of Infection was set to outdated");
+            }
+        });
+
+        //Button to test 15m Buisness
+        Button activate15mBuisnessButton = (Button) findViewById(R.id.activate15MinuteBuisness);
+        activate15mBuisnessButton.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Alarm.fifteenMinutesBusiness();
+                Log.d("Jonas", "FifteenMinutesBusiness was started by Button, not 15m routine");
+            }
+        }));
+
+
     }
 }
+
