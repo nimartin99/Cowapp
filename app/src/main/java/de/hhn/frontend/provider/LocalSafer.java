@@ -27,8 +27,8 @@ import de.hhn.frontend.risklevel.IndirectContact;
 /**
  * This is the class for persistent saving of data at the client-side.
  *
- * @author Miftari, Klein
- * @version Nov 2020
+ * @author Miftari, Leibl, Klein
+ * @version 2020-11-30
  */
 public class LocalSafer {
     private static final String TAG = "LocalSafer";
@@ -49,6 +49,7 @@ public class LocalSafer {
     private static final String DATAFILE14 = "cowappisalarmsetlogged.txt";
     private static final String DATAFILE15 = "cowappniskeytransmitlogged.txt";
     private static final String DATAFILE16 = "cowappiskeysafelogged.txt";
+    private static final String DATAFILE17 = "cowappisfirstappstart";
     private static final String DATAFILE21 = "cowappindirectcontacts.txt";
     private static final String DATAFILE22 = "cowappdirectcontacts.txt";
     private static final String DATAFILE23 = "cowappdateolri";
@@ -59,11 +60,15 @@ public class LocalSafer {
      * @param datafile The Name of the datafile.
      * @param value    The String.
      */
-    public static void safeStringAtDatafile(String datafile, String value) {
+    public static void safeStringAtDatafile(String datafile, String value, Context context) {
         Log.d(TAG, "safeStringAtDatafile -> String: " + value + " at data file: " + datafile);
         try {
-            FileOutputStream data = BeaconBackgroundService.getAppContext().openFileOutput(datafile,
-                    Context.MODE_PRIVATE);
+            FileOutputStream data;
+            if (context == null) {
+                data = BeaconBackgroundService.getAppContext().openFileOutput(datafile, Context.MODE_PRIVATE);
+            } else {
+                data = context.openFileOutput(datafile, Context.MODE_PRIVATE);
+            }
             data.write(value.getBytes());
             data.close();
         } catch (IOException ex) {
@@ -77,10 +82,15 @@ public class LocalSafer {
      * @param datafileName the name of the datafile.
      * @return the value of the datafile.
      */
-    private static String readDataFile(String datafileName) {
+    private static String readDataFile(String datafileName, Context context) {
         Log.d(TAG, "readDataFile: " + datafileName);
         try {
-            FileInputStream datafile = BeaconBackgroundService.getAppContext().openFileInput(datafileName);
+            FileInputStream datafile;
+            if (context == null) {
+                datafile = BeaconBackgroundService.getAppContext().openFileInput(datafileName);
+            } else {
+                datafile = context.openFileInput(datafileName);
+            }
             List<Byte> data = new ArrayList<Byte>();
 
             while (true) {
@@ -132,9 +142,10 @@ public class LocalSafer {
      *
      * @return A list of Strings. If there are no saved keys, the return-value is null.
      */
-    private static String[] getValuesAsArray(String datafileName) {
+    private static String[] getValuesAsArray(String datafileName, Context context) {
         Log.d(TAG, "getValuesAsArray() was called with datafile: " + datafileName);
-        String values = readDataFile(datafileName);
+        String values = readDataFile(datafileName, null);
+
         if (values.equals("")) {
             return null;
         }
@@ -145,10 +156,10 @@ public class LocalSafer {
     /**
      * All Values older than 2 weeks are going to be deleted.
      */
-    private static void deleteOldValues(String datafileName) {
+    private static void deleteOldValues(String datafileName, Context context) {
         Log.d(TAG, "deleteOldValues was called with datafile " + datafileName);
 
-        String[] values = getValuesAsArray(datafileName);
+        String[] values = getValuesAsArray(datafileName, context);
         String result = "";
 
         if (values != null) {
@@ -160,7 +171,7 @@ public class LocalSafer {
                 }
             }
 
-            safeStringAtDatafile(datafileName, result);
+            safeStringAtDatafile(datafileName, result, context);
         }
     }
 
@@ -169,17 +180,17 @@ public class LocalSafer {
      *
      * @param contactKey The Key of the contact
      */
-    public synchronized static void addKeyPairToSavedKeyPairs(String contactKey) {
+    public synchronized static void addKeyPairToSavedKeyPairs(String contactKey, Context context) {
         Log.d(TAG, "addKeyPairToSavedKeyPairs: " + contactKey);
         if (contactKey == null) {
-            deleteOldValues(DATAFILE01);
+            deleteOldValues(DATAFILE01, context);
         } else {
-            String alreadySavedKeyPairs = readDataFile(DATAFILE01);
+            String alreadySavedKeyPairs = readDataFile(DATAFILE01, context);
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey.substring(9) + "----" + new Date().toString();
-            safeStringAtDatafile(DATAFILE01, allKeyPairsToSafe);
+            safeStringAtDatafile(DATAFILE01, allKeyPairsToSafe, context);
 
-            if (Constants.DEBUG_MODE && isKeySafeLogged()) {
-                addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.key_was_saved) + contactKey);
+            if (Constants.DEBUG_MODE && isKeySafeLogged(context)) {
+                addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.key_was_saved) + contactKey, context);
             }
         }
     }
@@ -187,26 +198,26 @@ public class LocalSafer {
     /**
      * This method clears the keyPairDataFile.
      */
-    public static void clearKeyPairDataFile() {
+    public static void clearKeyPairDataFile(Context context) {
         Log.d(TAG, "cleareKeyPairDataFile() was called.");
-        safeStringAtDatafile(DATAFILE01, "");
+        safeStringAtDatafile(DATAFILE01, "", context);
     }
 
     /**
      * safes the given key.
      * @param contactKey The Key of the contact
      */
-    public synchronized static String[] addKeyToBufferFile(String contactKey) {
+    public synchronized static String[] addKeyToBufferFile(String contactKey, Context context) {
         Log.d(TAG, "addKeyToBufferFile: " + contactKey);
 
         if (contactKey == null) {
-            String[] result = getValuesAsArray(DATAFILE09);
-            clearBufferFile();
+            String[] result = getValuesAsArray(DATAFILE09, context);
+            clearBufferFile(context);
             return result;
         } else {
-            String alreadySavedKeyPairs = readDataFile(DATAFILE09);
+            String alreadySavedKeyPairs = readDataFile(DATAFILE09, context);
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey;
-            safeStringAtDatafile(DATAFILE09, allKeyPairsToSafe);
+            safeStringAtDatafile(DATAFILE09, allKeyPairsToSafe, context);
             return null;
         }
     }
@@ -214,9 +225,9 @@ public class LocalSafer {
     /**
      * This method clears the bufferFile.
      */
-    public static void clearBufferFile() {
+    public static void clearBufferFile(Context context) {
         Log.d(TAG, "cleareBufferFile() was called.");
-        safeStringAtDatafile(DATAFILE09, "");
+        safeStringAtDatafile(DATAFILE09, "", context);
     }
 
     /**
@@ -226,9 +237,9 @@ public class LocalSafer {
      *
      * @return A list of Strings. If there are no saved keys, the return-value is null.
      */
-    public static String[] getKeyPairs() {
+    public static String[] getKeyPairs(Context context) {
         Log.d(TAG, "getKeyPairs() was called.");
-        String[] result = getValuesAsArray(DATAFILE01);
+        String[] result = getValuesAsArray(DATAFILE01, context);
         if (result != null) {
             return result;
         } else {
@@ -241,24 +252,24 @@ public class LocalSafer {
      *
      * @param notification The new notification as String
      */
-    public synchronized static void addNotificationToSavedNotifications(String notification) {
+    public synchronized static void addNotificationToSavedNotifications(String notification, Context context) {
         Log.d(TAG, "addNotificationToSavedNotifications() was called with notification: " + notification);
         if (notification == null) {
-            deleteOldValues(DATAFILE02);
+            deleteOldValues(DATAFILE02, context);
         } else {
-            String alreadySavedNotifications = readDataFile(DATAFILE02);
+            String alreadySavedNotifications = readDataFile(DATAFILE02, context);
             String allNotificationsToSafe = alreadySavedNotifications + "-<>-" + notification + "----" + new Date().toString();
 
-            safeStringAtDatafile(DATAFILE02, allNotificationsToSafe);
+            safeStringAtDatafile(DATAFILE02, allNotificationsToSafe, context);
         }
     }
 
     /**
      * This method clears the Notifications-Datafile.
      */
-    public static void clearNotificationDataFile() {
+    public static void clearNotificationDataFile(Context context) {
         Log.d(TAG, "clearNotificationDataFile() was called.");
-        safeStringAtDatafile(DATAFILE02, "");
+        safeStringAtDatafile(DATAFILE02, "", context);
     }
 
     /**
@@ -268,9 +279,9 @@ public class LocalSafer {
      *
      * @return A list of Strings. If there are no saved notifications, the return-value is null.
      */
-    public static String[] getNotifications() {
+    public static String[] getNotifications(Context context) {
         Log.d(TAG, "getNotifications was called.");
-        return getValuesAsArray(DATAFILE02);
+        return getValuesAsArray(DATAFILE02, context);
     }
 
     /**
@@ -278,9 +289,9 @@ public class LocalSafer {
      *
      * @param riskLevel risk level as int
      */
-    public static void safeRiskLevel(int riskLevel) {
+    public static void safeRiskLevel(int riskLevel, Context context) {
         Log.d(TAG, "safeRiskLevel() with riskLevel: " + riskLevel);
-        safeStringAtDatafile(DATAFILE03, String.valueOf(riskLevel));
+        safeStringAtDatafile(DATAFILE03, String.valueOf(riskLevel), context);
         MainActivity.showTrafficLightStatus();
         MainActivity.showRiskStatus();
     }
@@ -290,10 +301,10 @@ public class LocalSafer {
      *
      * @return risk level as int.
      */
-    public static int getRiskLevel() {
+    public static int getRiskLevel(Context context) {
         Log.d(TAG, "getRiskLevel() was called.");
         try {
-            return Integer.valueOf(readDataFile(DATAFILE03));
+            return Integer.valueOf(readDataFile(DATAFILE03, context));
         } catch (Exception ex) { //datafile not found
             return 0;
         }
@@ -304,9 +315,9 @@ public class LocalSafer {
      *
      * @param daysSinceLastContact days Since last contact as int.
      */
-    public static void safeDaysSinceLastContact(int daysSinceLastContact) {
+    public static void safeDaysSinceLastContact(int daysSinceLastContact, Context context) {
         Log.d(TAG, "safeDaysSinceLastContact was called with: " + daysSinceLastContact);
-        safeStringAtDatafile(DATAFILE04, String.valueOf(daysSinceLastContact));
+        safeStringAtDatafile(DATAFILE04, String.valueOf(daysSinceLastContact), context);
     }
 
     /**
@@ -314,10 +325,10 @@ public class LocalSafer {
      *
      * @return the days since last Contact as int.
      */
-    public static int getDaysSinceLastContact() {
+    public static int getDaysSinceLastContact(Context context) {
         Log.d(TAG, "getDaysSinceLastContact()");
         try {
-            return Integer.valueOf(readDataFile(DATAFILE04));
+            return Integer.valueOf(readDataFile(DATAFILE04, context));
         } catch (Exception ex) { //datafile not found
             return 0;
         }
@@ -328,9 +339,9 @@ public class LocalSafer {
      *
      * @param date days Since last contact as int.
      */
-    public static void safeFirstStartDate(String date) {
+    public static void safeFirstStartDate(String date, Context context) {
         Log.d(TAG, "safeFirstStartDate() was called with " + date);
-        safeStringAtDatafile(DATAFILE05, date);
+        safeStringAtDatafile(DATAFILE05, date, context);
     }
 
     /**
@@ -338,9 +349,9 @@ public class LocalSafer {
      *
      * @return the days since last Contact as int.
      */
-    public static String getFirstStartDate() {
+    public static String getFirstStartDate(Context context) {
         Log.d(TAG, "getFirstStartDate() was called.");
-        return readDataFile(DATAFILE05);
+        return readDataFile(DATAFILE05, context);
     }
 
     /**
@@ -348,10 +359,10 @@ public class LocalSafer {
      *
      * @param key the own key as String
      */
-    public static void safeOwnKey(String key) {
+    public static void safeOwnKey(String key, Context context) {
         Log.d(TAG, "safeOwnKey was called with: " + key);
-        safeStringAtDatafile(DATAFILE06, key);
-        addKeyToOwnKeys(key);
+        safeStringAtDatafile(DATAFILE06, key, context);
+        addKeyToOwnKeys(key, context);
     }
 
 
@@ -360,11 +371,11 @@ public class LocalSafer {
      *
      * @return the own key as String
      */
-    public static String getOwnKey() {
+    public static String getOwnKey(Context context) {
         Log.d(TAG, "getOwnKey was called");
-        String key = readDataFile(DATAFILE06);
+        String key = readDataFile(DATAFILE06, context);
         if (!key.isEmpty()) {
-            String result = Constants.cowappBeaconIdentifier + "-" + readDataFile(DATAFILE06);
+            String result = Constants.cowappBeaconIdentifier + "-" + readDataFile(DATAFILE06, context);
             return result;
         } else {
             return "";
@@ -376,23 +387,23 @@ public class LocalSafer {
      *
      * @param ownKey The Key of the contact
      */
-    public synchronized static void addKeyToOwnKeys(String ownKey) {
+    public synchronized static void addKeyToOwnKeys(String ownKey, Context context) {
         Log.d(TAG, "addKeyToOwnKeys was called with " + ownKey);
         if (ownKey == null) {
-            deleteOldValues(DATAFILE07);
+            deleteOldValues(DATAFILE07, context);
         } else {
-            String alreadySavedKeys = readDataFile(DATAFILE07);
+            String alreadySavedKeys = readDataFile(DATAFILE07, context);
             String allKeysToSafe = alreadySavedKeys + "-<>-" + ownKey + "----" + new Date().toString();
-            safeStringAtDatafile(DATAFILE07, allKeysToSafe);
+            safeStringAtDatafile(DATAFILE07, allKeysToSafe, context);
         }
     }
 
     /**
      * This method clears the ownKeyPairDataFile.
      */
-    public static void clearOwnKeyPairDataFile() {
+    public static void clearOwnKeyPairDataFile(Context context) {
         Log.d(TAG, "clearOwnKeyPairDataFile() was called.");
-        safeStringAtDatafile(DATAFILE07, "");
+        safeStringAtDatafile(DATAFILE07, "", context);
     }
 
     /**
@@ -402,9 +413,9 @@ public class LocalSafer {
      *
      * @return A list of the own Strings without the first eight characters. If there are no saved keys, the return-value is null.
      */
-    public static String[] getOwnKeys() {
+    public static String[] getOwnKeys(Context context) {
         Log.d(TAG, "getOwnKeys() was called ");
-        String[] result = getValuesAsArray(DATAFILE07);
+        String[] result = getValuesAsArray(DATAFILE07, context);
         if (result != null) {
             return result;
         } else {
@@ -417,18 +428,18 @@ public class LocalSafer {
      *
      * @param key the received key
      */
-    public synchronized static void addReceivedKey(String key) {
+    public synchronized static void addReceivedKey(String key, Context context) {
         Log.d(TAG, "addReceivedKey() was called " + key);
-        addKeyToBufferFile(key);
+        addKeyToBufferFile(key, context);
     }
 
     /**
      * This method analyzes the buffer file and adds every key just one time to the key-pari datafile.
      */
-    public synchronized static void analyzeBufferFile() {
+    public synchronized static void analyzeBufferFile(Context context) {
         Log.d(TAG, "analyzeBufferFile() was called ");
 
-        String[] bufferValues = addKeyToBufferFile(null);
+        String[] bufferValues = addKeyToBufferFile(null, context);
         HashSet<String> strings = new HashSet<>();
 
         if (bufferValues != null) {
@@ -449,42 +460,41 @@ public class LocalSafer {
                 if (factor == 0) { factor = 1; }
 
                 for (int i = 0; i != factor; i++) {
-                    addKeyPairToSavedKeyPairs(string);
+                    addKeyPairToSavedKeyPairs(string, context);
                 }
             }
         }
     }
 
-    public synchronized static void safeIndirectContacts(String[] indirectContacts) {
+    public synchronized static void safeIndirectContacts(String[] indirectContacts, Context context) {
         if (indirectContacts == null) {
-            safeStringAtDatafile(DATAFILE08, "");
+            safeStringAtDatafile(DATAFILE08, "", context);
         } else {
             String value = "-<>-";
             for (String string: indirectContacts) {
                 value = value + string + "-<>-";
             }
-            safeStringAtDatafile(DATAFILE08, value);
+            safeStringAtDatafile(DATAFILE08, value, context);
         }
     }
-
-    public synchronized static void safeDirectContacts(String[] directContacts) {
+    public synchronized static void safeDirectContacts(String[] directContacts, Context context) {
         if (directContacts == null) {
-            safeStringAtDatafile(DATAFILE10, "");
+            safeStringAtDatafile(DATAFILE10, "", context);
         } else {
             String value = "-<>-";
             for (String string: directContacts) {
                 value = value + string + "-<>-";
             }
-            safeStringAtDatafile(DATAFILE10, value);
+            safeStringAtDatafile(DATAFILE10, value, context);
         }
     }
 
-    public synchronized static String[] getIndirectContacts() {
-        return getValuesAsArray(DATAFILE08);
+    public synchronized static String[] getIndirectContacts(Context context) {
+        return getValuesAsArray(DATAFILE08, context);
     }
 
-    public synchronized static String[] getdirectContacts() {
-        return getValuesAsArray(DATAFILE10);
+    public synchronized static String[] getdirectContacts(Context context) {
+        return getValuesAsArray(DATAFILE10, context);
     }
 
     /**
@@ -492,9 +502,9 @@ public class LocalSafer {
      *
      * @param notificationCount notificationCount as int
      */
-    public static void safeNotificationCounter(int notificationCount) {
+    public static void safeNotificationCounter(int notificationCount, Context context) {
         Log.d(TAG, "safeNotificationCounter was called with: " + notificationCount);
-        safeStringAtDatafile(DATAFILE11, String.valueOf(notificationCount));
+        safeStringAtDatafile(DATAFILE11, String.valueOf(notificationCount), context);
     }
 
     /**
@@ -502,10 +512,10 @@ public class LocalSafer {
      *
      * @return the NotificationCounter as int.
      */
-    public static int getNotificationCounter() {
+    public static int getNotificationCounter(Context context) {
         Log.d(TAG, "getNotificationCount()");
         try {
-            return Integer.valueOf(readDataFile(DATAFILE11));
+            return Integer.valueOf(readDataFile(DATAFILE11, context));
         } catch (Exception ex) { //datafile not found
             return 0;
         }
@@ -516,16 +526,16 @@ public class LocalSafer {
      *
      * @param logValue The new logValue as String
      */
-    public synchronized static void addLogValueToDebugLog(String logValue) {
+    public synchronized static void addLogValueToDebugLog(String logValue, Context context) {
         Log.d(TAG, "addLogValueToDebugLog() was called with LogValue: " + logValue);
         if (logValue == null) {
-            deleteOldValues(DATAFILE12);
+            deleteOldValues(DATAFILE12, context);
             DebugLog.renewTheLog();
         } else {
-            String alreadySavedlogValues = readDataFile(DATAFILE12);
+            String alreadySavedlogValues = readDataFile(DATAFILE12, context);
             String alllogValueToSafe = alreadySavedlogValues + "-<>-" + logValue + "----" + new Date().toString();
 
-            safeStringAtDatafile(DATAFILE12, alllogValueToSafe);
+            safeStringAtDatafile(DATAFILE12, alllogValueToSafe, context);
             DebugLog.renewTheLog();
         }
     }
@@ -533,9 +543,9 @@ public class LocalSafer {
     /**
      * This method clears the DebugLog-Datafile.
      */
-    public static void clearDebugLog() {
+    public static void clearDebugLog(Context context) {
         Log.d(TAG, "clearDebugLog() was called.");
-        safeStringAtDatafile(DATAFILE12, "");
+        safeStringAtDatafile(DATAFILE12, "", context);
         DebugLog.renewTheLog();
     }
 
@@ -546,54 +556,54 @@ public class LocalSafer {
      *
      * @return A list of Strings. If there are no saved logValues, the return-value is null.
      */
-    public static String[] getDebugValues() {
+    public static String[] getDebugValues(Context context) {
         Log.d(TAG, "getDebugValues was called.");
-        return getValuesAsArray(DATAFILE12);
+        return getValuesAsArray(DATAFILE12, context);
     }
 
-    public static void setIsAlarmRingLogged(boolean value) {
-        safeStringAtDatafile(DATAFILE13, String.valueOf(value));
+    public static void setIsAlarmRingLogged(boolean value, Context context) {
+        safeStringAtDatafile(DATAFILE13, String.valueOf(value), context);
     }
 
-    public static boolean isAlarmRingLogged() {
+    public static boolean isAlarmRingLogged(Context context) {
         try {
-            return Boolean.valueOf(readDataFile(DATAFILE13));
+            return Boolean.valueOf(readDataFile(DATAFILE13, context));
         } catch (Exception e) {
             return false;
         }
     }
 
-    public static void setIsAlarmSetLogged(boolean value) {
-        safeStringAtDatafile(DATAFILE14, String.valueOf(value));
+    public static void setIsAlarmSetLogged(boolean value, Context context) {
+        safeStringAtDatafile(DATAFILE14, String.valueOf(value), context);
     }
 
-    public static boolean isAlarmSetLogged() {
+    public static boolean isAlarmSetLogged(Context context) {
         try {
-            return Boolean.valueOf(readDataFile(DATAFILE14));
+            return Boolean.valueOf(readDataFile(DATAFILE14, context));
         } catch (Exception e) {
             return false;
         }
     }
 
-    public static void setIsKeyTransmitLogged(boolean value) {
-        safeStringAtDatafile(DATAFILE15, String.valueOf(value));
+    public static void setIsKeyTransmitLogged(boolean value, Context context) {
+        safeStringAtDatafile(DATAFILE15, String.valueOf(value), context);
     }
 
-    public static boolean isKeyTransmitLogged() {
+    public static boolean isKeyTransmitLogged(Context context) {
         try {
-            return Boolean.valueOf(readDataFile(DATAFILE15));
+            return Boolean.valueOf(readDataFile(DATAFILE15, context));
         } catch (Exception e) {
             return false;
         }
     }
 
-    public static void setIsKeySafeLogged(boolean value) {
-        safeStringAtDatafile(DATAFILE16, String.valueOf(value));
+    public static void setIsKeySafeLogged(boolean value, Context context) {
+        safeStringAtDatafile(DATAFILE16, String.valueOf(value), context);
     }
 
-    public static boolean isKeySafeLogged() {
+    public static boolean isKeySafeLogged(Context context) {
         try {
-            return Boolean.valueOf(readDataFile(DATAFILE16));
+            return Boolean.valueOf(readDataFile(DATAFILE16, context));
         } catch (Exception e) {
             return false;
         }
@@ -601,7 +611,6 @@ public class LocalSafer {
 
     /**
      * Safes the list containing all indirect contacts.
-     *
      * @param indirectContactArrayList list of indirect contacts
      */
 
@@ -690,9 +699,9 @@ public class LocalSafer {
      *
      * @param date
      */
-    public static void safeDateOfLastReportedInfection(String date) {
+    public static void safeDateOfLastReportedInfection(String date, Context context) {
         Log.d(TAG, "safeDateOfLastReportedInfection() was called with " + date);
-        safeStringAtDatafile(DATAFILE23, date);
+        safeStringAtDatafile(DATAFILE23, date, context);
     }
 
     /**
@@ -700,8 +709,30 @@ public class LocalSafer {
      *
      * @return
      */
-    public static String getDateOfLastReportedInfection() {
+    public static String getDateOfLastReportedInfection(Context context) {
         Log.d(TAG, "getDateOfLastReportedInfection() was called.");
-        return readDataFile(DATAFILE23);
+        return readDataFile(DATAFILE23, context);
+    }
+
+    /**
+    * method to set if the terms of use have been accepted
+     */
+    public static void setIsFirstAppStart(boolean value, Context context) {
+        safeStringAtDatafile(DATAFILE17, String.valueOf(value), context);
+    }
+
+    /**
+     * method to ask whether the terms of use have been accepted or not
+     * @param context the app
+     * @return true if the terms of use haven't been accepted, false if they have already been accepted
+     */
+    public static boolean isFirstAppStart(Context context) {
+        String dataFile = readDataFile(DATAFILE17, context);
+        if(dataFile.isEmpty()){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 }

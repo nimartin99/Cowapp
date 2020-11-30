@@ -108,7 +108,7 @@ public class DateHelper {
      * generates the text used by the date display
      */
     public static String generateStringForDateDisplay() {
-        String daysSinceText = MainActivity.dateDisplay.getResources().getString(R.string.daysSinceText, LocalSafer.getFirstStartDate(), DateHelper.getDateDiffSinceFirstUse());
+        String daysSinceText = MainActivity.dateDisplay.getResources().getString(R.string.daysSinceText, LocalSafer.getFirstStartDate(null), DateHelper.getDateDiffSinceFirstUse());
         return daysSinceText;
     }
 
@@ -132,7 +132,7 @@ public class DateHelper {
      */
     public static long getDateDiffSinceFirstUse() {
 
-        Date firstAppStartDate = convertStringToDate(LocalSafer.getFirstStartDate());
+        Date firstAppStartDate = convertStringToDate(LocalSafer.getFirstStartDate(null));
 
         Date currentDate = new Date();
         long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();

@@ -21,6 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,11 +55,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-25
+ * @version 2020-11-30
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
+
+    private static MainActivity mainActivity;
 
     // application context that allows stating android services from static methods
     private static Context context;
@@ -84,12 +87,12 @@ public class MainActivity extends AppCompatActivity {
     //To display the first use date and the elapsed time since the app is used.
     public static TextView dateDisplay;
 
-    //data protection has still to be accepted
-    private String prefDataProtection = "ausstehend";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mainActivity = this;
+
         //logo of the app in the action bar
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -122,11 +125,9 @@ public class MainActivity extends AppCompatActivity {
         showDateDisplay();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
-        if (firstAppStart()) {
+        if (LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString());
-            requestKey();
         } else {
             //Report infection button listener
             Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
@@ -151,8 +152,29 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(nextActivity);
                 }
             });
-        }
 
+            //info risk calculation button listener
+            ImageButton infoRiskCalcButton = (ImageButton) findViewById(R.id.infoRiskCalcButton);
+
+            infoRiskCalcButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to inform how the risk level is calculated
+                    Intent nextActivity = new Intent(MainActivity.this, RiskLevelInfoActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+            setAlarm();
+        }
+    }
+
+    public void firstinit() {
+        LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
+        requestKey();
+        setAlarm();
+    }
+
+    private void setAlarm() {
         boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), PendingIntent.FLAG_NO_CREATE) != null);
 
         if (alarmUp == false) {
@@ -168,8 +190,8 @@ public class MainActivity extends AppCompatActivity {
 
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (15 * 60 * 1000), myPendingIntent);
 
-            if (Constants.DEBUG_MODE && LocalSafer.isAlarmSetLogged()) {
-                LocalSafer.addLogValueToDebugLog(getString(R.string.alarm_set));
+            if (Constants.DEBUG_MODE && LocalSafer.isAlarmSetLogged(null)) {
+                LocalSafer.addLogValueToDebugLog(getString(R.string.alarm_set), null);
             }
         } else {
             Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
@@ -179,9 +201,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //show current risk level (updated once a day)
-        showTrafficLightStatus();
-        showRiskStatus();
+        if(LocalSafer.isFirstAppStart(null)){
+            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
+            startActivity(nextActivity);
+            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), null);
+            requestKey();
+        }
+        else{
+            //show current risk level (updated once a day)
+            showTrafficLightStatus();
+            showRiskStatus();
+        }
     }
 
     /**
@@ -216,12 +246,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
                 startActivity(nextActivityItem1);
                 return true;
-                //TODO settings menu - auch in menu_item.xml wieder einfügen wenn Verwendung
-            //case R.id.item2:
-                //Go to settings screen
-                //Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
-                //startActivity(nextActivityItem2);
-                //return true;
             case R.id.item3:
                 //Go to info screen
                 Intent nextActivity = new Intent(MainActivity.this, InfoMenuActivity.class);
@@ -256,28 +280,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * At first start of the app the user has to accept the data protection regulations before he can
-     * use the app
-     */
-    public boolean firstAppStart() {
-        SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
-        //generate and save the Date of the first app Start, maybe this code should be relocated.
-
-        if (preferences.getBoolean(prefDataProtection, true)) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(prefDataProtection, false);
-            editor.commit();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
      * Request a new key from the server.
      */
     public static boolean requestKey() {
-        if (LocalSafer.getRiskLevel() != 100) {
+        if (LocalSafer.getRiskLevel(null) != 100) {
             Call<String> call = retrofitService.requestKey();
             RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
                 @Override
@@ -292,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                         // set the key
                         Key.setKey(requestedKey);
                         // safe new key
-                        LocalSafer.safeOwnKey(Key.getKey());
+                        LocalSafer.safeOwnKey(Key.getKey(), null);
                         //Update the Transmission
                         BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
                     } else if (response.code() == 404) {
@@ -326,19 +332,19 @@ public class MainActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             public void run() {
                 // check if infected user has had contacts
-                if (LocalSafer.getKeyPairs() != null) {
+                if (LocalSafer.getKeyPairs(null) != null) {
                     // get all contact keys
                     HashMap<String, String> keyMap = new HashMap<>();
                     StringBuilder contactDate = new StringBuilder();
                     StringBuilder contactKey = new StringBuilder();
-                    for (int i = 0; i < LocalSafer.getKeyPairs().length; i++) {
+                    for (int i = 0; i < LocalSafer.getKeyPairs(null).length; i++) {
                         // don't append "|" on the fist circle
                         if (i == 0) {
-                            contactDate.append(LocalSafer.getKeyPairs()[i].split("----")[1]);
-                            contactKey.append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                            contactDate.append(LocalSafer.getKeyPairs(null)[i].split("----")[1]);
+                            contactKey.append(LocalSafer.getKeyPairs(null)[i].split("----")[0]);
                         } else {
-                            contactDate.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[1]);
-                            contactKey.append("|").append(LocalSafer.getKeyPairs()[i].split("----")[0]);
+                            contactDate.append("|").append(LocalSafer.getKeyPairs(null)[i].split("----")[1]);
+                            contactKey.append("|").append(LocalSafer.getKeyPairs(null)[i].split("----")[0]);
                         }
                     }
                     keyMap.put("contactType", contactType);
@@ -381,19 +387,19 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "Sending all own keys to the server, therefore the response may take some time...");
         Runnable runnable = new Runnable() {
             public void run() {
-                if (LocalSafer.getOwnKeys() != null) {
+                if (LocalSafer.getOwnKeys(null) != null) {
                     // get all own keys
                     HashMap<String, String> ownKeysMap = new HashMap<>();
                     StringBuilder contactDate = new StringBuilder();
                     StringBuilder contactKey = new StringBuilder();
-                    for (int i = 0; i < LocalSafer.getOwnKeys().length; i++) {
+                    for (int i = 0; i < LocalSafer.getOwnKeys(null).length; i++) {
                         // don't append "|" on the fist circle
                         if (i == 0) {
-                            contactDate.append(LocalSafer.getOwnKeys()[i].split("----")[1]);
-                            contactKey.append(LocalSafer.getOwnKeys()[i].split("----")[0]);
+                            contactDate.append(LocalSafer.getOwnKeys(null)[i].split("----")[1]);
+                            contactKey.append(LocalSafer.getOwnKeys(null)[i].split("----")[0]);
                         } else {
-                            contactDate.append("|").append(LocalSafer.getOwnKeys()[i].split("----")[1]);
-                            contactKey.append("|").append(LocalSafer.getOwnKeys()[i].split("----")[0]);
+                            contactDate.append("|").append(LocalSafer.getOwnKeys(null)[i].split("----")[1]);
+                            contactKey.append("|").append(LocalSafer.getOwnKeys(null)[i].split("----")[0]);
                         }
                     }
                     ownKeysMap.put("userDate", contactDate.toString());
@@ -505,7 +511,7 @@ public class MainActivity extends AppCompatActivity {
      * method called daily to show the right traffic light status (for current health risk)
      */
     public static void showTrafficLightStatus() {
-        int riskValue = LocalSafer.getRiskLevel();
+        int riskValue = LocalSafer.getRiskLevel(null);
         if (riskValue <= 33) {
             trafficLight.setImageResource(R.drawable.green_traffic_light);
         } else if (riskValue <= 70) {
@@ -519,7 +525,7 @@ public class MainActivity extends AppCompatActivity {
      * method called daily to show the right health risk status
      */
     public static void showRiskStatus() {
-        int riskValue = LocalSafer.getRiskLevel();
+        int riskValue = LocalSafer.getRiskLevel(null);
         if (riskValue <= 33) {
                 String risk = riskStatus.getResources().getString(R.string.risk_status_low)
                         + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
@@ -540,5 +546,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context getContext() {
         return context;
+    }
+
+    public static MainActivity getMainActivity() {
+        return mainActivity;
     }
 }

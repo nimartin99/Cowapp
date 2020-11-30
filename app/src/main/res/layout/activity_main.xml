@@ -85,4 +85,18 @@
         app:layout_constraintStart_toStartOf="@+id/trafficLightView"
         app:layout_constraintTop_toTopOf="@+id/trafficLightView" />
 
+    <ImageButton
+        android:id="@+id/infoRiskCalcButton"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="@dimen/main_riskCalcInfoButton_marginStart"
+        android:layout_marginBottom="@dimen/main_riskCalcInfoButton_marginBottom"
+        android:background="#142850"
+        android:backgroundTint="#00DAE1E7"
+        android:contentDescription="@string/infoRiskCalcButton_description"
+        android:tint="#142850"
+        app:layout_constraintBottom_toTopOf="@+id/InfektionMeldenButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_help" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -124,7 +124,7 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
      */
     public static void transmitAsBeacon() {
         if (Constants.SCAN_AND_TRANSMIT) {
-            String ownKey = LocalSafer.getOwnKey();
+            String ownKey = LocalSafer.getOwnKey(null);
             if (!ownKey.isEmpty()) {
                 Log.d(TAG, "Transmit as Exposure Notification Beacon with id1=" + ownKey);
                 Beacon beacon = new Beacon.Builder()
@@ -243,10 +243,10 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
                 if (beaconid1.substring(0, 8).equals(Constants.cowappBeaconIdentifier)) {
                     String context = "Beacon found: id1=" + beaconid1;
                     Log.d(TAG, context);
-                    LocalSafer.addReceivedKey(beaconid1);
+                    LocalSafer.addReceivedKey(beaconid1, null);
 
-                    if (Constants.DEBUG_MODE && LocalSafer.isKeyTransmitLogged()) {
-                        LocalSafer.addLogValueToDebugLog(getString(R.string.received_a_key) + beaconid1);
+                    if (Constants.DEBUG_MODE && LocalSafer.isKeyTransmitLogged(null)) {
+                        LocalSafer.addLogValueToDebugLog(getString(R.string.received_a_key) + beaconid1, null);
                     }
                     // Comment out to send Notification
                     // sendNotification(context);

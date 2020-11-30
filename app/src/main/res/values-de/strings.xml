@@ -9,6 +9,7 @@
     <string name="report_infection_button">Infektion melden</string>
     <string name="suspicion_button">Verdacht? - Was tun?</string>
     <string name="traffic_light_description">Anzeige, die das aktuelle Risikolevel durch eine Ampel veranschaulicht.</string>
+    <string name="infoRiskCalcButton_description">Anklicken, um auf die Informationsseite zur Risikoberechnung zu gelangen.</string>
     //Main risk status
     <string name="risk_status_default">Aktuelles Risiko</string>
     <string name="risk_status_low">Geringes Risiko</string>
@@ -22,12 +23,11 @@
     <string name="accept_button">Akzeptieren</string>
     <string name="decline_button">Ablehnen</string>
     <string name="head_data_protection">Nutzungsbedingungen</string>
-    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres
-        Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel und Standort
-        sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich
-        damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch
-        wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.Nur so ist die Funktion der
-        Corona-Warn-App gegeben.</string>
+    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel und Standort sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.Nur so ist die Funktion der Corona-Warn-App gegeben.</string>
+    <string name="decline_info_title">Zustimmung notwendig </string>
+    <string name="decline_info_message">Sie müssen die Nutzungsbedingungen akzeptieren, um die App nutzen zu können. </string>
+    <string name="decline_info_ok_button">Okay</string>
+    <string name="exit_app">Exit</string>
     //Info Menu and pages
     <string name="head_info_menu">Weitere Informationen</string>
     <string name="head_general_info">Allg. Informationen</string>

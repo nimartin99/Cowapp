@@ -76,7 +76,7 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //change risk level and update shown status
-                LocalSafer.safeRiskLevel(riskLevelTestValue);
+                LocalSafer.safeRiskLevel(riskLevelTestValue, null);
                 MainActivity.showRiskStatus();
                 MainActivity.showTrafficLightStatus();
             }
@@ -89,7 +89,7 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //reset risk level to 0
-                LocalSafer.safeRiskLevel(0);
+                LocalSafer.safeRiskLevel(0, null);
                 MainActivity.showRiskStatus();
                 MainActivity.showTrafficLightStatus();
             }
@@ -144,7 +144,7 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // log all own keys
-                Log.d(TAG, Arrays.toString(LocalSafer.getOwnKeys()));
+                Log.d(TAG, Arrays.toString(LocalSafer.getOwnKeys(null)));
             }
         });
 
@@ -156,7 +156,7 @@ public class TestMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // delete all own keys
                 Log.d(TAG, "own keys deleted");
-                LocalSafer.clearOwnKeyPairDataFile();
+                LocalSafer.clearOwnKeyPairDataFile(null);
             }
         });
 
