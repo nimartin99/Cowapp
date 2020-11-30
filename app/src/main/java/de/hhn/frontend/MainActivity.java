@@ -40,6 +40,7 @@ import de.hhn.frontend.provider.RetrofitService;
 import de.hhn.frontend.risklevel.DirectContact;
 import de.hhn.frontend.risklevel.IndirectContact;
 import de.hhn.frontend.risklevel.RiskLevel;
+import de.hhn.frontend.utils.ResponseState;
 import de.hhn.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
