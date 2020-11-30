@@ -87,8 +87,9 @@ public class MainActivity extends AppCompatActivity {
     //To display the first use date and the elapsed time since the app is used.
     public static TextView dateDisplay;
 
+    //TODO
     //data protection has still to be accepted
-    private String prefDataProtection = "ausstehend";
+    public String prefDataProtection = "required";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +129,9 @@ public class MainActivity extends AppCompatActivity {
         showDateDisplay();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
-        if (firstAppStart()) {
+        //TODO
+        //if (firstAppStart()) {
+        if (LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
             LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), null);
@@ -174,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void firstinit() {
-        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+        LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
         requestKey();
         setAlarm();
     }
@@ -206,9 +209,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        //show current risk level (updated once a day)
-        showTrafficLightStatus();
-        showRiskStatus();
+        //TODO
+        //if (firstAppStart()) {
+        if(LocalSafer.isFirstAppStart(null)){
+            Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
+            startActivity(nextActivity);
+            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), null);
+            requestKey();
+        }
+        else{
+            //show current risk level (updated once a day)
+            showTrafficLightStatus();
+            showRiskStatus();
+        }
     }
 
     /**
@@ -243,12 +256,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
                 startActivity(nextActivityItem1);
                 return true;
-                //TODO settings menu - auch in menu_item.xml wieder einfügen wenn Verwendung
-            //case R.id.item2:
-                //Go to settings screen
-                //Intent nextActivityItem2 = new Intent(MainActivity.this, SettingsActivity.class);
-                //startActivity(nextActivityItem2);
-                //return true;
             case R.id.item3:
                 //Go to info screen
                 Intent nextActivity = new Intent(MainActivity.this, InfoMenuActivity.class);
@@ -286,18 +293,20 @@ public class MainActivity extends AppCompatActivity {
      * At first start of the app the user has to accept the data protection regulations before he can
      * use the app
      */
+    //TODO
     public boolean firstAppStart() {
         SharedPreferences preferences = getSharedPreferences(prefDataProtection, MODE_PRIVATE);
-        //generate and save the Date of the first app Start, maybe this code should be relocated.
 
         if (preferences.getBoolean(prefDataProtection, true)) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putBoolean(prefDataProtection, false);
-            editor.commit();
+            //TODO war davor commit
+            editor.apply();
             return true;
         } else {
             return false;
         }
+        //LokalSafer.isFirstAppStart();
     }
 
     /**

@@ -717,15 +717,23 @@ public class LocalSafer {
         return readDataFile(DATAFILE23, context);
     }
 
-    public static void setIsfirstAppStart(boolean value, Context context) {
+    /**
+    * method to set if the terms of use have been accepted
+     */
+    public static void setIsFirstAppStart(boolean value, Context context) {
         safeStringAtDatafile(DATAFILE17, String.valueOf(value), context);
     }
 
+    /**
+     *
+     * @param context
+     * @return
+     */
     public static boolean isFirstAppStart(Context context) {
         try {
             return Boolean.valueOf(readDataFile(DATAFILE17, context));
         } catch (Exception e) {
-            return false;
+            return true;
         }
     }
 }

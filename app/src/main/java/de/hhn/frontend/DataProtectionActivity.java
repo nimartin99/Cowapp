@@ -36,6 +36,7 @@ public class DataProtectionActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
     private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +47,14 @@ public class DataProtectionActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Start the scanning on the first opening of the app
+                //terms of use have been accepted - set boolean of first app start to false
+                LocalSafer.setIsFirstAppStart(false, null);
+                //main.prefDataProtection = "false";
+                //Start app functionality
                 BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
                 application.changeMonitoringState(true);
-                //Go to main screen
                 MainActivity.getMainActivity().firstinit();
+                //Go to main screen
                 Intent nextActivity = new Intent(DataProtectionActivity.this,MainActivity.class);
                 startActivity(nextActivity);
             }
