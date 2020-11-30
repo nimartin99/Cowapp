@@ -699,7 +699,7 @@ public class LocalSafer {
     public static boolean isFirstAppStart(Context context) {
         String value = readDataFile(DATAFILE17, context);
         if (value.isEmpty()) {
-            return false;
+            return true;
         }
         return Boolean.valueOf(value);
     }
