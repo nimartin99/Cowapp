@@ -74,7 +74,7 @@
     <string name="debug_settings_alarm">when the alarm rings</string>
     <string name="debug_settings_alarmset">when the alarm is set</string>
     <string name="debug_settings_keytransmit">when a key is transmitted</string>
-    <string name="debug_settings_keysafe">when a key is safed</string>
+    <string name="debug_settings_keysafe">when a key is saved</string>
     <string name="key_was_saved">Key was saved:</string>
     <string name="received_a_key">Received a Key :</string>
     <string name="alarm_ringed">Alarm ring.</string>
