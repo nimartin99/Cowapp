@@ -29,6 +29,9 @@ public class Alarm {
         //update the information about the date of the first usage and the days since the app is used
         MainActivity.showDateDisplay();
 
+        //check if the infection is older than 14 days and reset the infection status if that is the case
+        RiskLevel.checkIfInfectionHasExpired();
+
         //request contacts from the server and calculates the risk level if there is no current infection
 
         if (LocalSafer.getRiskLevel(null) != 100) {
