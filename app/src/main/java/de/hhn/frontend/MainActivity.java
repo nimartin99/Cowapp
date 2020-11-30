@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ClipData;
 import android.content.Context;
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
@@ -37,8 +36,9 @@ import de.hhn.frontend.provider.LocalSafer;
 import de.hhn.frontend.provider.NotificationService;
 import de.hhn.frontend.provider.RequestedObject;
 import de.hhn.frontend.provider.RetrofitService;
-import de.hhn.frontend.risklevel.RiskLevel;
-import de.hhn.frontend.risklevel.TypeOfExposureEnum;
+import de.hhn.frontend.risklevel.DirectContact;
+import de.hhn.frontend.risklevel.IndirectContact;
+import de.hhn.frontend.risklevel.NewRiskLevel;
 import de.hhn.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -414,19 +414,18 @@ public class MainActivity extends AppCompatActivity {
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.DIRECT_CONTACT), true);
+                                    NewRiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
                                 } else if (infection.getStatus().equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.INDIRECT_CONTACT), true);
+                                    NewRiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
                                 } else {
                                     Log.w(TAG, "onResponse: NO DEFINED INFECTION_STATUS");
                                 }
                             } else if (response.code() == 400) {
                                 //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                RiskLevel.updateRiskLevel(RiskLevel.calculateRiskLevel(TypeOfExposureEnum.NO_CONTACT), true);
                                 // user has had no contact
                                 Log.d(TAG, "User has had no contact with an infected person");
                             } else if (response.code() == 404) {

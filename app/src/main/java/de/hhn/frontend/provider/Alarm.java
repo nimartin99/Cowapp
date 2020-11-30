@@ -4,7 +4,7 @@ import de.hhn.frontend.Constants;
 import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.R;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
-import de.hhn.frontend.risklevel.RiskLevel;
+import de.hhn.frontend.risklevel.NewRiskLevel;
 
 /**
  * This class has the method which is called once a day.
@@ -27,12 +27,10 @@ public class Alarm {
         //update the information about the date of the first usage and the days since the app is used
         MainActivity.showDateDisplay();
 
-        // check if user has had direct or indirect contact and calculate and update the riskLevel
-        MainActivity.requestInfectionStatus();
-
-        //update current risk status (traffic light and risk status title) on main screen
-        MainActivity.showTrafficLightStatus();
-        MainActivity.showRiskStatus();
+        if (LocalSafer.getRiskLevel() != 100) {
+            MainActivity.requestInfectionStatus();
+            NewRiskLevel.calculateRiskLevel();
+        }
 
         // request a new key
         MainActivity.requestKey();

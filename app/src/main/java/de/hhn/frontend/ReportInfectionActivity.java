@@ -8,8 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import de.hhn.frontend.provider.LocalSafer;
-import de.hhn.frontend.risklevel.RiskLevel;
+import de.hhn.frontend.risklevel.NewRiskLevel;
 
 /**
  * Report infection screen for CoWApp
@@ -40,7 +39,7 @@ public class ReportInfectionActivity extends AppCompatActivity {
                 // send infected key to the server
                 MainActivity.reportInfection("DIRECT");
                 //set the risklevel corresponding to the infection;
-                RiskLevel.updateRiskLevel(100, false);
+                NewRiskLevel.setRiskLevelToCurrentInfection();
 
                 //Go to screen to thank the user and inform about what to do now
                 Intent nextActivity = new Intent(ReportInfectionActivity.this, ThankYouActivity.class);
