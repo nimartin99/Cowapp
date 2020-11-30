@@ -38,7 +38,7 @@ import de.hhn.frontend.provider.RequestedObject;
 import de.hhn.frontend.provider.RetrofitService;
 import de.hhn.frontend.risklevel.DirectContact;
 import de.hhn.frontend.risklevel.IndirectContact;
-import de.hhn.frontend.risklevel.NewRiskLevel;
+import de.hhn.frontend.risklevel.RiskLevel;
 import de.hhn.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -414,13 +414,13 @@ public class MainActivity extends AppCompatActivity {
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    NewRiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
+                                    RiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
                                 } else if (infection.getStatus().equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    NewRiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
+                                    RiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
                                 } else {
                                     Log.w(TAG, "onResponse: NO DEFINED INFECTION_STATUS");
                                 }
