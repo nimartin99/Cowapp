@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
 
+    private static MainActivity mainActivity;
+
     // application context that allows stating android services from static methods
     private static Context context;
 
@@ -91,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mainActivity = this;
+
         //logo of the app in the action bar
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
@@ -126,8 +131,6 @@ public class MainActivity extends AppCompatActivity {
         if (firstAppStart()) {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-            LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
-            requestKey();
         } else {
             //Report infection button listener
             Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
@@ -164,8 +167,17 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(nextActivity);
                 }
             });
+            setAlarm();
         }
+    }
 
+    public void firstinit() {
+        LocalSafer.safeFirstStartDate(dateHelper.getCurrentDateString());
+        requestKey();
+        setAlarm();
+    }
+
+    private void setAlarm() {
         boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), PendingIntent.FLAG_NO_CREATE) != null);
 
         if (alarmUp == false) {
@@ -554,5 +566,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context getContext() {
         return context;
+    }
+
+    public static MainActivity getMainActivity() {
+        return mainActivity;
     }
 }

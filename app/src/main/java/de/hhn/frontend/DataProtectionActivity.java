@@ -50,6 +50,7 @@ public class DataProtectionActivity extends AppCompatActivity {
                 BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
                 application.changeMonitoringState(true);
                 //Go to main screen
+                MainActivity.getMainActivity().firstinit();
                 Intent nextActivity = new Intent(DataProtectionActivity.this,MainActivity.class);
                 startActivity(nextActivity);
             }
