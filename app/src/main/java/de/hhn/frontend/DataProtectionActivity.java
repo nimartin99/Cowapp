@@ -13,10 +13,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.altbeacon.beacon.BeaconManager;
 
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
+import de.hhn.frontend.provider.LocalSafer;
 
 /**
  * Data protection start screen activity for CoWApp
@@ -56,8 +58,8 @@ public class DataProtectionActivity extends AppCompatActivity {
         declineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //App not usable
-                finish();
+                //Data protection has been declined - info that it has to be accepted to use the app
+                deniedDataProtectionNotification();
             }
         });
 
@@ -225,6 +227,39 @@ public class DataProtectionActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    //TODO noch schreiben
+    public void deniedDataProtectionNotification() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        builder.setTitle(getString(R.string.you_are_clearing));
+        builder.setMessage(getString(R.string.are_you_sure_to_clear));
+        builder.setPositiveButton(getString(R.string.confirm),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LocalSafer.clearDebugLog();
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                getString(R.string.debug_log_was_cleared),
+                                Toast.LENGTH_SHORT);
+
+                        toast.show();
+                    }
+                });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        getString(R.string.action_canceled),
+                        Toast.LENGTH_SHORT);
+
+                toast.show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

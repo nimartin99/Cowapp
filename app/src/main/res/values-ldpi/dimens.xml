@@ -54,6 +54,8 @@
     <dimen name="main_riskView_marginTop">100dp</dimen>
     <dimen name="main_riskView_marginEnd">150dp</dimen>
     <dimen name="main_riskView_textSize">20sp</dimen>
+    <dimen name="main_riskCalcInfoButton_marginStart">40dp</dimen>
+    <dimen name="main_riskCalcInfoButton_marginBottom">35dp</dimen>
     //push notification activity
     <dimen name="image_view_marginStart_and_End">60dp</dimen>
     <dimen name="image_view_marginTop">5dp</dimen>

@@ -8,6 +8,7 @@
     <string name="report_infection_button">Report Infection</string>
     <string name="suspicion_button">Suspicion?</string>
     <string name="traffic_light_description">View to show the current risk status via traffic light status.</string>
+    <string name="infoRiskCalcButton_description">Click to show the information page about the risk level calculation.</string>
     //Main risk status
     <string name="risk_status_default">current risk</string>
     <string name="risk_status_low">Low Risk</string>

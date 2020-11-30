@@ -8,6 +8,12 @@ import android.os.Debug;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * Debug menu for the app developers only - for testing
+ *
+ * @author Mergim Miftari
+ * @version 2020-11-25
+ */
 public class DebugActivity extends AppCompatActivity {
 
     private Button testActions;

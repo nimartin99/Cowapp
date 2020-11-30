@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,7 +55,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-25
+ * @version 2020-11-30
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
@@ -148,6 +149,18 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     //Go to screen to inform what to do with infection suspicion
                     Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //info risk calculation button listener
+            ImageButton infoRiskCalcButton = (ImageButton) findViewById(R.id.infoRiskCalcButton);
+
+            infoRiskCalcButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to inform how the risk level is calculated
+                    Intent nextActivity = new Intent(MainActivity.this, RiskLevelInfoActivity.class);
                     startActivity(nextActivity);
                 }
             });
