@@ -215,7 +215,7 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Date outDatedInfectionDate = new GregorianCalendar(2019, Calendar.JULY, 2).getTime();
-                LocalSafer.safeDateOfLastReportedInfection(DateHelper.convertDateToString(outDatedInfectionDate));
+                LocalSafer.safeDateOfLastReportedInfection(DateHelper.convertDateToString(outDatedInfectionDate), null);
                 Log.d("Jonas", "Date of Infection was set to outdated");
             }
         });
