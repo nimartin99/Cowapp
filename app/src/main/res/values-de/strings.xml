@@ -9,7 +9,6 @@
     <string name="report_infection_button">Infektion melden</string>
     <string name="suspicion_button">Verdacht? - Was tun?</string>
     <string name="traffic_light_description">Anzeige, die das aktuelle Risikolevel durch eine Ampel veranschaulicht.</string>
-    <string name="daysSinceText">Sie helfen seit ___ Tagen, Corona einzudämmen.</string>
     //Main risk status
     <string name="risk_status_default">Aktuelles Risiko</string>
     <string name="risk_status_low">Geringes Risiko</string>
@@ -17,6 +16,8 @@
     <string name="risk_status_high">Hohes Risiko</string>
     <string name="risk_level">Risikolevel: %1$d von 100</string>
     <string name="current_infection">Bestehende Infektion</string>
+    //Date and days since use
+    <string name="daysSinceText">Seit dem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
     //Data Protection
     <string name="accept_button">Akzeptieren</string>
     <string name="decline_button">Ablehnen</string>
@@ -25,7 +26,7 @@
         Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel und Standort
         sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich
         damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch
-        wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.\nNur so ist die Funktion der
+        wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.Nur so ist die Funktion der
         Corona-Warn-App gegeben.</string>
     //Info Menu and pages
     <string name="head_info_menu">Weitere Informationen</string>
@@ -77,4 +78,24 @@
         und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Schutz aktiv</string>
+    <string name="actions">Test-Aktionen</string>
+    <string name="logs">Debug-Log-Einstellungen</string>
+    <string name="debuglog">Debug-Log</string>
+    <string name="debug_settings_headline">Was möchten Sie loggen?</string>
+    <string name="debug_settings_delete">DEBUG LOG LEEREN</string>
+    <string name="debug_settings_update">EINSTELLUNGEN AKTUALISIEREN</string>
+    <string name="debug_settings_alarm">wenn der Alarm anschlägt</string>
+    <string name="debug_settings_alarmset">wenn der Alarm gestellt wird</string>
+    <string name="debug_settings_keytransmit">wenn ein Key übertragen wird</string>
+    <string name="debug_settings_keysafe">wenn ein Key gespeichert wird</string>
+    <string name="key_was_saved">Key wurde gespeichert:</string>
+    <string name="received_a_key">Key wurde empfangen :</string>
+    <string name="alarm_ringed">Alarm hat geringt.</string>
+    <string name="alarm_set">Alarm wurd eingestellt.</string>
+    <string name="settings_were_saved">Einstellungen gespeichert.</string>
+    <string name="you_are_clearing">Du bist dabei den DebugLog zu leeren.</string>
+    <string name="are_you_sure_to_clear">Bist du sicher, dass du den DebugLog leeren willst?</string>
+    <string name="confirm">BESTÄTIGEN</string>
+    <string name="debug_log_was_cleared">Der DebugLog wurde geleert.</string>
+    <string name="action_canceled">Aktion abgebrochen</string>
 </resources>

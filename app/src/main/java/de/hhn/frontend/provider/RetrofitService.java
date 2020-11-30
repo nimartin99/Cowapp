@@ -31,14 +31,6 @@ public interface RetrofitService {
     Call<Void> reportInfection(@Body HashMap<String, String> keysMap);
 
     /**
-     * POST-request to inform the server about the newest key to allow unique keys for all users.
-     *
-     * @param sendKeyMap the generated user key
-     */
-    @POST("/send_key")
-    Call<Void> sendKey(@Body HashMap<String, String> sendKeyMap);
-
-    /**
      * POST-request to send own keys to the server which checks the infections status.
      *
      * @param ownUserKeysMap own user keys which are sent to the server

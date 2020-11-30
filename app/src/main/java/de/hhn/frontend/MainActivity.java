@@ -7,42 +7,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ClipData;
 import android.content.Context;
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.altbeacon.beacon.BeaconManager;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.date.dateHelper;
@@ -69,10 +54,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-22
+ * @version 2020-11-25
  */
 public class MainActivity extends AppCompatActivity {
-
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "MainActivity";
 
@@ -98,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
     private static ImageView trafficLight;
     private static TextView riskStatus;
     //To display the first use date and the elapsed time since the app is used.
-    private static TextView dateDisplay;
+    public static TextView dateDisplay;
 
     //data protection has still to be accepted
-    String prefDataProtection = "ausstehend";
+    private String prefDataProtection = "ausstehend";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
         // init retrofit
         retrofit = new Retrofit.Builder()
-                .baseUrl(PHONE_URL)
+                .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         retrofitService = retrofit.create(RetrofitService.class);
@@ -176,13 +160,17 @@ public class MainActivity extends AppCompatActivity {
             //Register AlarmManager Broadcast receive.
             firingCal = Calendar.getInstance();
             firingCal.set(Calendar.HOUR, 0); // alarm hour
-            firingCal.set(Calendar.MINUTE, 5); // alarm minute
+            firingCal.set(Calendar.MINUTE, 15); // alarm minute
             firingCal.set(Calendar.SECOND, 0); // and alarm second
             long intendedTime = firingCal.getTimeInMillis();
 
             registerMyAlarmBroadcast();
 
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (5 * 60 * 1000), myPendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, intendedTime, (15 * 60 * 1000), myPendingIntent);
+
+            if (Constants.DEBUG_MODE && LocalSafer.isAlarmSetLogged()) {
+                LocalSafer.addLogValueToDebugLog(getString(R.string.alarm_set));
+            }
         } else {
             Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
         }
@@ -206,6 +194,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_items, menu);
+
+        if (!Constants.DEBUG_MODE) {
+            MenuItem it = menu.getItem(2);
+            menu.removeItem(it.getItemId()); //its the ID of the Test-menu for some reason
+        }
         return true;
     }
 
@@ -236,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.item4:
                 //Go to test menu screen
-                Intent testActivity = new Intent(MainActivity.this, TestMenuActivity.class);
+                Intent testActivity = new Intent(MainActivity.this, DebugActivity.class);
                 startActivity(testActivity);
                 return true;
             default:
@@ -284,38 +277,45 @@ public class MainActivity extends AppCompatActivity {
      * Request a new key from the server.
      */
     public static boolean requestKey() {
-        Call<String> call = retrofitService.requestKey();
-        RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.code() == 200) {
-                    String requestedKey = response.body();
-                    // set the key
-                    Key.setKey(Key.increaseKey(requestedKey));
-                    // send new key to the db
-                    sendKey();
-                    // key is successfully requested
-                    Key.setKeyRequested(true);
-                    //Update the Transmission
-                    BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
-                } else if (response.code() == 404) {
-                    Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
+        if (LocalSafer.getRiskLevel() != 100) {
+            Call<String> call = retrofitService.requestKey();
+            RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    if (response.code() == 200) {
+                        // log newest key
+                        Log.d(TAG, "Key: " + response.body());
+                        // key is successfully requested
+                        Key.setKeyRequested(true);
+                        // reference requested key
+                        String requestedKey = response.body();
+                        // set the key
+                        Key.setKey(requestedKey);
+                        // safe new key
+                        LocalSafer.safeOwnKey(Key.getKey());
+                        //Update the Transmission
+                        BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
+                    } else if (response.code() == 404) {
+                        Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
+                        // key is not successfully requested
+                        Key.setKeyRequested(false);
+                        BeaconBackgroundService.stopTransmittingAsBeacon();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                    serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                     // key is not successfully requested
                     Key.setKeyRequested(false);
-                    BeaconBackgroundService.stopTransmittingAsBeacon();
                 }
-            }
+            });
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
-                // key is not successfully requested
-                Key.setKeyRequested(false);
-            }
-        });
-
-        return Key.isKeyRequested();
+            return Key.isKeyRequested();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -449,33 +449,6 @@ public class MainActivity extends AppCompatActivity {
         thread.start();
     }
 
-    // Send the key to inform the database about the new key
-    private static void sendKey() {
-        // prepare users key for report
-        HashMap<String, String> sendKeyMap = new HashMap<>();
-        sendKeyMap.put("key", Key.getKey());
-
-        // send values to the server
-        Call<Void> call = retrofitService.sendKey(sendKeyMap);
-        RetryCallUtil.enqueueWithRetry(call, new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.code() == 200) {
-                    // log newest key
-                    Log.d(TAG, "Key: " + Key.getKey());
-                    // safe new key
-                    LocalSafer.safeOwnKey(Key.getKey());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                serverResponseNotification("NO_CONNECTION_NOTIFICATION");
-            }
-        });
-    }
-
     // standard notification if there is no connection to the server
     private static void serverResponseNotification(String notificationType) {
         Intent responsePushNotification = new Intent(context, NotificationService.class);
@@ -502,8 +475,6 @@ public class MainActivity extends AppCompatActivity {
         }
         context.startService(responsePushNotification);
     }
-
-
 
     /**
      * create channel for the notification to be delivered as heads-up notification
