@@ -48,6 +48,7 @@ public class LocalSafer {
     private static final String DATAFILE14 = "cowappisalarmsetlogged.txt";
     private static final String DATAFILE15 = "cowappniskeytransmitlogged.txt";
     private static final String DATAFILE16 = "cowappiskeysafelogged.txt";
+    private static final String DATAFILE17 = "cowappisfirstappstart";
     private static final String DATAFILE21 = "cowappindirectcontacts.txt";
     private static final String DATAFILE22 = "cowappdirectcontacts.txt";
     private static final String DATAFILE23 = "cowappdateolri";
@@ -714,5 +715,17 @@ public class LocalSafer {
     public static String getDateOfLastReportedInfection(Context context) {
         Log.d(TAG, "getDateOfLastReportedInfection() was called.");
         return readDataFile(DATAFILE23, context);
+    }
+
+    public static void setIsfirstAppStart(boolean value, Context context) {
+        safeStringAtDatafile(DATAFILE17, String.valueOf(value), context);
+    }
+
+    public static boolean isFirstAppStart(Context context) {
+        try {
+            return Boolean.valueOf(readDataFile(DATAFILE17, context));
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
