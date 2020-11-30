@@ -40,7 +40,7 @@ public class DebugLog extends AppCompatActivity {
         template = findViewById(R.id.templatenotification02);
         debugValueLayout.removeView(template);
 
-        String [] values = LocalSafer.getDebugValues();
+        String [] values = LocalSafer.getDebugValues(null);
 
         valueViews = new ArrayList<TextView>();
 
@@ -59,7 +59,7 @@ public class DebugLog extends AppCompatActivity {
      * Updates the Scrollbar with the notifications.
      */
     private void updateScrollbar() {
-        String [] notifications = LocalSafer.getDebugValues();
+        String [] notifications = LocalSafer.getDebugValues(null);
 
         if (valueViews != null) {
             for (TextView textView1 : valueViews) {

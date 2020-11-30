@@ -21,7 +21,7 @@ import de.hhn.frontend.provider.LocalSafer;
  * @author Tabea Leibl
  * @version 2020-11-23
  */
-public class dateHelper {
+public class DateHelper {
 
     /**
      * @param date1 earlier in time date
@@ -65,7 +65,7 @@ public class dateHelper {
 
         Date currentDate = Calendar.getInstance().getTime();
 
-        DateFormat format = dateHelper.getDateFormat();
+        DateFormat format = DateHelper.getDateFormat();
 
         return format.format(currentDate);
     }
@@ -103,8 +103,20 @@ public class dateHelper {
      * generates the text used by the date display
      */
     public static String generateStringForDateDisplay() {
-        String daysSinceText = MainActivity.dateDisplay.getResources().getString(R.string.daysSinceText, LocalSafer.getFirstStartDate(), dateHelper.getDateDiffSinceFirstUse());
+        String daysSinceText = MainActivity.dateDisplay.getResources().getString(R.string.daysSinceText, LocalSafer.getFirstStartDate(null), DateHelper.getDateDiffSinceFirstUse());
         return daysSinceText;
+    }
+
+    public static boolean checkIfDateIsOld(Date dateToCheck) {
+        boolean isOld = false;
+
+        if (calculateTimeIntervalBetweenTwoDays(dateToCheck, getCurrentDate()) >= 14) {
+            isOld = true;
+
+        }
+
+
+        return isOld;
     }
 
 
@@ -112,11 +124,10 @@ public class dateHelper {
      * Methode calculates how much time passed since the first start of the app
      *
      * @return difference in days
-     * @throws ParseException Signals that an error has been reached unexpectedly while parsing.
      */
     public static long getDateDiffSinceFirstUse() {
 
-        Date firstAppStartDate = convertStringToDate(LocalSafer.getFirstStartDate());
+        Date firstAppStartDate = convertStringToDate(LocalSafer.getFirstStartDate(null));
 
         Date currentDate = new Date();
         long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();

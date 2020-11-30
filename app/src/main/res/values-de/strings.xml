@@ -77,7 +77,7 @@
     <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt
         und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
     //BeaconBackgroundService (foreground) Notification
-    <string name="foreground_Notificaiton">Kontaktverfolgung aktiv</string>
+    <string name="foreground_Notificaiton">Schutz aktiv</string>
     <string name="actions">Test-Aktionen</string>
     <string name="logs">Debug-Log-Einstellungen</string>
     <string name="debuglog">Debug-Log</string>

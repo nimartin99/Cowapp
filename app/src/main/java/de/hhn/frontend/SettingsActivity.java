@@ -58,17 +58,17 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        keyTransmit.setChecked(LocalSafer.isKeyTransmitLogged());
-        keySafe.setChecked(LocalSafer.isKeySafeLogged());
-        alarmRing.setChecked(LocalSafer.isAlarmRingLogged());
-        alarmSet.setChecked(LocalSafer.isAlarmSetLogged());
+        keyTransmit.setChecked(LocalSafer.isKeyTransmitLogged(null));
+        keySafe.setChecked(LocalSafer.isKeySafeLogged(null));
+        alarmRing.setChecked(LocalSafer.isAlarmRingLogged(null));
+        alarmSet.setChecked(LocalSafer.isAlarmSetLogged(null));
     }
 
     public void doTheUpdate() {
-            LocalSafer.setIsAlarmRingLogged(alarmRing.isChecked());
-            LocalSafer.setIsAlarmSetLogged(alarmSet.isChecked());
-            LocalSafer.setIsKeySafeLogged(keySafe.isChecked());
-            LocalSafer.setIsKeyTransmitLogged(keyTransmit.isChecked());
+            LocalSafer.setIsAlarmRingLogged(alarmRing.isChecked(), null);
+            LocalSafer.setIsAlarmSetLogged(alarmSet.isChecked(), null);
+            LocalSafer.setIsKeySafeLogged(keySafe.isChecked(), null);
+            LocalSafer.setIsKeyTransmitLogged(keyTransmit.isChecked(), null);
             Toast toast = Toast.makeText(getApplicationContext(),
                 getString(R.string.settings_were_saved),
                 Toast.LENGTH_SHORT);
@@ -84,7 +84,7 @@ public class SettingsActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        LocalSafer.clearDebugLog();
+                        LocalSafer.clearDebugLog(null);
                         Toast toast = Toast.makeText(getApplicationContext(),
                                 getString(R.string.debug_log_was_cleared),
                                 Toast.LENGTH_SHORT);
