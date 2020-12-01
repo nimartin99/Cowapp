@@ -646,7 +646,6 @@ public class MainActivity extends AppCompatActivity {
      * If the user has a current infection the buttons change to a button for further information and one to report
      * yourself negative.
      */
-    //TODO
     public void initButtons(){
         int riskValue = LocalSafer.getRiskLevel(null);
         //set buttons
