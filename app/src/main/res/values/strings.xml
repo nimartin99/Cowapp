@@ -100,4 +100,5 @@
     <string name="confirm">confirm</string>
     <string name="debug_log_was_cleared">The Debug-Log was cleared.</string>
     <string name="action_canceled">Action canceled</string>
+    <string name="request_permission">Request permissions again</string>
 </resources>

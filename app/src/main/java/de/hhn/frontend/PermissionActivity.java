@@ -1,6 +1,7 @@
 package de.hhn.frontend;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -11,10 +12,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import org.altbeacon.beacon.BeaconManager;
 
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
+
+import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 
 public class PermissionActivity extends AppCompatActivity {
 
@@ -29,6 +34,19 @@ public class PermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
 
+        Button requestPermissionButton = findViewById(R.id.requestPermissionButton);
+        requestPermissionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Check bluetooth and location turned on
+                if (Constants.SCAN_AND_TRANSMIT) {
+                    verifyBluetooth();
+                }
+                //Request needed permissions
+                requestPermissions();
+            }
+        });
+
         //Check bluetooth and location turned on
         if (Constants.SCAN_AND_TRANSMIT) {
             verifyBluetooth();
@@ -36,6 +54,7 @@ public class PermissionActivity extends AppCompatActivity {
         //Request needed permissions
         requestPermissions();
     }
+
 
     private void permissionAccepted () {
         //Start the scanning on the first opening of the app
@@ -70,6 +89,8 @@ public class PermissionActivity extends AppCompatActivity {
 
                             });
                             builder.show();
+                            startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+                            finish();
                         } else {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                             builder.setTitle("Functionality limited");
@@ -84,6 +105,9 @@ public class PermissionActivity extends AppCompatActivity {
                             });
                             builder.show();
                         }
+                    } else {
+                        startActivity(new Intent(PermissionActivity.this, MainActivity.class));
+                        finish();
                     }
                 }
             } else {
@@ -163,6 +187,7 @@ public class PermissionActivity extends AppCompatActivity {
             case PERMISSION_REQUEST_FINE_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "fine location permission granted");
+                    permissionAccepted();
                     startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                     finish();
                 } else {
@@ -184,6 +209,7 @@ public class PermissionActivity extends AppCompatActivity {
             case PERMISSION_REQUEST_BACKGROUND_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "background location permission granted");
+                    permissionAccepted();
                     startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                     finish();
                 } else {

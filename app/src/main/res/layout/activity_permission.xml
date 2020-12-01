@@ -6,14 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".PermissionActivity">
 
+    <Button
+        android:id="@+id/requestPermissionButton"
+        android:layout_width="250dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="96dp"
+        android:backgroundTint="#27496D"
+        android:text="@string/request_permission"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/data_protection_buttons_and_text_textSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="250dp"
         android:layout_height="250dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/requestPermissionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25"
         app:srcCompat="@drawable/ic_push_activity_cow" />
 </androidx.constraintlayout.widget.ConstraintLayout>

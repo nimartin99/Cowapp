@@ -56,6 +56,7 @@ public class DataProtectionActivity extends AppCompatActivity {
                 //Go to main screen
                 Intent nextActivity = new Intent(DataProtectionActivity.this, PermissionActivity.class);
                 startActivity(nextActivity);
+                finish();
             }
         });
         //Decline-Button Listener
