@@ -164,7 +164,7 @@ public class RiskLevel {
      * sets the current risk level to a value that represents a current infection and disables BLE key exchange
      */
 
-    public static void setRiskLevelToCurrentInfection() {
+    public static void reportInfection() {
         //Set risk level corresponding to infection and safe date of the infection report
         LocalSafer.safeRiskLevel(100, null);
         LocalSafer.safeDateOfLastReportedInfection(DateHelper.getCurrentDateString(), null);
@@ -175,9 +175,17 @@ public class RiskLevel {
         application.changeMonitoringState(false);
         BeaconBackgroundService.stopTransmittingAsBeacon();
 
-        Log.d(TAG, "Due to a current infection the Key Exchange was stopped");
+        Log.d(TAG, "Due to a current infection the Key Exchange was stopped.");
 
     }
+
+    public static void reportNegativeInfectionTestResult() {
+
+        Log.d(TAG, "Negative Infection Test was reported.");
+
+
+    }
+
 
     /**
      * check if the current infection status is still up to date.

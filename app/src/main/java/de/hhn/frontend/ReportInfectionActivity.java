@@ -39,7 +39,7 @@ public class ReportInfectionActivity extends AppCompatActivity {
                 // send infected key to the server
                 MainActivity.reportInfection("DIRECT");
                 //set the risklevel corresponding to the infection;
-                RiskLevel.setRiskLevelToCurrentInfection();
+                RiskLevel.reportInfection();
 
                 //Go to screen to thank the user and inform about what to do now
                 Intent nextActivity = new Intent(ReportInfectionActivity.this, ThankYouActivity.class);
