@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     //To display the current risk status
     private static ImageView trafficLight;
     private static TextView riskStatus;
+    private static TextView risklevelStatus;
     //To display the first use date and the elapsed time since the app is used.
     public static TextView dateDisplay;
 
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         //traffic light image view and risk status text view
         this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
         this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
+        this.risklevelStatus = (TextView) this.findViewById(R.id.RisklevelView);
         this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
 
         // init retrofit
@@ -550,20 +552,25 @@ public class MainActivity extends AppCompatActivity {
     public static void showRiskStatus() {
         int riskValue = LocalSafer.getRiskLevel(null);
         if (riskValue <= 33) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_low)
-                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                String risk = riskStatus.getResources().getString(R.string.risk_status_low);
                 riskStatus.setText(risk);
+                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                risklevelStatus.setText(risklevel);
         } else if (riskValue <= 70) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_moderate)
-                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                String risk = riskStatus.getResources().getString(R.string.risk_status_moderate);
                 riskStatus.setText(risk);
+                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                risklevelStatus.setText(risklevel);
         } else if (riskValue > 70 && riskValue < 100) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_high)
-                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                String risk = riskStatus.getResources().getString(R.string.risk_status_high);
                 riskStatus.setText(risk);
+                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                risklevelStatus.setText(risklevel);
         } else if (riskValue == 100) {
-            String risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
+                String risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
                 riskStatus.setText(risk);
+                String risklevel = "";
+                risklevelStatus.setText(risklevel);
         }
     }
 

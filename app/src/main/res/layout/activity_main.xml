@@ -72,7 +72,7 @@
     <TextView
         android:id="@+id/RiskView"
         android:layout_width="@dimen/risk_view_width"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/main_riskView_marginStart"
         android:layout_marginTop="@dimen/main_riskView_marginTop"
         android:layout_marginEnd="@dimen/main_riskView_marginEnd"
@@ -84,6 +84,21 @@
         app:layout_constraintEnd_toEndOf="@+id/trafficLightView"
         app:layout_constraintStart_toStartOf="@+id/trafficLightView"
         app:layout_constraintTop_toTopOf="@+id/trafficLightView" />
+
+    <TextView
+        android:id="@+id/RisklevelView"
+        android:layout_width="@dimen/risk_view_width"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/main_risklevelView_marginStart"
+        android:layout_marginTop="@dimen/main_risklevelView_marginTop"
+        android:layout_marginEnd="@dimen/main_riskView_marginEnd"
+        android:text="@string/risk_level"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textDirection="firstStrongRtl"
+        android:textSize="@dimen/main_riskView_textSize"
+        app:layout_constraintStart_toStartOf="@+id/trafficLightView"
+        app:layout_constraintTop_toBottomOf="@+id/RiskView" />
 
     <ImageButton
         android:id="@+id/infoRiskCalcButton"
