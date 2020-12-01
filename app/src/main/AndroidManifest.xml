@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".PermissionActivity"></activity>
+        <activity android:name=".ReportNegativeActivity"></activity>
+        <activity android:name=".PermissionActivity" />
         <activity android:name=".DebugLog" />
         <activity android:name=".DebugActivity" />
         <activity android:name=".RiskLevelInfoActivity" />

@@ -49,10 +49,11 @@
     <string name="text_notification">Eine Person, mit der Sie in direktem oder indirektem Kontakt
         standen, hat sich mit dem Coronavirus infiziert.
         Bitte lassen Sie sich testen und begeben sich bis zu einem negativen Testergebnis in Quarantäne.</string>
-    //Report Infection
+    //Report Infection or negative test result
     <string name="report_no_button">Nein</string>
     <string name="report_yes_button">Ja</string>
     <string name="text_report_infection">Möchten Sie sich wirklich als infiziert melden? (Nur mit positivem PCR-Testergebnis)</string>
+    <string name="text_report_negative">Möchten Sie sich wirklich als nicht mehr infiziert melden? (Nur mit negativem PCR-Testergebnis)</string>
     //Settings
     <string name="setting_1">Setting 1</string>
     <string name="setting_2">Setting 2</string>

@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
         } else {
-            //TODO HIER WAREN DIE BUTTONS!! + DOK SCHREIBEN
+            //method to initialize buttons due to infection status of the user
             initButtons();
 
             //info risk calculation button listener
@@ -178,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO Button-Änderung
     @Override
     protected void onResume() {
         super.onResume();
@@ -192,10 +191,9 @@ public class MainActivity extends AppCompatActivity {
             //show current risk level (updated once a day)
             showTrafficLightStatus();
             showRiskStatus();
+            //initialize buttons due to infection status of the user
+            initButtons();
         }
-
-        //TODO Dok
-        initButtons();
     }
 
     /**
@@ -569,8 +567,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //TODO Methode evt
-    //TODO Dok der Methode
+    /**
+     * Method called to initialize the buttons depending on the infection status of the user.
+     * If the user has no known infection the buttons are to report yourself infected and inform yourself what to
+     * do if you have a suspicion to be infected.
+     * If the user has a current infection the buttons change to a button for further information and one to report
+     * yourself negative.
+     */
     public void initButtons(){
         int riskValue = LocalSafer.getRiskLevel(null);
         //set buttons
@@ -595,10 +598,9 @@ public class MainActivity extends AppCompatActivity {
             suspicionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO wd einkommentieren
                     //Go to screen to report a negative test result to update the infection status
-                    //Intent nextActivity = new Intent(MainActivity.this, ReportNegativeActivity.class);
-                    //startActivity(nextActivity);
+                    Intent nextActivity = new Intent(MainActivity.this, ReportNegativeActivity.class);
+                    startActivity(nextActivity);
                 }
             });
         }
