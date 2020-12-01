@@ -23,7 +23,11 @@ import de.hhn.frontend.provider.LocalSafer;
  */
 public class DateHelper {
 
+    private static final String TAG = "DateHelper";
+
     /**
+     * calculates the time in days beetween to dates
+     *
      * @param date1 earlier in time date
      * @param date2 later in time date
      * @return calculated difference in days between both mentioned dates
@@ -37,6 +41,7 @@ public class DateHelper {
     /**
      * This method returns a date format, matching to the currently used locale setting
      */
+
     public static SimpleDateFormat getDateFormat() {
         // returns default Locale set by the Java Virtual Machine
         String language = Locale.getDefault().getLanguage();
@@ -86,11 +91,11 @@ public class DateHelper {
                 date = format.parse(stringToConvert);
             } catch (ParseException e) {
                 e.printStackTrace();
-                Log.d("Jonas", "Parse gone Wrong @convertStringToDate");
+                Log.d(TAG, "Parse gone Wrong @convertStringToDate");
                 System.out.println("Parsing the String of getFirstStartDate to a Date went wrong!");
             }
         } else {
-            Log.d("Jonas", "Cant parse the string cause it seems to be empty or null");
+            Log.d(TAG, "Cant parse the string cause it seems to be empty or null");
         }
 
 
@@ -107,6 +112,7 @@ public class DateHelper {
     /**
      * generates the text used by the date display
      */
+
     public static String generateStringForDateDisplay() {
         String daysSinceText = MainActivity.dateDisplay.getResources().getString(R.string.daysSinceText, LocalSafer.getFirstStartDate(null), DateHelper.getDateDiffSinceFirstUse());
         return daysSinceText;
@@ -119,7 +125,6 @@ public class DateHelper {
             isOld = true;
 
         }
-
 
         return isOld;
     }
@@ -138,7 +143,5 @@ public class DateHelper {
         long diffInMillis = currentDate.getTime() - firstAppStartDate.getTime();
         return TimeUnit.DAYS.convert(diffInMillis, TimeUnit.MILLISECONDS);
     }
-
-
 
 }

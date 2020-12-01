@@ -644,6 +644,7 @@ public class LocalSafer {
      *
      * @param date
      */
+
     public static void safeDateOfLastReportedInfection(String date, Context context) {
         Log.d(TAG, "safeDateOfLastReportedInfection() was called with " + date);
         safeStringAtDatafile(DATAFILE23, date, context);
