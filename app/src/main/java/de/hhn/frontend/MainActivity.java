@@ -605,6 +605,9 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         else{  //normal app usage
+            //normal button texts (report infection and suspicion button)
+            reportInfectionButton.setText(R.string.report_infection_button);
+            suspicionButton.setText(R.string.suspicion_button);
             //Report infection button listener
             reportInfectionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
