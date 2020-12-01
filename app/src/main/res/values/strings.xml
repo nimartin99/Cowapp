@@ -6,7 +6,9 @@
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
     <string name="report_infection_button">Report Infection</string>
+    <string name="report_infection_button_ci">Further Information</string>
     <string name="suspicion_button">Suspicion?</string>
+    <string name="suspicion_button_ci">Negative test result</string>
     <string name="traffic_light_description">View to show the current risk status via traffic light status.</string>
     <string name="infoRiskCalcButton_description">Click to show the information page about the risk level calculation.</string>
     //Main risk status

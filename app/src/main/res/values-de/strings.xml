@@ -7,7 +7,9 @@
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
     <string name="report_infection_button">Infektion melden</string>
+    <string name="report_infection_button_ci">Weitere Informationen</string>
     <string name="suspicion_button">Verdacht? - Was tun?</string>
+    <string name="suspicion_button_ci">Negativmeldung</string>
     <string name="traffic_light_description">Anzeige, die das aktuelle Risikolevel durch eine Ampel veranschaulicht.</string>
     <string name="infoRiskCalcButton_description">Anklicken, um auf die Informationsseite zur Risikoberechnung zu gelangen.</string>
     //Main risk status

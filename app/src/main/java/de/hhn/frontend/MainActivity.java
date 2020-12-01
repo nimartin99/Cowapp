@@ -129,29 +129,8 @@ public class MainActivity extends AppCompatActivity {
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
         } else {
-            //Report infection button listener
-            Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
-
-            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to report infection
-                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
-
-            //suspicion button listener
-            Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
-
-            suspicionButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Go to screen to inform what to do with infection suspicion
-                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
-                    startActivity(nextActivity);
-                }
-            });
+            //TODO HIER WAREN DIE BUTTONS!! + DOK SCHREIBEN
+            initButtons();
 
             //info risk calculation button listener
             ImageButton infoRiskCalcButton = (ImageButton) findViewById(R.id.infoRiskCalcButton);
@@ -198,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //TODO Button-Änderung
     @Override
     protected void onResume() {
         super.onResume();
@@ -212,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
             showTrafficLightStatus();
             showRiskStatus();
         }
+
+        //TODO Dok
+        initButtons();
     }
 
     /**
@@ -541,6 +524,62 @@ public class MainActivity extends AppCompatActivity {
         } else if (riskValue == 100) {
             String risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
                 riskStatus.setText(risk);
+        }
+    }
+
+    //TODO Methode evt
+    //TODO Dok der Methode
+    public void initButtons(){
+        int riskValue = LocalSafer.getRiskLevel(null);
+        //set buttons
+        Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
+        Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
+        //set button text and listener
+        if(riskValue == 100){ //the user has a current infection
+            //change report infection button to further information button and suspicion button to negative test result
+            reportInfectionButton.setText(R.string.report_infection_button_ci);
+            suspicionButton.setText(R.string.suspicion_button_ci);
+            //Report infection button listener
+            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen for further information what to do if there is a current infection
+                    Intent nextActivity = new Intent(MainActivity.this, InfectionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //suspicion button listener
+            suspicionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //TODO wd einkommentieren
+                    //Go to screen to report a negative test result to update the infection status
+                    //Intent nextActivity = new Intent(MainActivity.this, ReportNegativeActivity.class);
+                    //startActivity(nextActivity);
+                }
+            });
+        }
+        else{  //normal app usage
+            //Report infection button listener
+            reportInfectionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to report infection
+                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
+
+            //suspicion button listener
+            suspicionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Go to screen to inform what to do with infection suspicion
+                    Intent nextActivity = new Intent(MainActivity.this, SuspicionActivity.class);
+                    startActivity(nextActivity);
+                }
+            });
         }
     }
 
