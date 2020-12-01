@@ -6,7 +6,9 @@
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
     <string name="report_infection_button">Report Infection</string>
+    <string name="report_infection_button_ci">Further Information</string>
     <string name="suspicion_button">Suspicion?</string>
+    <string name="suspicion_button_ci">Negative Test Result</string>
     <string name="traffic_light_description">View to show the current risk status via traffic light status.</string>
     <string name="infoRiskCalcButton_description">Click to show the information page about the risk level calculation.</string>
     //Main risk status
@@ -44,10 +46,11 @@
     <string name="ok_button">Okay</string>
     <string name="head_notification">Possible health risk</string>
     <string name="text_notification">A person with whom you were in direct or indirect contact has been infected with the corona virus.     Please let yourself be tested and go into quarantine until you receive a negative test result.</string>
-    //Report Infection
+    //Report Infection / negative test result
     <string name="report_no_button">No</string>
     <string name="report_yes_button">Yes</string>
     <string name="text_report_infection">Do you really want to report yourself infected? (Only with positive PCR test result.)</string>
+    <string name="text_report_negative">Do you really want to report yourself negative? (Only with negative PCR test result.)</string>
     //Settings
     <string name="setting_1">Setting 1</string>
     <string name="setting_2">Setting 2</string>

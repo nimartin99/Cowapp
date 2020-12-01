@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ReportNegativeActivity">
+
+    <Button
+        android:id="@+id/reportNegNoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/report_no_button_marginTop"
+        android:layout_marginEnd="@dimen/report_no_button_marginEnd"
+        android:backgroundTint="#27496D"
+        android:text="@string/report_no_button"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/report_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textReportInfection2" />
+
+    <Button
+        android:id="@+id/reportNegYesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/report_yes_button_marginStart"
+        android:layout_marginTop="@dimen/report_yes_button_marginTop"
+        android:backgroundTint="#27496D"
+        android:text="@string/report_yes_button"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/report_textSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textReportInfection2" />
+
+    <TextView
+        android:id="@+id/textReportInfection2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/report_text_marginStart_and_End"
+        android:layout_marginTop="@dimen/report_text_marginTop"
+        android:layout_marginEnd="@dimen/report_text_marginStart_and_End"
+        android:background="#DAD4D4"
+        android:backgroundTint="#EDEDED"
+        android:text="@string/text_report_negative"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="@dimen/report_textSize"
+        app:layout_constraintBottom_toTopOf="@+id/reportNoButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
