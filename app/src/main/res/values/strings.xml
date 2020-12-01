@@ -77,6 +77,7 @@
     <string name="test_button_15" translatable="false">Add Direct Test Contact</string>
     <string name="test_button_16" translatable="false">Remove all Test Contacts</string>
     <string name="test_button_17" translatable="false">check ControlKeyExchangeFunction</string>
+    <string name="foregroundNotificationUpdate" translatable="false">UpdateForegroundNotification</string>
 
     //Thank You Screen
     <string name="head_thank_you">Thank you for the report!</string>

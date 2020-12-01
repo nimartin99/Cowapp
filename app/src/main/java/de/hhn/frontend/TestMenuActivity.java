@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import de.hhn.frontend.date.DateHelper;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
@@ -230,7 +231,25 @@ public class TestMenuActivity extends AppCompatActivity {
             }
         }));
 
+        //Button and EditText to update the foregroundNotification
+        final EditText updateForegroundEditText = findViewById(R.id.updateForegroundEditText);
+        Button updateForegroundButton = findViewById(R.id.updateForegroundButton);
+        updateForegroundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                application.updateForegroundNotification(updateForegroundEditText.getText().toString());
+            }
+        });
 
+        Button stopForegroundNotificationButton = findViewById(R.id.stopForegroundNotificationButton);
+        stopForegroundNotificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                application.stopForegroundNotification();
+            }
+        });
     }
 }
 

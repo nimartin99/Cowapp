@@ -94,6 +94,44 @@
                 android:textAllCaps="false"
                 android:textSize="@dimen/test_buttons_textSize" />
 
+            <Button
+                android:id="@+id/transmit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/test_button_7"
+                android:textAllCaps="false"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/updateForegroundEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:autofillHints=""
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:text="Text" />
+
+                <Button
+                    android:id="@+id/updateForegroundButton"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/foregroundNotificationUpdate"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/stopForegroundNotificationButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stop foreground Notification" />
+
             <LinearLayout
                 style="buttonBarStyle"
                 android:layout_width="match_parent"
@@ -118,14 +156,6 @@
                     android:backgroundTint="#EA6262"
                     android:text="@string/reset_button_risklevel" />
             </LinearLayout>
-
-            <Button
-                android:id="@+id/transmit"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/test_button_7"
-                android:textAllCaps="false"
-                android:textSize="24sp" />
 
             <Button
                 android:id="@+id/addIndirectTestContact"
