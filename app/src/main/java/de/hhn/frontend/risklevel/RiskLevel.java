@@ -179,11 +179,17 @@ public class RiskLevel {
 
     }
 
+    /**
+     * resets the risk level if a negative infection test result was reported.
+     */
+
     public static void reportNegativeInfectionTestResult() {
 
         Log.d(TAG, "Negative Infection Test was reported.");
-
-
+        LocalSafer.safeRiskLevel(0, null);
+        Log.d(TAG, "Risk level was set to 0");
+        Log.d(TAG, "remove old contacts from the contact lists");
+        deleteAllContacts();
     }
 
 
@@ -195,8 +201,9 @@ public class RiskLevel {
     public static void checkIfInfectionHasExpired() {
 
         if (DateHelper.checkIfDateIsOld(DateHelper.convertStringToDate(LocalSafer.getDateOfLastReportedInfection(null)))) {
-            Log.d(TAG, "Infection is older than 14 days and was removed!");
+            Log.d(TAG, "Infection is older than 14 days!");
             LocalSafer.safeRiskLevel(0, null);
+            Log.d(TAG, "Infection status was set to not infected!");
             Log.d(TAG, "Risk level was set to 0");
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
