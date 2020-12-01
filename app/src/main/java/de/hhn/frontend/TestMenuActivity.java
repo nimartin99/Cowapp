@@ -34,7 +34,7 @@ public class TestMenuActivity extends AppCompatActivity {
 
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "TestMenuActivity";
-    private static final int riskLevelTestValue = 100;
+    private static final int riskLevelTestValue = 50;
     private static boolean clickedTransmit = true;
     private static boolean clickedScan = true;
 
