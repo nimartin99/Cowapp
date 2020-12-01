@@ -289,8 +289,11 @@ public class LocalSafer {
     public static void safeRiskLevel(int riskLevel, Context context) {
         Log.d(TAG, "safeRiskLevel() with riskLevel: " + riskLevel);
         safeStringAtDatafile(DATAFILE03, String.valueOf(riskLevel), context);
-        MainActivity.showTrafficLightStatus();
-        MainActivity.showRiskStatus();
+
+        if (MainActivity.getMainActivity() != null) {
+            MainActivity.showTrafficLightStatus();
+            MainActivity.showRiskStatus();
+        }
     }
 
     /**
