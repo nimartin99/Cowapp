@@ -4,7 +4,7 @@ package de.hhn.frontend.provider;
  * Class for holding requested values from Retrofit.
  *
  * @author Philipp Alessandrini
- * @version 2020-11-22
+ * @version 2020-12-01
  */
 public class RequestedObject {
     private String status;
@@ -21,5 +21,17 @@ public class RequestedObject {
 
     public String getLastInfectionTime() {
         return lastInfectionTime;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setContactNbr(String contactNbr) {
+        this.contactNbr = contactNbr;
+    }
+
+    public void setLastInfectionTime(String lastInfectionTime) {
+        this.lastInfectionTime = lastInfectionTime;
     }
 }
