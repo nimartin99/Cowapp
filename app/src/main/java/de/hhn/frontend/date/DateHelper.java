@@ -76,18 +76,23 @@ public class DateHelper {
     }
 
     public static Date convertStringToDate(String stringToConvert) {
-
         Date date = new Date();
 
-        SimpleDateFormat format = getDateFormat();
+        if (stringToConvert != null && !stringToConvert.isEmpty()) {
 
-        try {
-            date = format.parse(stringToConvert);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.d("Jonas Log", "Parse gone Wrong @convertStringToDate");
-            System.out.println("Parsing the String of getFirstStartDate to a Date went wrong!");
+            SimpleDateFormat format = getDateFormat();
+
+            try {
+                date = format.parse(stringToConvert);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Log.d("Jonas", "Parse gone Wrong @convertStringToDate");
+                System.out.println("Parsing the String of getFirstStartDate to a Date went wrong!");
+            }
+        } else {
+            Log.d("Jonas", "Cant parse the string cause it seems to be empty or null");
         }
+
 
         return date;
 

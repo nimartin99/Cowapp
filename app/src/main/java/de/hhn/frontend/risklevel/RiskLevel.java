@@ -2,8 +2,6 @@ package de.hhn.frontend.risklevel;
 
 import android.util.Log;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -19,7 +17,7 @@ import de.hhn.frontend.provider.LocalSafer;
  * @version 23.11.2020
  */
 
-public class NewRiskLevel {
+public class RiskLevel {
 
 
     static ArrayList<IndirectContact> indirectContactArrayList = LocalSafer.getListOfIndirectContacts();
@@ -97,6 +95,7 @@ public class NewRiskLevel {
             IndirectContact iC = iCIterator.next();
             if (DateHelper.checkIfDateIsOld(iC.getDate())) {
                 iCIterator.remove();
+                Log.d("Jonas", "Indirect contact was removed due to outdated date");
             }
 
         }
@@ -107,10 +106,35 @@ public class NewRiskLevel {
             DirectContact dC = dCIterator.next();
             if (DateHelper.checkIfDateIsOld(dC.getDate())) {
                 dCIterator.remove();
+                Log.d("Jonas", "Direct contact was removed due to outdated date");
             }
         }
 
     }
+
+    public static void deleteAllContacts() {
+        Iterator<IndirectContact> iCIterator;
+        Iterator<DirectContact> dCIterator;
+
+        iCIterator = indirectContactArrayList.iterator();
+
+        while (iCIterator.hasNext()) {
+            IndirectContact iC = iCIterator.next();
+            iCIterator.remove();
+            Log.d("Jonas", "Indirect contact was removed");
+
+        }
+
+        dCIterator = directContactArrayList.iterator();
+
+        while (dCIterator.hasNext()) {
+            DirectContact dC = dCIterator.next();
+            dCIterator.remove();
+            Log.d("Jonas", "Direct contact was removed");
+        }
+
+    }
+
 
     /**
      * this method stops BLE key exchange when the user is currently infected and starts the key exchange when the user is to infected anymore.
@@ -139,19 +163,27 @@ public class NewRiskLevel {
     }
 
     /**
-     * sets the current risk level to a value that represents a current infection
+     * sets the current risk level to a value that represents a current infection and disables BLE key exchange
      */
 
     public static void setRiskLevelToCurrentInfection() {
+        //Set risk level corresponding to infection and safe date of the infection report
         LocalSafer.safeRiskLevel(100, null);
         LocalSafer.safeDateOfLastReportedInfection(DateHelper.getCurrentDateString(), null);
         Log.d("Jonas", "risk level has been set to 100!");
 
-        controlKeyExchange();
+        //disable scanning and transmitting of the bluetoothLE key exchange
+        BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+        application.changeMonitoringState(false);
+        BeaconBackgroundService.stopTransmittingAsBeacon();
+
+        Log.d("Jonas", "Due to a current infection the Key Exchange was stopped");
+
     }
 
     /**
-     *
+     * check if the current infection status is still up to date.
+     * updates the status if it is outdated.
      */
 
     public static void checkIfInfectionHasExpired() {
@@ -160,6 +192,12 @@ public class NewRiskLevel {
             Log.d("Jonas", "Infection is older than 14 days and was removed!");
             LocalSafer.safeRiskLevel(0, null);
             Log.d("Jonas", "Risk level was set to 0");
+            //activate scanning and transmitting of the bluetoothLE key exchange
+            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+            application.changeMonitoringState(true);
+            BeaconBackgroundService.transmitAsBeacon();
+
+            Log.d("Jonas", "Due to no current infection the Key Exchange was started");
             calculateRiskLevel();
 
         } else {

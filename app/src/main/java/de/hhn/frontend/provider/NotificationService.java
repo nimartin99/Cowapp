@@ -24,6 +24,7 @@ import de.hhn.frontend.R;
 public class NotificationService extends Service {
 
     final int notificationId = 1;
+    private static final int NO_CONNECTION_NOTIFICATION_INTERVAL = 10;
     //visibility of the push notification
     private NotificationManagerCompat notificationManagerCom;
 
@@ -83,5 +84,9 @@ public class NotificationService extends Service {
 
         NotificationManager notManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notManager.notify(notificationId, builder.build());
+    }
+
+    public static int getNoConnectionNotificationInterval() {
+        return NO_CONNECTION_NOTIFICATION_INTERVAL;
     }
 }

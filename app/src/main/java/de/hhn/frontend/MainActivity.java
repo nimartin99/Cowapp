@@ -39,7 +39,8 @@ import de.hhn.frontend.provider.RequestedObject;
 import de.hhn.frontend.provider.RetrofitService;
 import de.hhn.frontend.risklevel.DirectContact;
 import de.hhn.frontend.risklevel.IndirectContact;
-import de.hhn.frontend.risklevel.NewRiskLevel;
+import de.hhn.frontend.risklevel.RiskLevel;
+import de.hhn.frontend.utils.ResponseState;
 import de.hhn.frontend.utils.RetryCallUtil;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -274,6 +275,8 @@ public class MainActivity extends AppCompatActivity {
                     if (response.code() == 200) {
                         // log newest key
                         Log.d(TAG, "Key: " + response.body());
+                        // set last response state
+                        ResponseState.setLastResponseState(ResponseState.State.KEY_SUCCESSFULLY_REQUESTED);
                         // key is successfully requested
                         Key.setKeyRequested(true);
                         // reference requested key
@@ -286,6 +289,8 @@ public class MainActivity extends AppCompatActivity {
                         BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
                     } else if (response.code() == 404) {
                         Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
+                        // set last response state
+                        ResponseState.setLastResponseState(ResponseState.State.NO_EXISTING_KEY);
                         // key is not successfully requested
                         Key.setKeyRequested(false);
                         BeaconBackgroundService.stopTransmittingAsBeacon();
@@ -296,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(Call<String> call, Throwable t) {
                     Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                     serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                    // set last response state
+                    ResponseState.setLastResponseState(ResponseState.State.NO_CONNECTION);
                     // key is not successfully requested
                     Key.setKeyRequested(false);
                 }
@@ -341,10 +348,16 @@ public class MainActivity extends AppCompatActivity {
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if (response.code() == 200) {
                                 Log.d(TAG, "Contacts are successfully reported");
+                                // set last response state
+                                ResponseState.setLastResponseState(ResponseState.State.CONTACTS_SUCCESSFULLY_REPORTED);
                             } else if (response.code() == 400) {
                                 Log.w(TAG, "reportInfection: NO DEFINED CONTACT_TYPE");
+                                // set last response state
+                                ResponseState.setLastResponseState(ResponseState.State.NO_DEFINED_CONTACT_TYPE);
                             } else if (response.code() == 404) {
                                 Log.w(TAG, "reportInfection: UNDEFINED_REQUEST_BODY_VALUE");
+                                // set last response state
+                                ResponseState.setLastResponseState(ResponseState.State.UNDEFINED_REQUEST_BODY_VALUE);
                             }
                         }
 
@@ -352,10 +365,14 @@ public class MainActivity extends AppCompatActivity {
                         public void onFailure(Call<Void> call, Throwable t) {
                             Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                             serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                            // set last response state
+                            ResponseState.setLastResponseState(ResponseState.State.NO_CONNECTION);
                         }
                     });
                 } else {
                     Log.d(TAG, "User doesn't have contacts registered");
+                    // set last response state
+                    ResponseState.setLastResponseState(ResponseState.State.NO_REGISTERED_CONTACTS);
                 }
             }
         };
@@ -398,27 +415,36 @@ public class MainActivity extends AppCompatActivity {
                                 RequestedObject infection = response.body();
                                 if (infection.getStatus().equals("DIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had direct contact with an infected person");
+                                    // set last response state
+                                    ResponseState.setLastResponseState(ResponseState.State.DIRECT_CONTACT);
                                     // send own contacts as indirect contacts to the server
                                     reportInfection("INDIRECT");
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    NewRiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
+                                    RiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
                                 } else if (infection.getStatus().equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
+                                    // set last response state
+                                    ResponseState.setLastResponseState(ResponseState.State.INDIRECT_CONTACT);
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    NewRiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
+                                    RiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
                                 } else {
                                     Log.w(TAG, "onResponse: NO DEFINED INFECTION_STATUS");
+                                    // set last response state
+                                    ResponseState.setLastResponseState(ResponseState.State.NO_DEFINED_INFECTION_STATUS);
                                 }
                             } else if (response.code() == 400) {
-                                //calculate and safe Risklevel, update of days since last contact corresponding to the server response
                                 // user has had no contact
                                 Log.d(TAG, "User has had no contact with an infected person");
+                                // set last response state
+                                ResponseState.setLastResponseState(ResponseState.State.NO_CONTACT);
                             } else if (response.code() == 404) {
                                 Log.w(TAG, "onResponse: UNDEFINED_REQUEST_BODY_VALUE");
+                                // set last response state
+                                ResponseState.setLastResponseState(ResponseState.State.UNDEFINED_REQUEST_BODY_VALUE);
                             }
                         }
 
@@ -426,10 +452,14 @@ public class MainActivity extends AppCompatActivity {
                         public void onFailure(Call<RequestedObject> call, Throwable t) {
                             Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                             serverResponseNotification("NO_CONNECTION_NOTIFICATION");
+                            // set last response state
+                            ResponseState.setLastResponseState(ResponseState.State.NO_CONNECTION);
                         }
                     });
                 } else {
                     Log.d(TAG, "User has no keys");
+                    // set last response state
+                    ResponseState.setLastResponseState(ResponseState.State.NO_USER_KEYS);
                 }
             }
         };
@@ -439,29 +469,41 @@ public class MainActivity extends AppCompatActivity {
 
     // standard notification if there is no connection to the server
     private static void serverResponseNotification(String notificationType) {
-        Intent responsePushNotification = new Intent(context, NotificationService.class);
         switch (notificationType) {
             case "DIRECT_CONTACT_NOTIFICATION":
-                responsePushNotification.putExtra("TITLE", "Direkten Kontakt zu einer infizierten Person festgestellt");
-                responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
-                responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
-                responsePushNotification.putExtra("LOG", true);
+                Intent directContactPushNotification = new Intent(context, NotificationService.class);
+                directContactPushNotification.putExtra("TITLE", "Direkten Kontakt zu einer infizierten Person festgestellt");
+                directContactPushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
+                directContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                directContactPushNotification.putExtra("LOG", true);
+                context.startService(directContactPushNotification);
                 break;
             case "INDIRECT_CONTACT_NOTIFICATION":
-                responsePushNotification.putExtra("TITLE", "Indirekten Kontakt zu einer infizierten Person festgestellt");
-                responsePushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
-                responsePushNotification.putExtra("CLASS", PushNotificationActivity.class);
-                responsePushNotification.putExtra("LOG", true);
+                Intent indirectContactPushNotification = new Intent(context, NotificationService.class);
+                indirectContactPushNotification.putExtra("TITLE", "Indirekten Kontakt zu einer infizierten Person festgestellt");
+                indirectContactPushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
+                indirectContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
+                indirectContactPushNotification.putExtra("LOG", true);
+                context.startService(indirectContactPushNotification);
                 break;
             case "NO_CONNECTION_NOTIFICATION":
-                responsePushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
-                responsePushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
-                responsePushNotification.putExtra("LOG", false);
+                int noConnectionNotificationCounter = LocalSafer.getNotificationCounter(null);
+                Log.d(TAG, "noConnectionNotificationCounter: " + noConnectionNotificationCounter);
+                // only show this notification every x times a NO_CONNECTION_NOTIFICATION appears
+                if ((noConnectionNotificationCounter
+                        % NotificationService.getNoConnectionNotificationInterval()) == 0) {
+                    Intent noConnectionPushNotification = new Intent(context, NotificationService.class);
+                    noConnectionPushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
+                    noConnectionPushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+                    noConnectionPushNotification.putExtra("LOG", false);
+                    context.startService(noConnectionPushNotification);
+                }
+                LocalSafer.safeNotificationCounter((noConnectionNotificationCounter + 1)
+                        % NotificationService.getNoConnectionNotificationInterval(), null);
                 break;
             default:
                 Log.w(TAG, "NO DEFINED NOTIFICATION_TYPE");
         }
-        context.startService(responsePushNotification);
     }
 
     /**
