@@ -101,4 +101,5 @@
     <string name="confirm">BESTÄTIGEN</string>
     <string name="debug_log_was_cleared">Der DebugLog wurde geleert.</string>
     <string name="action_canceled">Aktion abgebrochen</string>
+    <string name="request_permission">Berechtigungen erneut anfragen</string>
 </resources>
