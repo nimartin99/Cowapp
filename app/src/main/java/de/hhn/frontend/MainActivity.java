@@ -707,4 +707,10 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity getMainActivity() {
         return mainActivity;
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainActivity = null;
+    }
 }
