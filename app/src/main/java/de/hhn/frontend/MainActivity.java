@@ -131,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (LocalSafer.isFirstAppStart(null)){
+            if (LocalSafer.getFirstStartDate(null) == null || LocalSafer.getFirstStartDate(null).isEmpty()) {
+                LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
+            }
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
         } else {
@@ -153,7 +156,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void firstinit() {
-        LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
+        //TODO get best place to save first app start date
+        if (LocalSafer.getFirstStartDate(null) == null || LocalSafer.getFirstStartDate(null).isEmpty()) {
+            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
+        }
         requestKey();
         setAlarm();
     }
