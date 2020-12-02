@@ -103,7 +103,7 @@
                 <Button
                     android:id="@+id/Test3"
                     style="buttonBarStyle"
-                    android:layout_width="305dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/test_button_3"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
