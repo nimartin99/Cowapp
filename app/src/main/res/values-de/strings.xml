@@ -96,7 +96,7 @@
     <string name="key_was_saved">Key wurde gespeichert:</string>
     <string name="received_a_key">Key wurde empfangen :</string>
     <string name="alarm_ringed">Alarm hat geringt.</string>
-    <string name="alarm_set">Alarm wurd eingestellt.</string>
+    <string name="alarm_set">Alarm wurde eingestellt.</string>
     <string name="settings_were_saved">Einstellungen gespeichert.</string>
     <string name="you_are_clearing">Du bist dabei den DebugLog zu leeren.</string>
     <string name="are_you_sure_to_clear">Bist du sicher, dass du den DebugLog leeren willst?</string>
