@@ -339,10 +339,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(riskValue == 100){ //report negative test result
-                            //report yourself negative
-                            //TODO Ticket 73
-                            //reset risk level
-                            LocalSafer.safeRiskLevel(0, null);
+                            //report yourself negative and reset risk level
+                            RiskLevel.reportNegativeInfectionTestResult();
                             //update buttons
                             initButtons();
                             //pop up dialog to inform the user that the negative report was successful
@@ -364,7 +362,7 @@ public class MainActivity extends AppCompatActivity {
                             //send infected key to the server
                             reportInfection("DIRECT");
                             //set the risk level corresponding to the infection
-                            RiskLevel.setRiskLevelToCurrentInfection();
+                            RiskLevel.reportInfection();
                             //update buttons
                             initButtons();
                             //pop up dialog to thank the user and inform about what to do now
@@ -726,4 +724,9 @@ public class MainActivity extends AppCompatActivity {
         return mainActivity;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainActivity = null;
+    }
 }

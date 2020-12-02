@@ -19,12 +19,10 @@ import de.hhn.frontend.provider.LocalSafer;
 
 public class RiskLevel {
 
-
-    static ArrayList<IndirectContact> indirectContactArrayList = LocalSafer.getListOfIndirectContacts();
-    static ArrayList<DirectContact> directContactArrayList = LocalSafer.getListOfDirectContacts();
-
-
-    static int newRiskLevelValue;
+    private static final String TAG = "RiskLevel";
+    private static ArrayList<IndirectContact> indirectContactArrayList = LocalSafer.getListOfIndirectContacts();
+    private static ArrayList<DirectContact> directContactArrayList = LocalSafer.getListOfDirectContacts();
+    private static int newRiskLevelValue;
 
 
     /**
@@ -56,7 +54,7 @@ public class RiskLevel {
             }
 
             LocalSafer.safeRiskLevel(newRiskLevelValue, null);
-            Log.d("Jonas", "calulated risk Level: " + newRiskLevelValue);
+            Log.d(TAG, "calulated risk Level: " + newRiskLevelValue);
 
         }
     }
@@ -69,13 +67,13 @@ public class RiskLevel {
 
             indirectContactArrayList.add((IndirectContact) contact);
             LocalSafer.safeListOfIndirectContacts(indirectContactArrayList);
-            Log.d("Jonas", "Indirect contact added to List");
+            Log.d(TAG, "Indirect contact added to List");
 
         } else if (contact instanceof DirectContact) {
 
             directContactArrayList.add((DirectContact) contact);
             LocalSafer.safeListOfDirectContacts(directContactArrayList);
-            Log.d("Jonas", "Direct contact added to List");
+            Log.d(TAG, "Direct contact added to List");
         }
         deleteOldContacts();
 
@@ -95,7 +93,7 @@ public class RiskLevel {
             IndirectContact iC = iCIterator.next();
             if (DateHelper.checkIfDateIsOld(iC.getDate())) {
                 iCIterator.remove();
-                Log.d("Jonas", "Indirect contact was removed due to outdated date");
+                Log.d(TAG, "Indirect contact was removed due to outdated date");
             }
 
         }
@@ -106,7 +104,7 @@ public class RiskLevel {
             DirectContact dC = dCIterator.next();
             if (DateHelper.checkIfDateIsOld(dC.getDate())) {
                 dCIterator.remove();
-                Log.d("Jonas", "Direct contact was removed due to outdated date");
+                Log.d(TAG, "Direct contact was removed due to outdated date");
             }
         }
 
@@ -121,7 +119,7 @@ public class RiskLevel {
         while (iCIterator.hasNext()) {
             IndirectContact iC = iCIterator.next();
             iCIterator.remove();
-            Log.d("Jonas", "Indirect contact was removed");
+            Log.d(TAG, "Indirect contact was removed");
 
         }
 
@@ -130,7 +128,7 @@ public class RiskLevel {
         while (dCIterator.hasNext()) {
             DirectContact dC = dCIterator.next();
             dCIterator.remove();
-            Log.d("Jonas", "Direct contact was removed");
+            Log.d(TAG, "Direct contact was removed");
         }
 
     }
@@ -148,7 +146,7 @@ public class RiskLevel {
             application.changeMonitoringState(false);
             BeaconBackgroundService.stopTransmittingAsBeacon();
 
-            Log.d("Jonas", "Due to a current infection the Key Exchange was stopped");
+            Log.d(TAG, "Due to a current infection the Key Exchange was stopped");
 
 
         } else if (LocalSafer.getRiskLevel(null) != 100) {
@@ -157,7 +155,7 @@ public class RiskLevel {
             application.changeMonitoringState(true);
             BeaconBackgroundService.transmitAsBeacon();
 
-            Log.d("Jonas", "Due to no current infection the Key Exchange was started");
+            Log.d(TAG, "Due to no current infection the Key Exchange was started");
         }
 
     }
@@ -166,20 +164,34 @@ public class RiskLevel {
      * sets the current risk level to a value that represents a current infection and disables BLE key exchange
      */
 
-    public static void setRiskLevelToCurrentInfection() {
+    public static void reportInfection() {
         //Set risk level corresponding to infection and safe date of the infection report
         LocalSafer.safeRiskLevel(100, null);
         LocalSafer.safeDateOfLastReportedInfection(DateHelper.getCurrentDateString(), null);
-        Log.d("Jonas", "risk level has been set to 100!");
+        Log.d(TAG, "risk level has been set to 100!");
 
         //disable scanning and transmitting of the bluetoothLE key exchange
         BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
         application.changeMonitoringState(false);
         BeaconBackgroundService.stopTransmittingAsBeacon();
 
-        Log.d("Jonas", "Due to a current infection the Key Exchange was stopped");
+        Log.d(TAG, "Due to a current infection the Key Exchange was stopped.");
 
     }
+
+    /**
+     * resets the risk level if a negative infection test result was reported.
+     */
+
+    public static void reportNegativeInfectionTestResult() {
+
+        Log.d(TAG, "Negative Infection Test was reported.");
+        LocalSafer.safeRiskLevel(0, null);
+        Log.d(TAG, "Risk level was set to 0");
+        Log.d(TAG, "remove old contacts from the contact lists");
+        deleteAllContacts();
+    }
+
 
     /**
      * check if the current infection status is still up to date.
@@ -189,20 +201,21 @@ public class RiskLevel {
     public static void checkIfInfectionHasExpired() {
 
         if (DateHelper.checkIfDateIsOld(DateHelper.convertStringToDate(LocalSafer.getDateOfLastReportedInfection(null)))) {
-            Log.d("Jonas", "Infection is older than 14 days and was removed!");
+            Log.d(TAG, "Infection is older than 14 days!");
             LocalSafer.safeRiskLevel(0, null);
-            Log.d("Jonas", "Risk level was set to 0");
+            Log.d(TAG, "Infection status was set to not infected!");
+            Log.d(TAG, "Risk level was set to 0");
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(true);
             BeaconBackgroundService.transmitAsBeacon();
 
-            Log.d("Jonas", "Due to no current infection the Key Exchange was started");
+            Log.d(TAG, "Due to no current infection the Key Exchange was started");
             calculateRiskLevel();
 
         } else {
             if (!DateHelper.checkIfDateIsOld(DateHelper.convertStringToDate(LocalSafer.getDateOfLastReportedInfection(null)))) {
-                Log.d("Jonas", "Infection is not older than 14 days");
+                Log.d(TAG, "Infection is not older than 14 days");
             }
         }
     }
