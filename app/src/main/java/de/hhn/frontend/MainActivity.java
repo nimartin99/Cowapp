@@ -553,16 +553,16 @@ public class MainActivity extends AppCompatActivity {
         switch (notificationType) {
             case "DIRECT_CONTACT_NOTIFICATION":
                 Intent directContactPushNotification = new Intent(context, NotificationService.class);
-                directContactPushNotification.putExtra("TITLE", R.string.head_directContactPush);
-                directContactPushNotification.putExtra("TEXT", R.string.text_moreInfoPush);
+                directContactPushNotification.putExtra("TITLE", "Direct contact with an infected person detected");
+                directContactPushNotification.putExtra("TEXT", "Tap for further information.");
                 directContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
                 directContactPushNotification.putExtra("LOG", true);
                 context.startService(directContactPushNotification);
                 break;
             case "INDIRECT_CONTACT_NOTIFICATION":
                 Intent indirectContactPushNotification = new Intent(context, NotificationService.class);
-                indirectContactPushNotification.putExtra("TITLE", R.string.head_indirectContactPush);
-                indirectContactPushNotification.putExtra("TEXT", R.string.text_moreInfoPush);
+                indirectContactPushNotification.putExtra("TITLE", "Indirect contact with an infected person detected");
+                indirectContactPushNotification.putExtra("TEXT", "Tap for further information.");
                 indirectContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
                 indirectContactPushNotification.putExtra("LOG", true);
                 context.startService(indirectContactPushNotification);
@@ -574,8 +574,8 @@ public class MainActivity extends AppCompatActivity {
                 if ((noConnectionNotificationCounter
                         % NotificationService.getNoConnectionNotificationInterval()) == 0) {
                     Intent noConnectionPushNotification = new Intent(context, NotificationService.class);
-                    noConnectionPushNotification.putExtra("TITLE", R.string.head_noConnectionPush);
-                    noConnectionPushNotification.putExtra("TEXT", R.string.text_noConnectionPush);
+                    noConnectionPushNotification.putExtra("TITLE", "Currently no connection to the server");
+                    noConnectionPushNotification.putExtra("TEXT", "Trying to connect again in 5 minutes...");
                     noConnectionPushNotification.putExtra("LOG", false);
                     context.startService(noConnectionPushNotification);
                 }
