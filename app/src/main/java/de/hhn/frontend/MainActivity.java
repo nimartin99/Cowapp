@@ -152,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+
+    }
+
     public void firstinit() {
         LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
         requestKey();
