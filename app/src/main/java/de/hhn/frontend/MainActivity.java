@@ -503,7 +503,10 @@ public class MainActivity extends AppCompatActivity {
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    RiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
+                                    int numberOfInfection= Integer.parseInt(infection.getContactNbr());
+                                    for (int i = 0; i != numberOfInfection; i++){
+                                        RiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
+                                    }
                                 } else if (infection.getStatus().equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
                                     // set last response state
@@ -511,7 +514,10 @@ public class MainActivity extends AppCompatActivity {
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    RiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
+                                    int numberOfInfection= Integer.parseInt(infection.getContactNbr());
+                                    for (int i = 0; i != numberOfInfection; i++) {
+                                        RiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
+                                    }
                                 } else {
                                     Log.w(TAG, "onResponse: NO DEFINED INFECTION_STATUS");
                                     // set last response state
