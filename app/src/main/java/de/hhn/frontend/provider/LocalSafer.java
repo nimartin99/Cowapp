@@ -120,6 +120,7 @@ public class LocalSafer {
      */
     public static boolean dateIsOld(Date date) {
         Log.d(TAG, "dateIsOld() was called");
+        Log.d(TAG, "dateIsOld() was called");
 
         boolean result = false;
         Date oldDate = date;

@@ -126,9 +126,6 @@ public class MainActivity extends AppCompatActivity {
         showTrafficLightStatus();
         showRiskStatus();
 
-        //show current Info about days since usage.
-        showDateDisplay();
-
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
@@ -150,6 +147,8 @@ public class MainActivity extends AppCompatActivity {
             });
             setAlarm();
         }
+        //show current Info about days since usage.
+        showDateDisplay();
     }
 
     @Override
