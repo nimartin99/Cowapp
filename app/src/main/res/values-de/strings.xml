@@ -26,6 +26,8 @@
     <string name="head_report_negative">Negativmeldung</string>
     <string name="text_report_infection">Möchten Sie sich wirklich als infiziert melden? (Nur mit positivem PCR-Testergebnis)</string>
     <string name="text_report_negative">Möchten Sie sich wirklich als nicht mehr infiziert melden? (Nur mit negativem PCR-Testergebnis)</string>
+    <string name="head_report_successful">Meldung erfolgreich</string>
+    <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. Vielen Dank!</string>
     //Date and days since use
     <string name="daysSinceText">Seit dem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
     //Data Protection

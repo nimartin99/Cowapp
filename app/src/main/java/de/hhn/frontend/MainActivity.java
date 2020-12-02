@@ -58,7 +58,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-11-30
+ * @version 2020-12-02
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
@@ -341,12 +341,30 @@ public class MainActivity extends AppCompatActivity {
                         if(riskValue == 100){ //report negative test result
                             //report yourself negative and reset risk level
                             RiskLevel.reportNegativeInfectionTestResult();
+                            //update buttons
+                            initButtons();
+                            //pop up dialog to inform the user that the negative report was successful
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+                            builder.setCancelable(true);
+                            builder.setTitle(getString(R.string.head_report_successful));
+                            builder.setMessage(getString(R.string.text_report_successful));
+                            builder.setPositiveButton(getString(R.string.ok_button),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //pop up disappears
+                                        }
+                                    });
+                            AlertDialog thankYouDialog = builder.create();
+                            thankYouDialog.show();
                         }
                         else{ //report infection
                             //send infected key to the server
                             reportInfection("DIRECT");
                             //set the risk level corresponding to the infection
                             RiskLevel.reportInfection();
+                            //update buttons
+                            initButtons();
                             //pop up dialog to thank the user and inform about what to do now
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);

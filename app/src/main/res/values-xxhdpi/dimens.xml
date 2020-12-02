@@ -2,7 +2,7 @@
 <resources>
     //data protection
     <dimen name="data_protection_button_height">50dp</dimen>
-    <dimen name="data_protection_buttons_marginStart_or_End">60dp</dimen>
+    <dimen name="data_protection_buttons_marginStart_or_End">40dp</dimen>
     <dimen name="data_protection_buttons_marginBottom">15dp</dimen>
     <dimen name="data_protection_buttons_and_text_textSize">18sp</dimen>
     <dimen name="data_protection_text_marginStart_and_End">20dp</dimen>
@@ -17,14 +17,14 @@
     <dimen name="gen_info_text_textSize">18sp</dimen>
     <dimen name="gen_info_head_marginStart_and_End">20dp</dimen>
     <dimen name="gen_info_head_marginTop">25dp</dimen>
-    <dimen name="gen_info_head_textSize">36sp</dimen>
+    <dimen name="gen_info_head_textSize">30sp</dimen>
     //infection info
     <dimen name="infection_info_text_marginStart_and_End">20dp</dimen>
     <dimen name="infection_info_text_marginTop">5dp</dimen>
     <dimen name="infection_info_text_textSize">18sp</dimen>
     <dimen name="infection_info_head_marginStart_and_End">20dp</dimen>
     <dimen name="infection_info_head_marginTop">25dp</dimen>
-    <dimen name="infection_info_head_textSize">36sp</dimen>
+    <dimen name="infection_info_head_textSize">30sp</dimen>
     //info menu
     <dimen name="info_menu_head_and_buttons_marginStart_and_End">20dp</dimen>
     <dimen name="info_menu_head_marginTop">25dp</dimen>
@@ -37,48 +37,48 @@
     <dimen name="log_textSize">30sp</dimen>
     <dimen name="log_notification_margins">20dp</dimen>
     //main
-    <dimen name="main_button_height">77dp</dimen>
+    <dimen name="main_button_height">50dp</dimen>
     <dimen name="date_display_width">343dp</dimen>
     <dimen name="date_display_height">63dp</dimen>
     <dimen name="risk_view_width">160dp</dimen>
     <dimen name="main_buttons_marginStart_and_End">20dp</dimen>
-    <dimen name="main_infection_button_marginTop">10dp</dimen>
-    <dimen name="main_suspicion_button_marginTop">5dp</dimen>
+    <dimen name="main_infection_button_marginTop">-10dp</dimen>
+    <dimen name="main_suspicion_button_marginTop">-5dp</dimen>
     <dimen name="main_buttons_textSize">24sp</dimen>
     <dimen name="main_date_marginStart_and_End">30dp</dimen>
     <dimen name="main_date_marginBottom">5dp</dimen>
     <dimen name="main_date_textSize">18sp</dimen>
     <dimen name="main_trafficLightView_marginStart_and_End">20dp</dimen>
-    <dimen name="main_trafficLightView_marginTop">25dp</dimen>
+    <dimen name="main_trafficLightView_marginTop">-15dp</dimen>
     <dimen name="main_trafficLightView_marginBottom">260dp</dimen>
-    <dimen name="main_riskView_marginStart">30dp</dimen>
+    <dimen name="main_riskView_marginStart">60dp</dimen>
     <dimen name="main_risklevelView_marginStart">30dp</dimen>
     <dimen name="main_riskView_marginTop">70dp</dimen>
     <dimen name="main_riskView_marginEnd">174dp</dimen>
     <dimen name="main_riskView_textSize">30sp</dimen>
     <dimen name="main_risklevelView_marginTop">15dp</dimen>
     <dimen name="main_riskCalcInfoButton_marginStart">50dp</dimen>
-    <dimen name="main_riskCalcInfoButton_marginBottom">5dp</dimen>
+    <dimen name="main_riskCalcInfoButton_marginBottom">15dp</dimen>
     //push notification activity
     <dimen name="image_view_marginStart_and_End">20dp</dimen>
-    <dimen name="image_view_marginTop">20dp</dimen>
+    <dimen name="image_view_marginTop">10dp</dimen>
     <dimen name="image_view_marginBottom">90dp</dimen>
-    <dimen name="view_height">350dp</dimen>
+    <dimen name="view_height">360dp</dimen>
     <dimen name="view_marginStart_and_End">15dp</dimen>
-    <dimen name="view_marginTop">228dp</dimen>
+    <dimen name="view_marginTop">218dp</dimen>
     <dimen name="push_not_button_marginBottom">15dp</dimen>
     <dimen name="push_not_button_textSize">30sp</dimen>
     <dimen name="push_not_text_marginStart_and_End">30dp</dimen>
     <dimen name="push_not_text_marginTop">16dp</dimen>
-    <dimen name="push_not_text_textSize">24sp</dimen>
+    <dimen name="push_not_text_textSize">20sp</dimen>
     <dimen name="push_not_head_marginStart_and_End">30dp</dimen>
     <dimen name="push_not_head_marginTop">240dp</dimen>
-    <dimen name="push_not_head_textSize">36sp</dimen>
+    <dimen name="push_not_head_textSize">30sp</dimen>
     //risk level info
     <dimen name="risk_info_head_and_text_marginStart_and_End">20dp</dimen>
     <dimen name="risk_info_head_marginTop">5dp</dimen>
     <dimen name="risk_info_text_marginTop">25dp</dimen>
-    <dimen name="risk_info_head_textSize">36sp</dimen>
+    <dimen name="risk_info_head_textSize">30sp</dimen>
     <dimen name="risk_info_text_textSize">18sp</dimen>
     //suspicion info
     <dimen name="susp_info_head_and_text_marginStart_and_End">20dp</dimen>
