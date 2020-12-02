@@ -343,12 +343,30 @@ public class MainActivity extends AppCompatActivity {
                             //TODO Ticket 73
                             //reset risk level
                             LocalSafer.safeRiskLevel(0, null);
+                            //update buttons
+                            initButtons();
+                            //pop up dialog to inform the user that the negative report was successful
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+                            builder.setCancelable(true);
+                            builder.setTitle(getString(R.string.head_report_successful));
+                            builder.setMessage(getString(R.string.text_report_successful));
+                            builder.setPositiveButton(getString(R.string.ok_button),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //pop up disappears
+                                        }
+                                    });
+                            AlertDialog thankYouDialog = builder.create();
+                            thankYouDialog.show();
                         }
                         else{ //report infection
                             //send infected key to the server
                             reportInfection("DIRECT");
                             //set the risk level corresponding to the infection
                             RiskLevel.setRiskLevelToCurrentInfection();
+                            //update buttons
+                            initButtons();
                             //pop up dialog to thank the user and inform about what to do now
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);
@@ -707,4 +725,5 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity getMainActivity() {
         return mainActivity;
     }
+
 }

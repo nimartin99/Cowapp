@@ -25,6 +25,8 @@
     <string name="head_report_negative">Report Negative Test Result</string>
     <string name="text_report_infection">Do you really want to report yourself infected? (Only with positive PCR test result.)</string>
     <string name="text_report_negative">Do you really want to report yourself negative? (Only with negative PCR test result.)</string>
+    <string name="head_report_successful">Report successful</string>
+    <string name="text_report_successful">You have been successfully reported negative. Thank you!</string>
     //Date and days since use
     <string name="daysSinceText">Since %1$s you are helping for %2$d days to fight the coronavirus.</string>
     //Data Protection
