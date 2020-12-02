@@ -621,20 +621,24 @@ public class MainActivity extends AppCompatActivity {
      * Sets the content of the date display on the mainscreen of the app
      */
     public static void showDateDisplay() {
-        dateDisplay.setText(DateHelper.generateStringForDateDisplay());
+        if(dateDisplay != null) {
+            dateDisplay.setText(DateHelper.generateStringForDateDisplay());
+        }
     }
 
     /**
      * method called daily to show the right traffic light status (for current health risk)
      */
     public static void showTrafficLightStatus() {
-        int riskValue = LocalSafer.getRiskLevel(null);
-        if (riskValue <= 33) {
-            trafficLight.setImageResource(R.drawable.green_traffic_light);
-        } else if (riskValue <= 70) {
-            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
-        } else {
-            trafficLight.setImageResource(R.drawable.red_traffic_light);
+        if (trafficLight != null) {
+            int riskValue = LocalSafer.getRiskLevel(null);
+            if (riskValue <= 33) {
+                trafficLight.setImageResource(R.drawable.green_traffic_light);
+            } else if (riskValue <= 70) {
+                trafficLight.setImageResource(R.drawable.yellow_traffic_light);
+            } else {
+                trafficLight.setImageResource(R.drawable.red_traffic_light);
+            }
         }
     }
 
