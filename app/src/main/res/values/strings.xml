@@ -25,6 +25,8 @@
     <string name="head_report_negative">Report Negative Test Result</string>
     <string name="text_report_infection">Do you really want to report yourself infected? (Only with positive PCR test result.)</string>
     <string name="text_report_negative">Do you really want to report yourself negative? (Only with negative PCR test result.)</string>
+    <string name="head_thank_you">Thank you for the report!</string>
+    <string name="text_thank_you">The app warns your surroundings. Please inform your local health department and immediately go into 14-day quarantine.</string>
     <string name="head_report_successful">Report successful</string>
     <string name="text_report_successful">You have been successfully reported negative. Thank you!</string>
     //Date and days since use
@@ -54,7 +56,12 @@
     <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>
     <string name="ok_button">Okay</string>
     <string name="head_notification">Possible health risk</string>
-    <string name="text_notification">A person with whom you were in direct or indirect contact has been infected with the corona virus.     Please let yourself be tested and go into quarantine until you receive a negative test result.</string>
+    <string name="text_notification">A person with whom you were in direct or indirect contact has been infected with the corona virus. Please let yourself be tested and go into quarantine until you receive a negative test result.</string>
+    <string name="head_directContactPush">Direct contact with an infected person detected</string>
+    <string name="text_moreInfoPush">Tap for further information.</string>
+    <string name="head_indirectContactPush">Indirect contact with an infected person detected</string>
+    <string name="head_noConnectionPush">Currently no connection to the server</string>
+    <string name="text_noConnectionPush">Trying to connect again in 5 minutes...</string>
     //Settings
     <string name="setting_1">Setting 1</string>
     <string name="setting_2">Setting 2</string>
@@ -81,10 +88,6 @@
     <string name="test_button_15" translatable="false">Add Direct Test Contact</string>
     <string name="test_button_16" translatable="false">Remove all Test Contacts</string>
     <string name="test_button_17" translatable="false">check ControlKeyExchangeFunction</string>
-
-    //Thank You Screen
-    <string name="head_thank_you">Thank you for the report!</string>
-    <string name="text_thank_you">The app warns your surroundings. Please inform your local health department and immediately go into 14-day quarantine.</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Protection active</string>
     <string name="actions">Test-Actions</string>

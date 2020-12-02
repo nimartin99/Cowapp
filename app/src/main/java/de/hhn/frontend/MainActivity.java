@@ -508,7 +508,10 @@ public class MainActivity extends AppCompatActivity {
                                     // inform user via push-up notification about the direct contact
                                     serverResponseNotification("DIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    RiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
+                                    int numberOfInfection= Integer.parseInt(infection.getContactNbr());
+                                    for (int i = 0; i != numberOfInfection; i++){
+                                        RiskLevel.addContact(new DirectContact(DateHelper.getCurrentDate()));
+                                    }
                                 } else if (infection.getStatus().equals("INDIRECT_CONTACT")) {
                                     Log.d(TAG, "User has had indirect contact with an infected person");
                                     // set last response state
@@ -516,7 +519,10 @@ public class MainActivity extends AppCompatActivity {
                                     // inform user via push-up notification about the indirect contact
                                     serverResponseNotification("INDIRECT_CONTACT_NOTIFICATION");
                                     //calculate and safe Risklevel, update of days since last contact corresponding to the server response
-                                    RiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
+                                    int numberOfInfection= Integer.parseInt(infection.getContactNbr());
+                                    for (int i = 0; i != numberOfInfection; i++) {
+                                        RiskLevel.addContact(new IndirectContact(DateHelper.getCurrentDate()));
+                                    }
                                 } else {
                                     Log.w(TAG, "onResponse: NO DEFINED INFECTION_STATUS");
                                     // set last response state
@@ -558,16 +564,16 @@ public class MainActivity extends AppCompatActivity {
         switch (notificationType) {
             case "DIRECT_CONTACT_NOTIFICATION":
                 Intent directContactPushNotification = new Intent(context, NotificationService.class);
-                directContactPushNotification.putExtra("TITLE", "Direkten Kontakt zu einer infizierten Person festgestellt");
-                directContactPushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
+                directContactPushNotification.putExtra("TITLE", "Direct contact with an infected person detected");
+                directContactPushNotification.putExtra("TEXT", "Tap for further information.");
                 directContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
                 directContactPushNotification.putExtra("LOG", true);
                 context.startService(directContactPushNotification);
                 break;
             case "INDIRECT_CONTACT_NOTIFICATION":
                 Intent indirectContactPushNotification = new Intent(context, NotificationService.class);
-                indirectContactPushNotification.putExtra("TITLE", "Indirekten Kontakt zu einer infizierten Person festgestellt");
-                indirectContactPushNotification.putExtra("TEXT", "Hier klicken für weitere Informationen.");
+                indirectContactPushNotification.putExtra("TITLE", "Indirect contact with an infected person detected");
+                indirectContactPushNotification.putExtra("TEXT", "Tap for further information.");
                 indirectContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
                 indirectContactPushNotification.putExtra("LOG", true);
                 context.startService(indirectContactPushNotification);
@@ -579,8 +585,8 @@ public class MainActivity extends AppCompatActivity {
                 if ((noConnectionNotificationCounter
                         % NotificationService.getNoConnectionNotificationInterval()) == 0) {
                     Intent noConnectionPushNotification = new Intent(context, NotificationService.class);
-                    noConnectionPushNotification.putExtra("TITLE", "Es konnte keine Verbindung zum Server hergestellt werden");
-                    noConnectionPushNotification.putExtra("TEXT", "Versuche Verbindungsaufbau in 5 Minuten erneut...");
+                    noConnectionPushNotification.putExtra("TITLE", "Currently no connection to the server");
+                    noConnectionPushNotification.putExtra("TEXT", "Trying to connect again in 5 minutes...");
                     noConnectionPushNotification.putExtra("LOG", false);
                     context.startService(noConnectionPushNotification);
                 }
