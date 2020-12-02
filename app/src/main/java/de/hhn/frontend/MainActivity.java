@@ -4,12 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.app.AlarmManager;
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     //To display the current risk status
     private static ImageView trafficLight;
     private static TextView riskStatus;
+    private static TextView risklevelStatus;
     //To display the first use date and the elapsed time since the app is used.
     public static TextView dateDisplay;
 
@@ -103,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         //traffic light image view and risk status text view
         this.trafficLight = (ImageView) this.findViewById(R.id.trafficLightView);
         this.riskStatus = (TextView) this.findViewById(R.id.RiskView);
+        this.risklevelStatus = (TextView) this.findViewById(R.id.RisklevelView);
         this.dateDisplay = (TextView) this.findViewById(R.id.DateDisplay);
 
         // init retrofit
@@ -311,6 +315,69 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    /**
+     * Method called when the user clicks the report infection or negative test result button.
+     * A dialog pops up which asks for approval to report or not.
+     * If an infection has been reported a dialog pops up to thank the user for the report
+     */
+    public void reportApproval() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(true);
+        final int riskValue = LocalSafer.getRiskLevel(null);
+        if(riskValue == 100){ //user wants to report negative test result
+            builder.setTitle(getString(R.string.head_report_negative));
+            builder.setMessage(getString(R.string.text_report_negative));
+        }
+        else{
+            builder.setTitle(getString(R.string.head_report_infection));
+            builder.setMessage(getString(R.string.text_report_infection));
+        }
+        //approval button
+        builder.setPositiveButton(getString(R.string.report_yes_button),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(riskValue == 100){ //report negative test result
+                            //report yourself negative
+                            //TODO Ticket 73
+                            //reset risk level
+                            LocalSafer.safeRiskLevel(0, null);
+                        }
+                        else{ //report infection
+                            //send infected key to the server
+                            reportInfection("DIRECT");
+                            //set the risk level corresponding to the infection
+                            RiskLevel.setRiskLevelToCurrentInfection();
+                            //pop up dialog to thank the user and inform about what to do now
+                            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+                            builder.setCancelable(true);
+                            builder.setTitle(getString(R.string.head_thank_you));
+                            builder.setMessage(getString(R.string.text_thank_you));
+                            builder.setPositiveButton(getString(R.string.ok_button),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            //pop up disappears
+                                        }
+                                    });
+                            AlertDialog thankYouDialog = builder.create();
+                            thankYouDialog.show();
+                        }
+                    }
+                });
+        //button to stop the report
+        builder.setNegativeButton(getString(R.string.report_no_button),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //pop up disappears
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     /**
      * Report an infection by sending the current key to the server.
@@ -550,20 +617,25 @@ public class MainActivity extends AppCompatActivity {
     public static void showRiskStatus() {
         int riskValue = LocalSafer.getRiskLevel(null);
         if (riskValue <= 33) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_low)
-                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                String risk = riskStatus.getResources().getString(R.string.risk_status_low);
                 riskStatus.setText(risk);
+                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                risklevelStatus.setText(risklevel);
         } else if (riskValue <= 70) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_moderate)
-                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                String risk = riskStatus.getResources().getString(R.string.risk_status_moderate);
                 riskStatus.setText(risk);
+                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                risklevelStatus.setText(risklevel);
         } else if (riskValue > 70 && riskValue < 100) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_high)
-                        + "\n \n" + riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                String risk = riskStatus.getResources().getString(R.string.risk_status_high);
                 riskStatus.setText(risk);
+                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
+                risklevelStatus.setText(risklevel);
         } else if (riskValue == 100) {
-            String risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
+                String risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
                 riskStatus.setText(risk);
+                String risklevel = "";
+                risklevelStatus.setText(risklevel);
         }
     }
 
@@ -598,20 +670,21 @@ public class MainActivity extends AppCompatActivity {
             suspicionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Go to screen to report a negative test result to update the infection status
-                    Intent nextActivity = new Intent(MainActivity.this, ReportNegativeActivity.class);
-                    startActivity(nextActivity);
+                    //opens pop up dialog to ask the user if he really wants to report a negative test result to update the infection status
+                    reportApproval();
                 }
             });
         }
         else{  //normal app usage
+            //normal button texts (report infection and suspicion button)
+            reportInfectionButton.setText(R.string.report_infection_button);
+            suspicionButton.setText(R.string.suspicion_button);
             //Report infection button listener
             reportInfectionButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Go to screen to report infection
-                    Intent nextActivity = new Intent(MainActivity.this, ReportInfectionActivity.class);
-                    startActivity(nextActivity);
+                    //opens pop up dialog to ask the user if he really wants to report a infection
+                    reportApproval();
                 }
             });
 
@@ -633,5 +706,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity getMainActivity() {
         return mainActivity;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainActivity = null;
     }
 }

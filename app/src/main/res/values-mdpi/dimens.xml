@@ -52,9 +52,11 @@
     <dimen name="main_trafficLightView_marginTop">25dp</dimen>
     <dimen name="main_trafficLightView_marginBottom">260dp</dimen>
     <dimen name="main_riskView_marginStart">30dp</dimen>
+    <dimen name="main_risklevelView_marginStart">70dp</dimen>
     <dimen name="main_riskView_marginTop">70dp</dimen>
     <dimen name="main_riskView_marginEnd">174dp</dimen>
     <dimen name="main_riskView_textSize">30sp</dimen>
+    <dimen name="main_risklevelView_marginTop">15dp</dimen>
     <dimen name="main_riskCalcInfoButton_marginStart">90dp</dimen>
     <dimen name="main_riskCalcInfoButton_marginBottom">18dp</dimen>
     //push notification activity
@@ -72,14 +74,6 @@
     <dimen name="push_not_head_marginStart_and_End">60dp</dimen>
     <dimen name="push_not_head_marginTop">300dp</dimen>
     <dimen name="push_not_head_textSize">36sp</dimen>
-    //report infection activity
-    <dimen name="report_no_button_marginTop">10dp</dimen>
-    <dimen name="report_no_button_marginEnd">120dp</dimen>
-    <dimen name="report_textSize">30sp</dimen>
-    <dimen name="report_text_marginStart_and_End">90dp</dimen>
-    <dimen name="report_text_marginTop">200dp</dimen>
-    <dimen name="report_yes_button_marginStart">120dp</dimen>
-    <dimen name="report_yes_button_marginTop">10dp</dimen>
     //risk level info
     <dimen name="risk_info_head_and_text_marginStart_and_End">20dp</dimen>
     <dimen name="risk_info_head_marginTop">5dp</dimen>
@@ -102,12 +96,4 @@
     <dimen name="test_head_marginStart_and_End">20dp</dimen>
     <dimen name="test_head_marginTop">25dp</dimen>
     <dimen name="test_head_textSize">30sp</dimen>
-    //thank you activity
-    <dimen name="thanks_button_marginTop">20dp</dimen>
-    <dimen name="thanks_button_textSize">30sp</dimen>
-    <dimen name="thanks_head_and_text_marginStart_and_End">90dp</dimen>
-    <dimen name="thanks_head_marginTop">180dp</dimen>
-    <dimen name="thanks_head_textSize">36sp</dimen>
-    <dimen name="thanks_text_marginTop">10dp</dimen>
-    <dimen name="thanks_text_textSize">24sp</dimen>
 </resources>

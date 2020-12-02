@@ -1,3 +1,2 @@
-include ':jonasLib'
 include ':app'
 rootProject.name = "frontend"
