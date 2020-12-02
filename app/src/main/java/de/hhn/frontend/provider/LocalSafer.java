@@ -514,7 +514,7 @@ public class LocalSafer {
     public static boolean isAlarmRingLogged(Context context) {
         String value = readDataFile(DATAFILE13, context);
         if (value.isEmpty()) {
-            return false;
+            return true;
         }
         return Boolean.valueOf(value);
     }
@@ -526,7 +526,7 @@ public class LocalSafer {
     public static boolean isAlarmSetLogged(Context context) {
         String value = readDataFile(DATAFILE14, context);
         if (value.isEmpty()) {
-            return false;
+            return true;
         }
         return Boolean.valueOf(value);
     }
@@ -538,7 +538,7 @@ public class LocalSafer {
     public static boolean isKeyTransmitLogged(Context context) {
         String value = readDataFile(DATAFILE15, context);
         if (value.isEmpty()) {
-            return false;
+            return true;
         }
         return Boolean.valueOf(value);
     }
@@ -550,7 +550,7 @@ public class LocalSafer {
     public static boolean isKeySafeLogged(Context context) {
         String value = readDataFile(DATAFILE16, context);
         if (value.isEmpty()) {
-            return false;
+            return true;
         }
         return Boolean.valueOf(value);
     }
