@@ -26,6 +26,8 @@
     <string name="head_report_negative">Negativmeldung</string>
     <string name="text_report_infection">Möchten Sie sich wirklich als infiziert melden? (Nur mit positivem PCR-Testergebnis)</string>
     <string name="text_report_negative">Möchten Sie sich wirklich als nicht mehr infiziert melden? (Nur mit negativem PCR-Testergebnis)</string>
+    <string name="head_thank_you">Vielen Dank für die Meldung!</string>
+    <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
     <string name="head_report_successful">Meldung erfolgreich</string>
     <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. Vielen Dank!</string>
     //Date and days since use
@@ -55,9 +57,12 @@
     <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>
     <string name="ok_button">Okay</string>
     <string name="head_notification">Mögliches Gesundheitsrisiko</string>
-    <string name="text_notification">Eine Person, mit der Sie in direktem oder indirektem Kontakt
-        standen, hat sich mit dem Coronavirus infiziert.
-        Bitte lassen Sie sich testen und begeben sich bis zu einem negativen Testergebnis in Quarantäne.</string>
+    <string name="text_notification">Eine Person, mit der Sie in direktem oder indirektem Kontakt standen, hat sich mit dem Coronavirus infiziert. Bitte lassen Sie sich testen und begeben sich bis zu einem negativen Testergebnis in Quarantäne.</string>
+    <string name="head_directContactPush">Direkten Kontakt zu einer infizierten Person festgestellt</string>
+    <string name="text_moreInfoPush">Hier klicken für weitere Informationen.</string>
+    <string name="head_indirectContactPush">Indirekten Kontakt zu einer infizierten Person festgestellt</string>
+    <string name="head_noConnectionPush">Es konnte keine Verbindung zum Server hergestellt werden</string>
+    <string name="text_noConnectionPush">Versuche Verbindungsaufbau in 5 Minuten erneut...</string>
     //Settings
     <string name="setting_1">Setting 1</string>
     <string name="setting_2">Setting 2</string>
@@ -79,10 +84,6 @@
     <string name="reset_button_risklevel">Reset Risk Level</string>
     <string name="test_button_7">Übertragung an/aus</string>
     <string name="test_button_8">Scannen an/aus</string>
-    //Thank You Screen
-    <string name="head_thank_you">Vielen Dank für die Meldung!</string>
-    <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt
-        und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Schutz aktiv</string>
     <string name="actions">Test-Aktionen</string>
