@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -165,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
         boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), PendingIntent.FLAG_NO_CREATE) != null);
 
         if (alarmUp == false) {
+            LocalSafer.shouldRingAgain(null);
+            Log.d("requestLine", "Main Activity: Alarm was set");
             Log.i(TAG, "onCreate: Alarm is set");
             //Register AlarmManager Broadcast receive.
             firingCal = Calendar.getInstance();
@@ -182,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
+            Log.d("requestLine", "Main Activity: Alarm was not set, because allready setted");
         }
     }
 
@@ -269,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
      * Request a new key from the server.
      */
     public static boolean requestKey() {
+        Log.d("requestLine", "MainActivity: requestKey() was called. ");
         if (LocalSafer.getRiskLevel(null) != 100) {
             Call<String> call = retrofitService.requestKey();
             RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
