@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private static RetrofitService retrofitService;
-    private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
-    private String PHONE_URL = "http://" + Personal_Constants.OWN_IP + ":3000";
+    private String BASE_URL = "https://cowapp.glitch.me";
 
     //For the once-a-day-alarm-clock for deleting keys that are older than 3 weeks
     private PendingIntent myPendingIntent;
