@@ -12,6 +12,8 @@ import java.util.List;
 import de.hhn.frontend.Constants;
 import de.hhn.frontend.DebugLog;
 import de.hhn.frontend.MainActivity;
+import de.hhn.frontend.OtherKeysActivity;
+import de.hhn.frontend.OwnKeyActivity;
 import de.hhn.frontend.R;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.risklevel.DirectContact;
@@ -185,6 +187,7 @@ public class LocalSafer {
                 addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.key_was_saved) + contactKey, context);
             }
         }
+        OtherKeysActivity.renewTheLog();
     }
 
     /**
@@ -334,6 +337,7 @@ public class LocalSafer {
         Log.d(TAG, "safeOwnKey was called with: " + key);
         safeStringAtDatafile(DATAFILE06, key, context);
         addKeyToOwnKeys(key, context);
+        OwnKeyActivity.renewTheLog();
     }
 
 
