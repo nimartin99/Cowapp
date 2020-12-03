@@ -402,8 +402,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void reportInfection(final String contactType) {
         Log.d(TAG, "Sending all contact keys to the server, therefore the response may take some time...");
+
         Runnable runnable = new Runnable() {
             public void run() {
+                LocalSafer.analyzeBufferFile(null);
                 // check if infected user has had contacts
                 if (LocalSafer.getKeyPairs(null) != null) {
                     // get all contact keys
