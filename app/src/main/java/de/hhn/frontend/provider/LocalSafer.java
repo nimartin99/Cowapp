@@ -2,26 +2,18 @@ package de.hhn.frontend.provider;
 
 import android.content.Context;
 import android.util.Log;
-
-import androidx.annotation.StringRes;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-
 import de.hhn.frontend.Constants;
 import de.hhn.frontend.DebugLog;
 import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.R;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
-import de.hhn.frontend.risklevel.Contact;
 import de.hhn.frontend.risklevel.DirectContact;
 import de.hhn.frontend.risklevel.IndirectContact;
 
@@ -40,6 +32,7 @@ public class LocalSafer {
     private static final String DATAFILE05 = "cowappfirstdate.txt";
     private static final String DATAFILE06 = "cowappownkey.txt";
     private static final String DATAFILE07 = "cowappownkeys.txt";
+    private static final String DATAFILE08 = "cowapplastring.txt";
     private static final String DATAFILE09 = "cowappkeybuffer.txt";
     private static final String DATAFILE11 = "cowappnotificationcount.txt";
     private static final String DATAFILE12 = "cowappdebuglogger.txt";
@@ -675,4 +668,66 @@ public class LocalSafer {
         safeStringAtDatafile(DATAFILE22, "", context);
     }
 
+    /**
+     * Safes the Time of the last ring.
+     *
+     * @param date last ring
+     */
+    public static void safeLastRingTime(Date date, Context context) {
+        Log.d(TAG, "safeLastRingDate() was called with " + date.toString());
+        safeStringAtDatafile(DATAFILE08, date.toString(), context);
+    }
+
+    /**
+     * Getter for the date of the first start.
+     *
+     * @return the days since last Contact as int.
+     */
+    public static Date getLastRingTime(Context context) {
+        Log.d(TAG, "getLastRingTime() was called.");
+        String date = readDataFile(DATAFILE08, context);
+        if (date.isEmpty()) {
+            return null;
+        } else {
+            return new Date(date);
+        }
+    }
+
+    /**
+     * Returns true if the date is older than 5 Minutes
+     *
+     * @param date
+     * @return
+     */
+    public static boolean lastRingOlderThenFifteenMinutes(Date date) {
+        Log.d(TAG, "dateIsOld() was called");
+        Log.d(TAG, "dateIsOld() was called");
+
+        boolean result = false;
+        Date oldDate = date;
+        oldDate.setMinutes(date.getMinutes() + 5);
+
+        if (oldDate.before(new Date())) {
+            result = true;
+        }
+
+        return result;
+    }
+
+    public static boolean shouldRingAgain(Context context) {
+        Date lastRing = getLastRingTime(null);
+        if (lastRing == null) {
+            safeLastRingTime(new Date(), null);
+            Log.d("requestLine", "LocalSafer: shouldRingAgain() was called and value is true");
+            return true;
+        }
+
+        boolean value = lastRingOlderThenFifteenMinutes(lastRing);
+
+        if (value == true) {
+            safeLastRingTime(new Date(), null);
+        }
+        Log.d("requestLine", "LocalSafer: shouldRingAgain() was called and value is " + value);
+        return value;
+    }
 }
