@@ -12,6 +12,8 @@
     <string name="suspicion_button_ci">Negativmeldung</string>
     <string name="traffic_light_description">Anzeige, die das aktuelle Risikolevel durch eine Ampel veranschaulicht.</string>
     <string name="infoRiskCalcButton_description">Anklicken, um auf die Informationsseite zur Risikoberechnung zu gelangen.</string>
+    <string name="check_bluetooth_enabled_title">Bluetooth ist ausgeschaltet</string>
+    <string name="check_bluetooth_enabled_message">Bluetooth ist ausgeschaltet.\nDamit Covid Kontakte verfolgt werden können muss Bluetooth und GPS (Standort) immer aktiviert sein.</string>
     //Main risk status
     <string name="risk_status_default">Aktuelles Risiko</string>
     <string name="risk_status_low">Geringes Risiko</string>

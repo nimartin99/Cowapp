@@ -27,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.altbeacon.beacon.BeaconManager;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -149,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         }
         //show current Info about days since usage.
         showDateDisplay();
+        if(Constants.SCAN_AND_TRANSMIT) {
+            checkIfBluetoothIsEnabled();
+        }
     }
 
     @Override
@@ -192,6 +197,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(Constants.SCAN_AND_TRANSMIT) {
+            checkIfBluetoothIsEnabled();
+        }
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
@@ -730,6 +738,40 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(nextActivity);
                 }
             });
+        }
+    }
+
+    private void checkIfBluetoothIsEnabled() {
+        try {
+            if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.check_bluetooth_enabled_title));
+                builder.setMessage(getString(R.string.check_bluetooth_enabled_message));
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        //finish();
+                        //System.exit(0);
+                    }
+                });
+                builder.show();
+            }
+        } catch (RuntimeException e) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.ble_available_title));
+            builder.setMessage(getString(R.string.ble_available_message));
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    //finish();
+                    //System.exit(0);
+                }
+
+            });
+            builder.show();
         }
     }
 

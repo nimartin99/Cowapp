@@ -11,6 +11,8 @@
     <string name="suspicion_button_ci">Negative Test Result</string>
     <string name="traffic_light_description">View to show the current risk status via traffic light status.</string>
     <string name="infoRiskCalcButton_description">Click to show the information page about the risk level calculation.</string>
+    <string name="check_bluetooth_enabled_title">Please enable Bluetooth</string>
+    <string name="check_bluetooth_enabled_message">Your Bluetooth is disabled.\nThe App needs Bluetooth and GPS (Location) always turned on to detect Covid contacts.</string>
     //Main risk status
     <string name="risk_status_default">Current risk</string>
     <string name="risk_status_low">Low Risk</string>
