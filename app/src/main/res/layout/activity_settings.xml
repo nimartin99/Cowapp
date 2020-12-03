@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50sp"
                 android:layout_weight="1"
+                android:checked="true"
                 android:text="@string/debug_settings_alarm"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50sp"
                 android:layout_weight="1"
+                android:checked="true"
                 android:text="@string/debug_settings_alarmset"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -74,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50sp"
                 android:layout_weight="1"
+                android:checked="true"
                 android:text="@string/debug_settings_keytransmit"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -91,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="50sp"
                 android:layout_weight="1"
+                android:checked="true"
                 android:text="@string/debug_settings_keysafe"
                 android:textSize="20sp" />
         </LinearLayout>

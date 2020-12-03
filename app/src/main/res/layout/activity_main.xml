@@ -7,7 +7,7 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-    <Button
+        <Button
         android:id="@+id/InfektionMeldenButton"
         android:layout_width="match_parent"
         android:layout_height="@dimen/main_button_height"
@@ -113,5 +113,6 @@
         app:layout_constraintBottom_toTopOf="@+id/InfektionMeldenButton"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_menu_help" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

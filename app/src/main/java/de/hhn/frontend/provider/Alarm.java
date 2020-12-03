@@ -27,7 +27,9 @@ public class Alarm {
         LocalSafer.addNotificationToSavedNotifications(null, null);
 
         //update the information about the date of the first usage and the days since the app is used
-        MainActivity.showDateDisplay();
+        if (MainActivity.getMainActivity() != null) {
+            MainActivity.showDateDisplay();
+        }
 
         // in case of a current infection, check if it is older than 14 days and if that is true, set the infection status from infected to not infected and start the BLE key exchange.
         if (LocalSafer.getRiskLevel(null) == 100) {
@@ -49,7 +51,6 @@ public class Alarm {
         } else {
             Log.d("Alarm", "due to a current infection no key was requested");
         }
-
     }
 
     public static void ring() {

@@ -104,16 +104,18 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
      * @param state true if monitoring should be enabled, false if disabled
      */
     public void changeMonitoringState(boolean state) {
-        if (state && regionBootstrap == null) {
-            Log.d(TAG, "Scanning: ON");
-            Region region = new Region("backgroundRegion",
-                    null, null, null);
-            regionBootstrap = new RegionBootstrap(this, region);
-        } else if (!state) {
-            Log.d(TAG, "Scanning: OFF");
-            if (regionBootstrap != null) {
-                regionBootstrap.disable();
-                regionBootstrap = null;
+        if(Constants.SCAN_AND_TRANSMIT) {
+            if (state && regionBootstrap == null) {
+                Log.d(TAG, "Scanning: ON");
+                Region region = new Region("backgroundRegion",
+                        null, null, null);
+                regionBootstrap = new RegionBootstrap(this, region);
+            } else if (!state) {
+                Log.d(TAG, "Scanning: OFF");
+                if (regionBootstrap != null) {
+                    regionBootstrap.disable();
+                    regionBootstrap = null;
+                }
             }
         }
     }

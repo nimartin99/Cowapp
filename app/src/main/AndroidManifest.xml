@@ -20,8 +20,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ReportNegativeActivity"></activity>
-        <activity android:name=".PermissionActivity" />
+        <activity android:name=".PermissionActivity" android:noHistory="true"/>
         <activity android:name=".DebugLog" />
         <activity android:name=".DebugActivity" />
         <activity android:name=".RiskLevelInfoActivity" />
@@ -41,14 +40,12 @@
         </activity>
         <activity android:name=".TestMenuActivity" />
         <activity android:name=".PushNotificationActivity" />
-        <activity android:name=".ThankYouActivity" />
         <activity android:name=".SuspicionActivity" />
-        <activity android:name=".ReportInfectionActivity" />
         <activity android:name=".InfoMenuActivity" />
         <activity android:name=".GeneralInfoActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".LogActivity" />
-        <activity android:name=".DataProtectionActivity" />
+        <activity android:name=".DataProtectionActivity" android:noHistory="true"/>
 
         <service
             android:name="org.altbeacon.beacon.service.BeaconService"

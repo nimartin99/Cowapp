@@ -123,11 +123,7 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
 
         //show current risk level (updated once a day)
-        showTrafficLightStatus();
-        showRiskStatus();
-
-        //show current Info about days since usage.
-        showDateDisplay();
+        RiskLevel.calculateRiskLevel();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (LocalSafer.isFirstAppStart(null)){
@@ -153,6 +149,13 @@ public class MainActivity extends AppCompatActivity {
             });
             setAlarm();
         }
+        //show current Info about days since usage.
+        showDateDisplay();
+    }
+
+    @Override
+    public void onBackPressed() {
+
     }
 
     public void firstinit() {
@@ -199,8 +202,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             //show current risk level (updated once a day)
-            showTrafficLightStatus();
-            showRiskStatus();
+            RiskLevel.calculateRiskLevel();
             //initialize buttons due to infection status of the user
             initButtons();
         }
@@ -406,8 +408,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void reportInfection(final String contactType) {
         Log.d(TAG, "Sending all contact keys to the server, therefore the response may take some time...");
+
         Runnable runnable = new Runnable() {
             public void run() {
+                LocalSafer.analyzeBufferFile(null);
                 // check if infected user has had contacts
                 if (LocalSafer.getKeyPairs(null) != null) {
                     // get all contact keys
@@ -565,16 +569,16 @@ public class MainActivity extends AppCompatActivity {
         switch (notificationType) {
             case "DIRECT_CONTACT_NOTIFICATION":
                 Intent directContactPushNotification = new Intent(context, NotificationService.class);
-                directContactPushNotification.putExtra("TITLE", R.string.head_directContactPush);
-                directContactPushNotification.putExtra("TEXT", R.string.text_moreInfoPush);
+                directContactPushNotification.putExtra("TITLE", "Direct contact with an infected person detected");
+                directContactPushNotification.putExtra("TEXT", "Tap for further information.");
                 directContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
                 directContactPushNotification.putExtra("LOG", true);
                 context.startService(directContactPushNotification);
                 break;
             case "INDIRECT_CONTACT_NOTIFICATION":
                 Intent indirectContactPushNotification = new Intent(context, NotificationService.class);
-                indirectContactPushNotification.putExtra("TITLE", R.string.head_indirectContactPush);
-                indirectContactPushNotification.putExtra("TEXT", R.string.text_moreInfoPush);
+                indirectContactPushNotification.putExtra("TITLE", "Indirect contact with an infected person detected");
+                indirectContactPushNotification.putExtra("TEXT", "Tap for further information.");
                 indirectContactPushNotification.putExtra("CLASS", PushNotificationActivity.class);
                 indirectContactPushNotification.putExtra("LOG", true);
                 context.startService(indirectContactPushNotification);
@@ -586,8 +590,8 @@ public class MainActivity extends AppCompatActivity {
                 if ((noConnectionNotificationCounter
                         % NotificationService.getNoConnectionNotificationInterval()) == 0) {
                     Intent noConnectionPushNotification = new Intent(context, NotificationService.class);
-                    noConnectionPushNotification.putExtra("TITLE", R.string.head_noConnectionPush);
-                    noConnectionPushNotification.putExtra("TEXT", R.string.text_noConnectionPush);
+                    noConnectionPushNotification.putExtra("TITLE", "Currently no connection to the server");
+                    noConnectionPushNotification.putExtra("TEXT", "Trying to connect again in 5 minutes...");
                     noConnectionPushNotification.putExtra("LOG", false);
                     context.startService(noConnectionPushNotification);
                 }
@@ -622,20 +626,24 @@ public class MainActivity extends AppCompatActivity {
      * Sets the content of the date display on the mainscreen of the app
      */
     public static void showDateDisplay() {
-        dateDisplay.setText(DateHelper.generateStringForDateDisplay());
+        if(dateDisplay != null) {
+            dateDisplay.setText(DateHelper.generateStringForDateDisplay());
+        }
     }
 
     /**
      * method called daily to show the right traffic light status (for current health risk)
      */
     public static void showTrafficLightStatus() {
-        int riskValue = LocalSafer.getRiskLevel(null);
-        if (riskValue <= 33) {
-            trafficLight.setImageResource(R.drawable.green_traffic_light);
-        } else if (riskValue <= 70) {
-            trafficLight.setImageResource(R.drawable.yellow_traffic_light);
-        } else {
-            trafficLight.setImageResource(R.drawable.red_traffic_light);
+        if (trafficLight != null) {
+            int riskValue = LocalSafer.getRiskLevel(null);
+            if (riskValue <= 33) {
+                trafficLight.setImageResource(R.drawable.green_traffic_light);
+            } else if (riskValue <= 70) {
+                trafficLight.setImageResource(R.drawable.yellow_traffic_light);
+            } else {
+                trafficLight.setImageResource(R.drawable.red_traffic_light);
+            }
         }
     }
 

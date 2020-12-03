@@ -77,8 +77,7 @@ public class TestMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //change risk level and update shown status
                 LocalSafer.safeRiskLevel(riskLevelTestValue, null);
-                MainActivity.showRiskStatus();
-                MainActivity.showTrafficLightStatus();
+                RiskLevel.calculateRiskLevel();
             }
         });
 
@@ -90,8 +89,7 @@ public class TestMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //reset risk level to 0
                 LocalSafer.safeRiskLevel(0, null);
-                MainActivity.showRiskStatus();
-                MainActivity.showTrafficLightStatus();
+                RiskLevel.calculateRiskLevel();
             }
         });
 

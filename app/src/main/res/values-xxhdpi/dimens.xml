@@ -37,19 +37,19 @@
     <dimen name="log_textSize">30sp</dimen>
     <dimen name="log_notification_margins">20dp</dimen>
     //main
-    <dimen name="main_button_height">50dp</dimen>
+    <dimen name="main_button_height">78dp</dimen>
     <dimen name="date_display_width">343dp</dimen>
     <dimen name="date_display_height">63dp</dimen>
     <dimen name="risk_view_width">160dp</dimen>
     <dimen name="main_buttons_marginStart_and_End">20dp</dimen>
-    <dimen name="main_infection_button_marginTop">-10dp</dimen>
+    <dimen name="main_infection_button_marginTop">15dp</dimen>
     <dimen name="main_suspicion_button_marginTop">-5dp</dimen>
     <dimen name="main_buttons_textSize">24sp</dimen>
     <dimen name="main_date_marginStart_and_End">30dp</dimen>
     <dimen name="main_date_marginBottom">5dp</dimen>
     <dimen name="main_date_textSize">18sp</dimen>
     <dimen name="main_trafficLightView_marginStart_and_End">20dp</dimen>
-    <dimen name="main_trafficLightView_marginTop">-15dp</dimen>
+    <dimen name="main_trafficLightView_marginTop">15dp</dimen>
     <dimen name="main_trafficLightView_marginBottom">260dp</dimen>
     <dimen name="main_riskView_marginStart">60dp</dimen>
     <dimen name="main_risklevelView_marginStart">30dp</dimen>
