@@ -20,8 +20,8 @@ import de.hhn.frontend.provider.LocalSafer;
 public class RiskLevel {
 
     private static final String TAG = "RiskLevel";
-    private static ArrayList<IndirectContact> indirectContactArrayList = LocalSafer.getListOfIndirectContacts();
-    private static ArrayList<DirectContact> directContactArrayList = LocalSafer.getListOfDirectContacts();
+    private static ArrayList<IndirectContact> indirectContactArrayList;
+    private static ArrayList<DirectContact> directContactArrayList;
     private static int newRiskLevelValue;
 
 
@@ -30,7 +30,8 @@ public class RiskLevel {
      */
 
     public static synchronized void calculateRiskLevel() {
-
+        indirectContactArrayList = LocalSafer.getListOfIndirectContacts(null);
+        directContactArrayList = LocalSafer.getListOfDirectContacts(null);
 
         if (LocalSafer.getRiskLevel(null) != 100) {
             newRiskLevelValue = 0;
@@ -61,21 +62,19 @@ public class RiskLevel {
 
 
     public static synchronized void addContact(Contact contact) {
-
-
         if (contact instanceof IndirectContact) {
-
+            indirectContactArrayList = LocalSafer.getListOfIndirectContacts(null);
             indirectContactArrayList.add((IndirectContact) contact);
-            LocalSafer.safeListOfIndirectContacts(indirectContactArrayList);
+            LocalSafer.safeListOfIndirectContacts(indirectContactArrayList, null);
             Log.d(TAG, "Indirect contact added to List");
 
         } else if (contact instanceof DirectContact) {
-
+            directContactArrayList = LocalSafer.getListOfDirectContacts(null);
             directContactArrayList.add((DirectContact) contact);
-            LocalSafer.safeListOfDirectContacts(directContactArrayList);
+            LocalSafer.safeListOfDirectContacts(directContactArrayList, null);
             Log.d(TAG, "Direct contact added to List");
         }
-        deleteOldContacts();
+       deleteOldContacts();
 
     }
 
@@ -84,6 +83,9 @@ public class RiskLevel {
      */
 
     public static void deleteOldContacts() {
+        indirectContactArrayList = LocalSafer.getListOfIndirectContacts(null);
+        directContactArrayList = LocalSafer.getListOfDirectContacts(null);
+
         Iterator<IndirectContact> iCIterator;
         Iterator<DirectContact> dCIterator;
 

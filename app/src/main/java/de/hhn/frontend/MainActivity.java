@@ -123,8 +123,7 @@ public class MainActivity extends AppCompatActivity {
         createNotificationChannel();
 
         //show current risk level (updated once a day)
-        showTrafficLightStatus();
-        showRiskStatus();
+        RiskLevel.calculateRiskLevel();
 
         //If the app is opened for the first time the user has to accept the data protection regulations
         if (LocalSafer.isFirstAppStart(null)){
@@ -197,8 +196,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             //show current risk level (updated once a day)
-            showTrafficLightStatus();
-            showRiskStatus();
+            RiskLevel.calculateRiskLevel();
             //initialize buttons due to infection status of the user
             initButtons();
         }

@@ -21,6 +21,7 @@ import de.hhn.frontend.DebugLog;
 import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.R;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
+import de.hhn.frontend.risklevel.Contact;
 import de.hhn.frontend.risklevel.DirectContact;
 import de.hhn.frontend.risklevel.IndirectContact;
 
@@ -46,10 +47,10 @@ public class LocalSafer {
     private static final String DATAFILE14 = "cowappisalarmsetlogged.txt";
     private static final String DATAFILE15 = "cowappniskeytransmitlogged.txt";
     private static final String DATAFILE16 = "cowappiskeysafelogged.txt";
-    private static final String DATAFILE17 = "cowappisfirstappstart";
+    private static final String DATAFILE17 = "cowappisfirstappstart.txt";
     private static final String DATAFILE21 = "cowappindirectcontacts.txt";
     private static final String DATAFILE22 = "cowappdirectcontacts.txt";
-    private static final String DATAFILE23 = "cowappdateolri";
+    private static final String DATAFILE23 = "cowappdateolri.txt";
     /**
      * This methods saves a String under a datafileName.
      * If there is not such datafile, it will be created, when you call this methode.
@@ -560,38 +561,27 @@ public class LocalSafer {
      * @param indirectContactArrayList list of indirect contacts
      */
 
-    public synchronized static void safeListOfIndirectContacts(ArrayList<IndirectContact> indirectContactArrayList) {
-        try {
-            FileOutputStream fos = BeaconBackgroundService.getAppContext().openFileOutput(DATAFILE21, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(indirectContactArrayList);
-            oos.close();
-            fos.close();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+    public synchronized static void safeListOfIndirectContacts(ArrayList<IndirectContact> indirectContactArrayList, Context context) {
+        Log.d(TAG, "safeListOfIndirectContacts was called.");
+        String listValues = "";
+        for (IndirectContact contact: indirectContactArrayList) {
+            listValues = listValues + "-<>-" + contact.getDate();
         }
+        safeStringAtDatafile(DATAFILE21, listValues, context);
     }
 
     /**
      * Returns the list of the indirect contacts
      */
 
-    public synchronized static ArrayList<IndirectContact> getListOfIndirectContacts() {
-
+    public synchronized static ArrayList<IndirectContact> getListOfIndirectContacts(Context context) {
         ArrayList<IndirectContact> indirectContactArrayList = new ArrayList<>();
-        try {
-            FileInputStream fis = new FileInputStream(DATAFILE21);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+        String[] listvalues = getValuesAsArray(DATAFILE21, context);
 
-            indirectContactArrayList = (ArrayList) ois.readObject();
-            ois.close();
-            fis.close();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (ClassNotFoundException c) {
-            System.out.println("Class not found");
-            c.printStackTrace();
-
+        if (listvalues != null) {
+            for (String date: listvalues) {
+                indirectContactArrayList.add(new IndirectContact(new Date(date)));
+            }
         }
 
         return indirectContactArrayList;
@@ -602,39 +592,27 @@ public class LocalSafer {
      * @param directContactArrayList list of direct contacts
      */
 
-    public synchronized static void safeListOfDirectContacts(ArrayList<DirectContact> directContactArrayList) {
-        try {
-
-            FileOutputStream fos = BeaconBackgroundService.getAppContext().openFileOutput(DATAFILE22, Context.MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(directContactArrayList);
-            oos.close();
-            fos.close();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+    public synchronized static void safeListOfDirectContacts(ArrayList<DirectContact> directContactArrayList, Context context) {
+        Log.d(TAG, "safeListOfDirectContacts was called.");
+        String listValues = "";
+        for (DirectContact contact: directContactArrayList) {
+            listValues = listValues + "-<>-" + contact.getDate();
         }
+        safeStringAtDatafile(DATAFILE22, listValues, context);
     }
 
     /**
      * returns the list of direct contacts.
      */
 
-    public synchronized static ArrayList<DirectContact> getListOfDirectContacts() {
-
+    public synchronized static ArrayList<DirectContact> getListOfDirectContacts(Context context) {
         ArrayList<DirectContact> directContactArrayList = new ArrayList<>();
-        try {
-            FileInputStream fis = new FileInputStream(DATAFILE22);
-            ObjectInputStream ois = new ObjectInputStream(fis);
+        String[] listvalues = getValuesAsArray(DATAFILE22, context);
 
-            directContactArrayList = (ArrayList) ois.readObject();
-            ois.close();
-            fis.close();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        } catch (ClassNotFoundException c) {
-            System.out.println("Class not found");
-            c.printStackTrace();
-
+        if (listvalues != null) {
+            for (String date: listvalues) {
+                directContactArrayList.add(new DirectContact(new Date(date)));
+            }
         }
 
         return directContactArrayList;
