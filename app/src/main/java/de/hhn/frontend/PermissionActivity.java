@@ -34,6 +34,13 @@ public class PermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
 
+        //Check bluetooth and location turned on
+        if (Constants.SCAN_AND_TRANSMIT) {
+            verifyBluetooth();
+        } else {
+            requestPermissions();
+        }
+
         Button requestPermissionButton = findViewById(R.id.requestPermissionButton);
         requestPermissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,17 +49,9 @@ public class PermissionActivity extends AppCompatActivity {
                 if (Constants.SCAN_AND_TRANSMIT) {
                     verifyBluetooth();
                 }
-                //Request needed permissions
-                requestPermissions();
             }
         });
 
-        //Check bluetooth and location turned on
-        if (Constants.SCAN_AND_TRANSMIT) {
-            verifyBluetooth();
-        }
-        //Request needed permissions
-        requestPermissions();
     }
 
 
@@ -75,8 +74,8 @@ public class PermissionActivity extends AppCompatActivity {
                             != PackageManager.PERMISSION_GRANTED) {
                         if (!this.shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("This app needs background location access");
-                            builder.setMessage("Please grant location access so this app can detect beacons in the background.");
+                            builder.setTitle(getString(R.string.background_location_access_title));
+                            builder.setMessage(getString(R.string.background_location_access_message));
                             builder.setPositiveButton(android.R.string.ok, null);
                             builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
@@ -93,8 +92,8 @@ public class PermissionActivity extends AppCompatActivity {
                             finish();
                         } else {
                             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                            builder.setTitle("Functionality limited");
-                            builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app.");
+                            builder.setTitle(getString(R.string.background_location_access_denied_title));
+                            builder.setMessage(getString(R.string.background_location_access_denied_message));
                             builder.setPositiveButton(android.R.string.ok, null);
                             builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
@@ -117,8 +116,8 @@ public class PermissionActivity extends AppCompatActivity {
                             PERMISSION_REQUEST_FINE_LOCATION);
                 } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.  Please go to Settings -> Applications -> Permissions and grant location access to this app.");
+                    builder.setTitle(getString(R.string.background_location_access_denied_title));
+                    builder.setMessage(getString(R.string.background_location_access_denied_message));
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
@@ -141,8 +140,8 @@ public class PermissionActivity extends AppCompatActivity {
         try {
             if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Bluetooth not enabled");
-                builder.setMessage("Please enable bluetooth in settings and restart this application.");
+                builder.setTitle(getString(R.string.bluetooth_enabled_title));
+                builder.setMessage(getString(R.string.bluetooth_enabled_message));
                 builder.setPositiveButton(android.R.string.ok, null);
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
@@ -152,11 +151,13 @@ public class PermissionActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
+            } else {
+                requestPermissions();
             }
         } catch (RuntimeException e) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Bluetooth LE not available");
-            builder.setMessage("Sorry, this device does not support Bluetooth LE.");
+            builder.setTitle(getString(R.string.ble_available_title));
+            builder.setMessage(getString(R.string.ble_available_message));
             builder.setPositiveButton(android.R.string.ok, null);
             builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
@@ -192,8 +193,8 @@ public class PermissionActivity extends AppCompatActivity {
                     finish();
                 } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since location access has not been granted, this app will not be able to discover beacons.");
+                    builder.setTitle(getString(R.string.background_location_access_denied_title));
+                    builder.setMessage(getString(R.string.location_access_denied_message));
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 
@@ -208,14 +209,16 @@ public class PermissionActivity extends AppCompatActivity {
             }
             case PERMISSION_REQUEST_BACKGROUND_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "background location permission granted");
+                    //Check bluetooth
                     permissionAccepted();
-                    startActivity(new Intent(PermissionActivity.this, MainActivity.class));
-                    finish();
+                    if (Constants.SCAN_AND_TRANSMIT) {
+                        verifyBluetooth();
+                    }
+                    Log.d(TAG, "background location permission granted");
                 } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Functionality limited");
-                    builder.setMessage("Since background location access has not been granted, this app will not be able to discover beacons when in the background.");
+                    builder.setTitle(getString(R.string.background_location_access_denied_title));
+                    builder.setMessage(getString(R.string.background_location_denied));
                     builder.setPositiveButton(android.R.string.ok, null);
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
 

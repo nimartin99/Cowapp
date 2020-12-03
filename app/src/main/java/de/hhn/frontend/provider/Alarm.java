@@ -20,6 +20,8 @@ public class Alarm {
      * This method is called all fifteen Minutes.
      */
     public static void fifteenMinutesBusiness() {
+        Log.d("requestLine", "Alarm: fifteenMinutesBusiness() was called ");
+
         LocalSafer.analyzeBufferFile(null);
 
         //delete all keys older then 3 weeks.
@@ -54,9 +56,12 @@ public class Alarm {
     }
 
     public static void ring() {
-        fifteenMinutesBusiness();
-        if (Constants.DEBUG_MODE && LocalSafer.isAlarmRingLogged(null)) {
-            LocalSafer.addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.alarm_ringed), null);
+        Log.d("requestLine", "Alarm: ring() was called ");
+        if (LocalSafer.shouldRingAgain(null)) {
+            fifteenMinutesBusiness();
+            if (Constants.DEBUG_MODE && LocalSafer.isAlarmRingLogged(null)) {
+                LocalSafer.addLogValueToDebugLog(BeaconBackgroundService.getAppContext().getString(R.string.alarm_ringed), null);
+            }
         }
     }
 }

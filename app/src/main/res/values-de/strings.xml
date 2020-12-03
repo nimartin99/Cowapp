@@ -42,6 +42,17 @@
     <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. Vielen Dank!</string>
     //Date and days since use
     <string name="daysSinceText">Seit dem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
+    //Permission Requesting
+    <string name="background_location_access_title">Die App benötigt den Standort Zugriff</string>
+    <string name="background_location_access_message">Bitte erlaube der App deinen Standort zu verwenden, dieser wird benötigt um die App zu nutzen. Es werden keine Standortdaten von der App erhoben</string>
+    <string name="background_location_access_denied_title">Funktionalität ist eingeschränkt</string>
+    <string name="background_location_access_denied_message">Der Standortzugriff wurde nicht erlaubt, das bedeutet, dass keine Covid Kontakte im Hintergrund erkannt werden können. Bitte aktiviere den Standortzugriff in Einstellungen -> Anwendungen -> Berechtigung (hier die CoWApp suchen und den Zugriff aktivieren)</string>
+    <string name="bluetooth_enabled_title">Bluetooth ist deaktiviert</string>
+    <string name="bluetooth_enabled_message">Bitte aktiviere Bluetooth und starte die App neu</string>
+    <string name="ble_available_title">Bluetooth LE not available</string>
+    <string name="ble_available_message">Das Gerät unterstützt nicht die Bluetooth-Low-Energy Technologie. Deshalb funktioniert die App auf diesem Gerät nicht</string>
+    <string name="location_access_denied_message">Der Zugriff auf den Gerätestandort wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
+    <string name="background_location_denied">Der Zugriff auf den Gerätestandort im Hintergrund wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
     //Info Menu and pages
     <string name="head_info_menu">Weitere Informationen</string>
     <string name="head_general_info">Allg. Informationen</string>
@@ -50,9 +61,6 @@
     <string name="text_risklevel_info">Ticket 96</string>
     <string name="head_infection_info">Akute Infektion - Wie verhalte ich mich?</string>
     <string name="text_infection_info">Bei akuter Infektion sind Sie verpflichtet, sich umgehend in Quarantäne zu begeben und 14 Tage oder bis Erhalt eines negativen PCR-Testergebnisses in Quarantäne zu bleiben. Des weiteren sind Sie verpflichtet, ihr örtliches Gesundheitsamt zu benachrichtigen. Eventuelle Mitbewohner sollten sich ebenfalls umgehend testen lassen und Sie sind angehalten, sich von diesen zu distanzieren. Weitere Informationen unter: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen</string>
-    //Suspicion
-    <string name="head_suspicion_info">Verdacht? - Was tun?</string>
-    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in 14-tägiger Quarantäne. Ist das Testergebnis negativ, dürfen Sie die Quarantäne beenden. Vielen Dank für Ihre Mithilfe, der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
     //LOG
     <string name="text_log">Notification Log</string>
     <string name="log">Dies ist eine Benachrichtigung</string>
@@ -81,7 +89,7 @@
     <string name="debug_settings_keytransmit">wenn ein Key übertragen wird</string>
     <string name="debug_settings_keysafe">wenn ein Key gespeichert wird</string>
     <string name="key_was_saved">Key wurde gespeichert:</string>
-    <string name="received_a_key">Key wurde empfangen :</string>
+    <string name="received_a_key">Key wurde empfangen: </string>
     <string name="alarm_ringed">Alarm hat geringt.</string>
     <string name="alarm_set">Alarm wurde eingestellt.</string>
     <string name="settings_were_saved">Einstellungen gespeichert.</string>

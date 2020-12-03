@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -62,7 +63,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
-    protected static final String TAG = "MainActivity";
+    protected static final String TAG = "CoWAppMainActivity";
 
     private static MainActivity mainActivity;
 
@@ -169,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
         boolean alarmUp = (PendingIntent.getBroadcast(this, 0, new Intent("com.alarm.example"), PendingIntent.FLAG_NO_CREATE) != null);
 
         if (alarmUp == false) {
+            LocalSafer.shouldRingAgain(null);
+            Log.d("requestLine", "Main Activity: Alarm was set");
             Log.i(TAG, "onCreate: Alarm is set");
             //Register AlarmManager Broadcast receive.
             firingCal = Calendar.getInstance();
@@ -186,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
+            Log.d("requestLine", "Main Activity: Alarm was not set, because allready setted");
         }
     }
 
@@ -195,8 +199,6 @@ public class MainActivity extends AppCompatActivity {
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), null);
-            requestKey();
         }
         else{
             //show current risk level (updated once a day)
@@ -318,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
      * Request a new key from the server.
      */
     public static boolean requestKey() {
+        Log.d("requestLine", "MainActivity: requestKey() was called. ");
         if (LocalSafer.getRiskLevel(null) != 100) {
             Call<String> call = retrofitService.requestKey();
             RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
@@ -449,8 +452,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void reportInfection(final String contactType) {
         Log.d(TAG, "Sending all contact keys to the server, therefore the response may take some time...");
+
         Runnable runnable = new Runnable() {
             public void run() {
+                LocalSafer.analyzeBufferFile(null);
                 // check if infected user has had contacts
                 if (LocalSafer.getKeyPairs(null) != null) {
                     // get all contact keys

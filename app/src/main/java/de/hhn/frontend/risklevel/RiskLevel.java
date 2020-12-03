@@ -42,11 +42,14 @@ public class RiskLevel {
                 newRiskLevelValue = 35;
                 newRiskLevelValue = newRiskLevelValue + ((indirectContactArrayList.size() - 1) * 5);
 
+                if (newRiskLevelValue > 70) {
+                    newRiskLevelValue = 70;
+                }
             }
 
             if (directContactArrayList.size() > 0) {
                 newRiskLevelValue = 70;
-                newRiskLevelValue = newRiskLevelValue + ((directContactArrayList.size() - 1) * 5) + ((indirectContactArrayList.size() * 5));
+                newRiskLevelValue = newRiskLevelValue + ((directContactArrayList.size() - 1) * 5);
 
             }
 
@@ -56,7 +59,6 @@ public class RiskLevel {
 
             LocalSafer.safeRiskLevel(newRiskLevelValue, null);
             Log.d(TAG, "calulated risk Level: " + newRiskLevelValue);
-
         }
     }
 
@@ -113,28 +115,9 @@ public class RiskLevel {
     }
 
     public static void deleteAllContacts() {
-        Iterator<IndirectContact> iCIterator;
-        Iterator<DirectContact> dCIterator;
-
-        iCIterator = indirectContactArrayList.iterator();
-
-        while (iCIterator.hasNext()) {
-            IndirectContact iC = iCIterator.next();
-            iCIterator.remove();
-            Log.d(TAG, "Indirect contact was removed");
-
-        }
-
-        dCIterator = directContactArrayList.iterator();
-
-        while (dCIterator.hasNext()) {
-            DirectContact dC = dCIterator.next();
-            dCIterator.remove();
-            Log.d(TAG, "Direct contact was removed");
-        }
-
+        LocalSafer.clearDirectContacts(null);
+        LocalSafer.clearIndirectContacts(null);
     }
-
 
     /**
      * this method stops BLE key exchange when the user is currently infected and starts the key exchange when the user is to infected anymore.
