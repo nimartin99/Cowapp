@@ -39,7 +39,7 @@ import de.hhn.frontend.provider.LocalSafer;
  * foreground Service on Android 8+
  *
  * @author Nico Martin
- * @version 2020-11-02
+ * @version 2020-12-03
  */
 public class BeaconBackgroundService extends Application implements BootstrapNotifier, BeaconConsumer, RangeNotifier {
 

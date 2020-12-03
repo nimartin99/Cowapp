@@ -21,6 +21,12 @@ import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 
 import static androidx.core.content.PermissionChecker.PERMISSION_GRANTED;
 
+/**
+ * Permission Activity is for requesting the permissions from the User
+ *
+ * @author Nico Martin
+ * @version 2020-12-03
+ */
 public class PermissionActivity extends AppCompatActivity {
 
     private static final String TAG = "PermissionActivity";
@@ -88,6 +94,7 @@ public class PermissionActivity extends AppCompatActivity {
 
                             });
                             builder.show();
+
                             startActivity(new Intent(PermissionActivity.this, MainActivity.class));
                             finish();
                         } else {

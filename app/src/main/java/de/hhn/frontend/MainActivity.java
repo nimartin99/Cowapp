@@ -788,6 +788,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Check if Bluetooth is enabled and BLE is supported
+     */
     private void checkIfBluetoothIsEnabled() {
         try {
             if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
