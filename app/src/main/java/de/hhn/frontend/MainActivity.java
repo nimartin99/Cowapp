@@ -191,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-            LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), null);
-            requestKey();
         }
         else{
             //show current risk level (updated once a day)
