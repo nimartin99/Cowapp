@@ -19,6 +19,8 @@ public class DebugActivity extends AppCompatActivity {
     private Button testActions;
     private Button debugLogSettings;
     private Button debugLog;
+    private Button ownKeys;
+    private Button collectedKeys;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,8 @@ public class DebugActivity extends AppCompatActivity {
         testActions = this.findViewById(R.id.testActions);
         debugLogSettings = this.findViewById(R.id.debugLogSettings);
         debugLog = this.findViewById(R.id.debugLog);
+        ownKeys = this.findViewById(R.id.listOfOwnKeys);
+        collectedKeys = this.findViewById(R.id.collectedKeysButton);
 
         testActions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +53,22 @@ public class DebugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent nextActivity = new Intent(DebugActivity.this, DebugLog.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        ownKeys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextActivity = new Intent(DebugActivity.this, OwnKeyActivity.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        collectedKeys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextActivity = new Intent(DebugActivity.this, OtherKeysActivity.class);
                 startActivity(nextActivity);
             }
         });

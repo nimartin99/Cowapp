@@ -11,25 +11,24 @@ import java.util.ArrayList;
 
 import de.hhn.frontend.provider.LocalSafer;
 
-public class DebugLog extends AppCompatActivity {
+public class OtherKeysActivity extends AppCompatActivity {
 
-
-    private LinearLayout debugValueLayout;
-    private static DebugLog logActivity;
+    private LinearLayout otherKeys;
+    private static OtherKeysActivity otherKeyActivity;
     private ArrayList<TextView> valueViews;
     private  TextView template;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //logo of the app in the action bar
-        logActivity = this;
+        otherKeyActivity = this;
+
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.ic_cowapp);
-        setContentView(R.layout.activity_debug_log);
+        setContentView(R.layout.activity_other_keys);
 
-        debugValueLayout = findViewById(R.id.debugValueLayout);
+        otherKeys = findViewById(R.id.collectedKeysList);
         initScrollbar();
     }
 
@@ -37,20 +36,20 @@ public class DebugLog extends AppCompatActivity {
      * Creates the Scrollbar with the notifications.
      */
     private void initScrollbar() {
-        template = findViewById(R.id.templatenotification02);
-        debugValueLayout.removeView(template);
+        template = findViewById(R.id.collectedKeysText);
+        otherKeys.removeView(template);
 
-        String [] values = LocalSafer.getDebugValues(null);
+        String [] values = LocalSafer.getKeyPairs(null);
 
         valueViews = new ArrayList<TextView>();
 
         if (values != null) {
             for (String string : values) {
-                TextView notification = new TextView(this);
-                notification.setText(string);
-                notification.setLayoutParams(template.getLayoutParams());
-                valueViews.add(notification);
-                debugValueLayout.addView(notification, 0);
+                TextView ownKey = new TextView(this);
+                ownKey.setText(string);
+                ownKey.setLayoutParams(template.getLayoutParams());
+                valueViews.add(ownKey);
+                otherKeys.addView(ownKey, 0);
             }
         }
     }
@@ -59,23 +58,23 @@ public class DebugLog extends AppCompatActivity {
      * Updates the Scrollbar with the notifications.
      */
     private void updateScrollbar() {
-        String [] notifications = LocalSafer.getDebugValues(null);
+        String [] values = LocalSafer.getKeyPairs(null);
 
         if (valueViews != null) {
             for (TextView textView1 : valueViews) {
-                debugValueLayout.removeView(textView1);
+                otherKeys.removeView(textView1);
             }
         }
 
         valueViews = new ArrayList<TextView>();
 
-        if (notifications != null) {
-            for (String string : notifications) {
-                TextView notification = new TextView(this);
-                notification.setText(string);
-                notification.setLayoutParams(template.getLayoutParams());
-                valueViews.add(notification);
-                debugValueLayout.addView(notification, 0);
+        if (values != null) {
+            for (String string : values) {
+                TextView ownKey = new TextView(this);
+                ownKey.setText(string);
+                ownKey.setLayoutParams(template.getLayoutParams());
+                valueViews.add(ownKey);
+                otherKeys.addView(ownKey, 0);
             }
         }
     }
@@ -84,14 +83,14 @@ public class DebugLog extends AppCompatActivity {
      * Calles the updateScrollBar, if there is already a Scrollbar.
      */
     public static void renewTheLog() {
-        if (logActivity != null) {
-            logActivity.updateScrollbar();
+        if (otherKeyActivity != null) {
+            otherKeyActivity.updateScrollbar();
         }
     }
 
     @Override
     protected void onDestroy() {
-        logActivity = null;
+        otherKeyActivity = null;
         super.onDestroy();
     }
 }
