@@ -658,4 +658,21 @@ public class LocalSafer {
         }
         return Boolean.valueOf(value);
     }
+
+    /**
+     * This method clears the clearIndirectContacts.
+     */
+    public static void clearIndirectContacts(Context context) {
+        Log.d(TAG, "clearIndirectContacts() was called.");
+        safeStringAtDatafile(DATAFILE21, "", context);
+    }
+
+    /**
+     * This method clears the clearDirectContacts.
+     */
+    public static void clearDirectContacts(Context context) {
+        Log.d(TAG, "clearDirectContacts() was called.");
+        safeStringAtDatafile(DATAFILE22, "", context);
+    }
+
 }
