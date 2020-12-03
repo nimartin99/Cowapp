@@ -277,7 +277,7 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
         // communicate to users that your app is using resources in the background.
         Notification.Builder builder = new Notification.Builder(this);
         builder.setSmallIcon(R.mipmap.ic_cowapp);
-        builder.setContentTitle(getString(R.string.foreground_Notificaiton));
+        builder.setContentTitle(contentTitle);
         Intent intent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT

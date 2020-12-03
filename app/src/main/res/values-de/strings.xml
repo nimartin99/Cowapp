@@ -50,11 +50,12 @@
     <string name="background_location_access_denied_title">Funktionalität ist eingeschränkt</string>
     <string name="background_location_access_denied_message">Der Standortzugriff wurde nicht erlaubt, das bedeutet, dass keine Covid Kontakte im Hintergrund erkannt werden können. Bitte aktiviere den Standortzugriff in Einstellungen -> Anwendungen -> Berechtigung (hier die CoWApp suchen und den Zugriff aktivieren)</string>
     <string name="bluetooth_enabled_title">Bluetooth ist deaktiviert</string>
-    <string name="bluetooth_enabled_message">Bitte aktiviere Bluetooth und starte die App neu</string>
+    <string name="bluetooth_enabled_message">Bitte aktiviere Bluetooth und starte die App neu oder nutze "Berechtigung erneut anfragen"</string>
     <string name="ble_available_title">Bluetooth LE not available</string>
     <string name="ble_available_message">Das Gerät unterstützt nicht die Bluetooth-Low-Energy Technologie. Deshalb funktioniert die App auf diesem Gerät nicht</string>
     <string name="location_access_denied_message">Der Zugriff auf den Gerätestandort wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
     <string name="background_location_denied">Der Zugriff auf den Gerätestandort im Hintergrund wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
+    <string name="request_permission">Berechtigungen erneut anfragen</string>
     //Info Menu and pages
     <string name="head_info_menu">Weitere Informationen</string>
     <string name="head_general_info">Allg. Informationen</string>
@@ -100,7 +101,6 @@
     <string name="confirm">BESTÄTIGEN</string>
     <string name="debug_log_was_cleared">Der DebugLog wurde geleert.</string>
     <string name="action_canceled">Aktion abgebrochen</string>
-    <string name="request_permission">Berechtigungen erneut anfragen</string>
     //Test Menu
     <string name="head_test_menu">Test Menü</string>
     <string name="test_button_1">Push-Benachrichtigung Test</string>
