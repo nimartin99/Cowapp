@@ -20,32 +20,62 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".PermissionActivity" android:noHistory="true"/>
-        <activity android:name=".DebugLog" />
-        <activity android:name=".DebugActivity" />
-        <activity android:name=".RiskLevelInfoActivity" />
-        <activity android:name=".InfectionActivity" />
+        <activity android:name=".PermissionActivity"
+            android:noHistory="true"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DebugLog"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DebugActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".RiskLevelInfoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".InfectionActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".provider.NotificationService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestMenuActivity" />
-        <activity android:name=".PushNotificationActivity" />
-        <activity android:name=".SuspicionActivity" />
-        <activity android:name=".InfoMenuActivity" />
-        <activity android:name=".GeneralInfoActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".LogActivity" />
-        <activity android:name=".DataProtectionActivity" android:noHistory="true"/>
+        <activity android:name=".TestMenuActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".PushNotificationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SuspicionActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".InfoMenuActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GeneralInfoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".SettingsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".LogActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DataProtectionActivity"
+            android:noHistory="true"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name="org.altbeacon.beacon.service.BeaconService"

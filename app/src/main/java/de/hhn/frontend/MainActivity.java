@@ -62,7 +62,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
-    protected static final String TAG = "MainActivity";
+    protected static final String TAG = "CoWAppMainActivity";
 
     private static MainActivity mainActivity;
 
