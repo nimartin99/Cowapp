@@ -15,6 +15,7 @@
     <string name="menu_log">LOG</string>
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
+    <string name="menu_report_negative">Negativmeldung</string>
     <string name="report_infection_button">Infektion melden</string>
     <string name="report_infection_button_ci">Weitere Informationen</string>
     <string name="suspicion_button">Verdacht? - Was tun?</string>
