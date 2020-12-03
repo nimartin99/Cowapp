@@ -249,7 +249,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(testActivity);
                 return true;
             case R.id.item4:
-                //TODO
                 //ask the user if he really wants to report himself negative
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setCancelable(true);
@@ -372,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
      * If an infection has been reported a dialog pops up to thank the user for the report
      */
     public void reportApproval() {
-        //TODO
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         final int riskValue = LocalSafer.getRiskLevel(null);
