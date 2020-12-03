@@ -42,6 +42,9 @@ public class RiskLevel {
                 newRiskLevelValue = 35;
                 newRiskLevelValue = newRiskLevelValue + ((indirectContactArrayList.size() - 1) * 5);
 
+                if (newRiskLevelValue > 70) {
+                    newRiskLevelValue = 70;
+                }
             }
 
             if (directContactArrayList.size() > 0) {
@@ -56,7 +59,6 @@ public class RiskLevel {
 
             LocalSafer.safeRiskLevel(newRiskLevelValue, null);
             Log.d(TAG, "calulated risk Level: " + newRiskLevelValue);
-
         }
     }
 
