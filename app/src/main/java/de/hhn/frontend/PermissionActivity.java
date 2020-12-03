@@ -34,6 +34,13 @@ public class PermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_permission);
 
+        //Check bluetooth and location turned on
+        if (Constants.SCAN_AND_TRANSMIT) {
+            verifyBluetooth();
+        } else {
+            requestPermissions();
+        }
+
         Button requestPermissionButton = findViewById(R.id.requestPermissionButton);
         requestPermissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,17 +49,9 @@ public class PermissionActivity extends AppCompatActivity {
                 if (Constants.SCAN_AND_TRANSMIT) {
                     verifyBluetooth();
                 }
-                //Request needed permissions
-                requestPermissions();
             }
         });
 
-        //Check bluetooth and location turned on
-        if (Constants.SCAN_AND_TRANSMIT) {
-            verifyBluetooth();
-        }
-        //Request needed permissions
-        requestPermissions();
     }
 
 
@@ -152,6 +151,8 @@ public class PermissionActivity extends AppCompatActivity {
                     }
                 });
                 builder.show();
+            } else {
+                requestPermissions();
             }
         } catch (RuntimeException e) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -208,10 +209,12 @@ public class PermissionActivity extends AppCompatActivity {
             }
             case PERMISSION_REQUEST_BACKGROUND_LOCATION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.d(TAG, "background location permission granted");
+                    //Check bluetooth
                     permissionAccepted();
-                    startActivity(new Intent(PermissionActivity.this, MainActivity.class));
-                    finish();
+                    if (Constants.SCAN_AND_TRANSMIT) {
+                        verifyBluetooth();
+                    }
+                    Log.d(TAG, "background location permission granted");
                 } else {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle(getString(R.string.background_location_access_denied_title));
