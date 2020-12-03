@@ -3,6 +3,7 @@ package de.hhn.frontend;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 /**
@@ -23,4 +24,5 @@ public class SuspicionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_suspicion);
 
     }
+
 }

@@ -1,10 +1,31 @@
 <resources>
+    //General
     <string name="app_name">CoWApp</string>
+    //Data Protection
+    <string name="accept_button">Accept</string>
+    <string name="decline_button">Decline</string>
+    <string name="head_data_protection">Terms of Use</string>
+    <string name="text_data_protection">You agree that CoWApp is allowed to activate the Bluetooth of your device and send or receive data via it (generated keys with time stamp     and location as well as information about your current infection status). Furthermore you agree that the app may run as a background process     on your mobile device at any time and is allowed to send your generated and collected anonymous keys to the server if there is an existing infection and you push notifications, too. This is the only way the correct function of the     Corona-Warn-App is given.</string>
+    <string name="decline_info_title">Agreement required </string>
+    <string name="decline_info_message">You have to accept the terms of use to use the application. </string>
+    <string name="decline_info_ok_button">Okay</string>
+    <string name="exit_app">Exit</string>
+    //Permission Requesting
+    <string name="background_location_access_title">This app needs background location access</string>
+    <string name="background_location_access_message">Please grant location access so this app can detect Covid contacts in the background</string>
+    <string name="background_location_access_denied_title">Functionality limited</string>
+    <string name="background_location_access_denied_message">Since background location access has not been granted, this app will not be able to discover Covid contacts in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app</string>
+    <string name="bluetooth_enabled_title">Bluetooth not enabled</string>
+    <string name="bluetooth_enabled_message">Please enable bluetooth in settings and restart this application</string>
+    <string name="ble_available_title">Bluetooth LE not available</string>
+    <string name="ble_available_message">This device doesn\'t support Bluetooth-Low-Energy technology. Therefore it won\'t be able to use the app on this device</string>
+    <string name="location_access_denied_message">Since location access has not been granted, this app will not be able to discover Covid contacts in the background</string>
+    <string name="background_location_denied">Since background location access has not been granted, this app will not be able to discover beacons when in the background</string>
     //Main
     <string name="menu_log">LOG</string>
-    <string name="menu_settings">Settings</string>
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
+    <string name="menu_report_negative">Negative test result</string>
     <string name="report_infection_button">Report Infection</string>
     <string name="report_infection_button_ci">Further Information</string>
     <string name="suspicion_button">Suspicion?</string>
@@ -33,34 +54,17 @@
     <string name="text_report_successful">You have been successfully reported negative. Thank you!</string>
     //Date and days since use
     <string name="daysSinceText">Since %1$s you are helping for %2$d days to fight the Coronavirus.</string>
-    //Data Protection
-    <string name="accept_button">Accept</string>
-    <string name="decline_button">Decline</string>
-    <string name="head_data_protection">Terms of Use</string>
-    <string name="text_data_protection">You agree that CoWApp is allowed to activate the Bluetooth of your device and send or receive data via it (generated keys with time stamp     and location as well as information about your current infection status). Furthermore you agree that the app may run as a background process     on your mobile device at any time and is allowed to send your generated and collected anonymous keys to the server if there is an existing infection and you push notifications, too. This is the only way the correct function of the     Corona-Warn-App is given.</string>
-    <string name="decline_info_title">Agreement required </string>
-    <string name="decline_info_message">You have to accept the terms of use to use the application. </string>
-    <string name="decline_info_ok_button">Okay</string>
-    <string name="exit_app">Exit</string>
-    //Permission Requesting
-    <string name="background_location_access_title">This app needs background location access</string>
-    <string name="background_location_access_message">Please grant location access so this app can detect Covid contacts in the background</string>
-    <string name="background_location_access_denied_title">Functionality limited</string>
-    <string name="background_location_access_denied_message">Since background location access has not been granted, this app will not be able to discover Covid contacts in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app</string>
-    <string name="bluetooth_enabled_title">Bluetooth not enabled</string>
-    <string name="bluetooth_enabled_message">Please enable bluetooth in settings and restart this application</string>
-    <string name="ble_available_title">Bluetooth LE not available</string>
-    <string name="ble_available_message">This device doesn\'t support Bluetooth-Low-Energy technology. Therefore it won\'t be able to use the app on this device</string>
-    <string name="location_access_denied_message">Since location access has not been granted, this app will not be able to discover Covid contacts in the background</string>
-    <string name="background_location_denied">Since background location access has not been granted, this app will not be able to discover beacons when in the background</string>
     //Info Menu and pages
     <string name="head_info_menu">Further Information</string>
     <string name="head_general_info">General Information</string>
-    <string name="text_general_info">The CoWApp (Corona Warning App) is an application that anyone can use to further contain the spread of the coronavirus.     With it potential contact with corona-infected people can be determined in everyday life and an infection risk can be calculated. It is and     displayed by the traffic light principle and a risk value of 1 to 100. You will also receive a push notification when a potential health risk     has been identified so you know how to act correctly to protect yourself and those around you.     Under Suspicion? you can receive information on what to do if you suspect an infection.</string>
+    <string name="text_general_info">The CoWApp (Corona Warning App) is an application that anyone can use to further contain the spread of the coronavirus. With it potential contact with corona-infected people can be determined in everyday life and an infection risk can be calculated. It is and     displayed by the traffic light principle and a risk value of 1 to 100. You will also receive a push notification when a potential health risk     has been identified so you know how to act correctly to protect yourself and those around you.     Under Suspicion? you can receive information on what to do if you suspect an infection.</string>
     <string name="head_risklevel_info">Risk Level Calculation</string>
     <string name="text_risklevel_info">Ticket 96</string>
     <string name="head_infection_info">Current Infection - How to act?</string>
     <string name="text_infection_info">In the event of an acute infection, you are obliged to go into quarantine immediately and remain in quarantine for 14 days or until you receive a negative PCR test result. You are also obliged to notify your local health department. Any roommates should also be tested immediately and you are encouraged to distance yourself from them. Further information at the page of the federal government or the WHO: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen for German speaking people or https://www.who.int/health-topics/coronavirus#tab=tab_1 for general information.</string>
+    //Suspicion
+    <string name="head_suspicion_info">Suspicion? - What to do?</string>
+    <string name="text_suspicion_info">In case of suspicion, please go into quarantine immediately and let yourself be tested. If the test result is positive, please inform the health department for your region and stay in quarantine for 14 days. If the test result is negative, you can end the quarantine. Thank you for your help to dam the further spread of the corona virus.</string>
     //LOG
     <string name="text_log">Notification Log</string>
     <string name="log">This is a notification</string>
@@ -75,34 +79,9 @@
     <string name="head_indirectContactPush">Indirect contact with an infected person detected</string>
     <string name="head_noConnectionPush">Currently no connection to the server</string>
     <string name="text_noConnectionPush">Trying to connect again in 5 minutes...</string>
-    //Settings
-    <string name="setting_1">Setting 1</string>
-    <string name="setting_2">Setting 2</string>
-    //Suspicion
-    <string name="head_suspicion_info">Suspicion? - What to do?</string>
-    <string name="text_suspicion_info">In case of suspicion, please go into quarantine immediately and let yourself be tested.     If the test result is positive, please inform the health department for your region     and stay in quarantine for 14 days. If the test result is negative, you can end the quarantine.     Thank you for your help to dam the further spread of the corona virus.</string>
-    //Test Menu
-    <string name="head_test_menu">Test menu</string>
-    <string name="test_button_1">push notification test</string>
-    <string name="test_button_2">key generation test</string>
-    <string name="test_button_3">risk level test</string>
-    <string name="test_button_4">check infection status test</string>
-    <string name="test_button_5">log own keys test</string>
-    <string name="test_button_6">delete own keys test</string>
-    <string name="reset_button_risklevel">reset risk level</string>
-    <string name="test_button_7">Transmitting on/off</string>
-    <string name="test_button_8">Scanning on/off</string>
-    <string name="test_button_9" translatable="false">add Test Contact List</string>
-    <string name="test_button_10" translatable="false">Calculate Risk level of Test Contacts</string>
-    <string name="test_button_11" translatable="false">CheckOutDatedInfection</string>
-    <string name="test_button_12" translatable="false">SetInfectionAsOutdated</string>
-    <string name="test_button_13" translatable="false">Activate 15m business</string>
-    <string name="test_button_14" translatable="false">Add Indirect Test Contact</string>
-    <string name="test_button_15" translatable="false">Add Direct Test Contact</string>
-    <string name="test_button_16" translatable="false">Remove all Test Contacts</string>
-    <string name="test_button_17" translatable="false">check ControlKeyExchangeFunction</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Protection active</string>
+    //Debug Menu
     <string name="actions">Test-Actions</string>
     <string name="logs">Debug-Log-Settings</string>
     <string name="debuglog">Debug-Log</string>
@@ -124,4 +103,24 @@
     <string name="debug_log_was_cleared">The Debug-Log was cleared.</string>
     <string name="action_canceled">Action canceled</string>
     <string name="request_permission">Request permissions again</string>
+    //Test Menu
+    <string name="head_test_menu">Test menu</string>
+    <string name="test_button_1">push notification test</string>
+    <string name="test_button_2">key generation test</string>
+    <string name="test_button_3">risk level test</string>
+    <string name="test_button_4">check infection status test</string>
+    <string name="test_button_5">log own keys test</string>
+    <string name="test_button_6">delete own keys test</string>
+    <string name="reset_button_risklevel">reset risk level</string>
+    <string name="test_button_7">Transmitting on/off</string>
+    <string name="test_button_8">Scanning on/off</string>
+    <string name="test_button_9" translatable="false">add Test Contact List</string>
+    <string name="test_button_10" translatable="false">Calculate Risk level of Test Contacts</string>
+    <string name="test_button_11" translatable="false">CheckOutDatedInfection</string>
+    <string name="test_button_12" translatable="false">SetInfectionAsOutdated</string>
+    <string name="test_button_13" translatable="false">Activate 15m business</string>
+    <string name="test_button_14" translatable="false">Add Indirect Test Contact</string>
+    <string name="test_button_15" translatable="false">Add Direct Test Contact</string>
+    <string name="test_button_16" translatable="false">Remove all Test Contacts</string>
+    <string name="test_button_17" translatable="false">check ControlKeyExchangeFunction</string>
 </resources>
