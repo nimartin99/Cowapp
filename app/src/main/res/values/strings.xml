@@ -40,6 +40,17 @@
     <string name="decline_info_message">You have to accept the terms of use to use the application. </string>
     <string name="decline_info_ok_button">Okay</string>
     <string name="exit_app">Exit</string>
+    //Permission Requesting
+    <string name="background_location_access_title">This app needs background location access</string>
+    <string name="background_location_access_message">Please grant location access so this app can detect Covid contacts in the background</string>
+    <string name="background_location_access_denied_title">Functionality limited</string>
+    <string name="background_location_access_denied_message">Since background location access has not been granted, this app will not be able to discover Covid contacts in the background.  Please go to Settings -> Applications -> Permissions and grant background location access to this app</string>
+    <string name="bluetooth_enabled_title">Bluetooth not enabled</string>
+    <string name="bluetooth_enabled_message">Please enable bluetooth in settings and restart this application</string>
+    <string name="ble_available_title">Bluetooth LE not available</string>
+    <string name="ble_available_message">This device doesn\'t support Bluetooth-Low-Energy technology. Therefore it won\'t be able to use the app on this device</string>
+    <string name="location_access_denied_message">Since location access has not been granted, this app will not be able to discover Covid contacts in the background</string>
+    <string name="background_location_denied">Since background location access has not been granted, this app will not be able to discover beacons when in the background</string>
     //Info Menu and pages
     <string name="head_info_menu">Further Information</string>
     <string name="head_general_info">General Information</string>
@@ -101,7 +112,7 @@
     <string name="debug_settings_keytransmit">when a key is transmitted</string>
     <string name="debug_settings_keysafe">when a key is saved</string>
     <string name="key_was_saved">Key was saved:</string>
-    <string name="received_a_key">Received a Key :</string>
+    <string name="received_a_key">Received a Key: </string>
     <string name="alarm_ringed">Alarm ring.</string>
     <string name="alarm_set">Alarm set.</string>
     <string name="settings_were_saved">Your Settings were saved.</string>
