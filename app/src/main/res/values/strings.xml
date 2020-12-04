@@ -128,8 +128,8 @@
     <string name="test_button_11" translatable="false">CheckOutDatedInfection</string>
     <string name="test_button_12" translatable="false">SetInfectionAsOutdated</string>
     <string name="test_button_13" translatable="false">Activate 15m business</string>
-    <string name="test_button_14" translatable="false">Add Indirect Test Contact</string>
-    <string name="test_button_15" translatable="false">Add Direct Test Contact</string>
+    <string name="test_button_14" translatable="false">Risklevel Algorithm: Add Indirect Test Contact</string>
+    <string name="test_button_15" translatable="false">Risklevel Algorithm: Add Direct Test Contact</string>
     <string name="test_button_16" translatable="false">Remove all Test Contacts</string>
     <string name="test_button_17" translatable="false">check ControlKeyExchangeFunction</string>
 </resources>
