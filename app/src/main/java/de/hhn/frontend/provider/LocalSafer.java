@@ -210,11 +210,13 @@ public class LocalSafer {
         if (contactKey == null) {
             String[] result = getValuesAsArray(DATAFILE09, context);
             clearBufferFile(context);
+            BufferFileLogActivity.renewTheLog();
             return result;
         } else {
             String alreadySavedKeyPairs = readDataFile(DATAFILE09, context);
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey;
             safeStringAtDatafile(DATAFILE09, allKeyPairsToSafe, context);
+            BufferFileLogActivity.renewTheLog();
             return null;
         }
     }
@@ -408,7 +410,6 @@ public class LocalSafer {
     public synchronized static void addReceivedKey(String key, Context context) {
         Log.d(TAG, "addReceivedKey() was called " + key);
         addKeyToBufferFile(key, context);
-        BufferFileLogActivity.renewTheLog();
     }
 
     /**

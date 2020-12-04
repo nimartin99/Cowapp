@@ -8,6 +8,8 @@ import android.os.Debug;
 import android.view.View;
 import android.widget.Button;
 
+import de.hhn.frontend.provider.LocalSafer;
+
 /**
  * Debug menu for the app developers only - for testing
  *
