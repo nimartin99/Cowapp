@@ -51,7 +51,7 @@
     <dimen name="main_trafficLightView_marginStart_and_End">20dp</dimen>
     <dimen name="main_trafficLightView_marginTop">-15dp</dimen>
     <dimen name="main_trafficLightView_marginBottom">300dp</dimen>
-    <dimen name="main_riskView_marginStart">30dp</dimen>
+    <dimen name="main_riskView_marginStart">50dp</dimen>
     <dimen name="main_risklevelView_marginStart">30dp</dimen>
     <dimen name="main_riskView_marginTop">70dp</dimen>
     <dimen name="main_riskView_marginEnd">170dp</dimen>

@@ -7,112 +7,130 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
-        <Button
-        android:id="@+id/InfektionMeldenButton"
+    <ScrollView
+        android:id="@+id/scrollViewMain"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_button_height"
-        android:layout_marginStart="@dimen/main_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/main_infection_button_marginTop"
-        android:layout_marginEnd="@dimen/main_buttons_marginStart_and_End"
-        android:backgroundTint="#142850"
-        android:text="@string/report_infection_button"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/main_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trafficLightView" />
-
-    <Button
-        android:id="@+id/VerdachtButton"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/main_button_height"
-        android:layout_marginStart="@dimen/main_buttons_marginStart_and_End"
-        android:layout_marginTop="@dimen/main_suspicion_button_marginTop"
-        android:layout_marginEnd="@dimen/main_buttons_marginStart_and_End"
-        android:backgroundTint="#27496D"
-        android:text="@string/suspicion_button"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/main_buttons_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/InfektionMeldenButton" />
-
-    <TextView
-        android:id="@+id/DateDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_date_marginStart_and_End"
-        android:layout_marginEnd="@dimen/main_date_marginStart_and_End"
-        android:layout_marginBottom="@dimen/main_date_marginBottom"
-        android:text="@string/daysSinceText"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textSize="@dimen/main_date_textSize"
+        android:layout_height="match_parent"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/VerdachtButton" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/trafficLightView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_trafficLightView_marginStart_and_End"
-        android:layout_marginTop="@dimen/main_trafficLightView_marginTop"
-        android:layout_marginEnd="@dimen/main_trafficLightView_marginStart_and_End"
-        android:contentDescription="@string/traffic_light_description"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/green_traffic_light" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/RiskView"
-        android:layout_width="@dimen/risk_view_width"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_riskView_marginStart"
-        android:layout_marginTop="@dimen/main_riskView_marginTop"
-        android:layout_marginEnd="@dimen/main_riskView_marginEnd"
-        android:text="@string/risk_status_default"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textDirection="firstStrongRtl"
-        android:textSize="@dimen/main_riskView_textSize"
-        app:layout_constraintEnd_toEndOf="@+id/trafficLightView"
-        app:layout_constraintStart_toStartOf="@+id/trafficLightView"
-        app:layout_constraintTop_toTopOf="@+id/trafficLightView" />
+            <ImageView
+                android:id="@+id/trafficLightView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_trafficLightView_marginStart_and_End"
+                android:layout_marginTop="@dimen/main_trafficLightView_marginTop"
+                android:layout_marginEnd="@dimen/main_trafficLightView_marginStart_and_End"
+                android:contentDescription="@string/traffic_light_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/green_traffic_light" />
 
-    <TextView
-        android:id="@+id/RisklevelView"
-        android:layout_width="@dimen/risk_view_width"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/main_risklevelView_marginStart"
-        android:layout_marginTop="@dimen/main_risklevelView_marginTop"
-        android:layout_marginEnd="@dimen/main_riskView_marginEnd"
-        android:text="@string/risk_level"
-        android:textAlignment="center"
-        android:textColor="#000000"
-        android:textDirection="firstStrongRtl"
-        android:textSize="@dimen/main_riskView_textSize"
-        app:layout_constraintStart_toStartOf="@+id/trafficLightView"
-        app:layout_constraintTop_toBottomOf="@+id/RiskView" />
+            <TextView
+                android:id="@+id/RiskView"
+                android:layout_width="@dimen/risk_view_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_riskView_marginStart"
+                android:layout_marginTop="@dimen/main_riskView_marginTop"
+                android:layout_marginEnd="@dimen/main_riskView_marginEnd"
+                android:text="@string/risk_status_default"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textDirection="firstStrongRtl"
+                android:textSize="@dimen/main_riskView_textSize"
+                app:layout_constraintEnd_toEndOf="@+id/trafficLightView"
+                app:layout_constraintStart_toStartOf="@+id/trafficLightView"
+                app:layout_constraintTop_toTopOf="@+id/trafficLightView" />
 
-    <ImageButton
-        android:id="@+id/infoRiskCalcButton"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="@dimen/main_riskCalcInfoButton_marginStart"
-        android:layout_marginBottom="@dimen/main_riskCalcInfoButton_marginBottom"
-        android:background="#142850"
-        android:backgroundTint="#00DAE1E7"
-        android:contentDescription="@string/infoRiskCalcButton_description"
-        android:tint="#142850"
-        app:layout_constraintBottom_toTopOf="@+id/InfektionMeldenButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_help" />
+            <Button
+                android:id="@+id/InfektionMeldenButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_button_height"
+                android:layout_marginStart="@dimen/main_buttons_marginStart_and_End"
+                android:layout_marginTop="@dimen/main_infection_button_marginTop"
+                android:layout_marginEnd="@dimen/main_buttons_marginStart_and_End"
+                android:backgroundTint="#142850"
+                android:text="@string/report_infection_button"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/main_buttons_textSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trafficLightView" />
 
+            <Button
+                android:id="@+id/VerdachtButton"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/main_button_height"
+                android:layout_marginStart="@dimen/main_buttons_marginStart_and_End"
+                android:layout_marginTop="@dimen/main_suspicion_button_marginTop"
+                android:layout_marginEnd="@dimen/main_buttons_marginStart_and_End"
+                android:backgroundTint="#27496D"
+                android:text="@string/suspicion_button"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/main_buttons_textSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/InfektionMeldenButton" />
+
+            <TextView
+                android:id="@+id/DateDisplay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_date_marginStart_and_End"
+                android:layout_marginEnd="@dimen/main_date_marginStart_and_End"
+                android:layout_marginBottom="@dimen/main_date_marginBottom"
+                android:text="@string/daysSinceText"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="@dimen/main_date_textSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/VerdachtButton" />
+
+            <TextView
+                android:id="@+id/RisklevelView"
+                android:layout_width="@dimen/risk_view_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/main_risklevelView_marginStart"
+                android:layout_marginTop="@dimen/main_risklevelView_marginTop"
+                android:layout_marginEnd="@dimen/main_riskView_marginEnd"
+                android:text="@string/risk_level"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textDirection="firstStrongRtl"
+                android:textSize="@dimen/main_riskView_textSize"
+                app:layout_constraintStart_toStartOf="@+id/trafficLightView"
+                app:layout_constraintTop_toBottomOf="@+id/RiskView" />
+
+            <ImageButton
+                android:id="@+id/infoRiskCalcButton"
+                android:layout_width="0dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="@dimen/main_riskCalcInfoButton_marginStart"
+                android:layout_marginBottom="@dimen/main_riskCalcInfoButton_marginBottom"
+                android:background="#142850"
+                android:backgroundTint="#00DAE1E7"
+                android:contentDescription="@string/infoRiskCalcButton_description"
+                android:tint="#142850"
+                app:layout_constraintBottom_toTopOf="@+id/InfektionMeldenButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_help" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
