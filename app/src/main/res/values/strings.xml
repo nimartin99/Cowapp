@@ -47,6 +47,8 @@
     <string name="risk_level">Risk Level: %1$d of 100</string>
     <string name="current_infection">Current Infection</string>
     //Report Infection / negative test result
+    <string name="report_no_button">No</string>
+    <string name="report_yes_button">Yes</string>
     <string name="head_report_infection">Report Infection</string>
     <string name="head_report_negative">Report Negative Test Result</string>
     <string name="text_report_infection">Do you really want to report yourself infected? (Only with positive PCR test result.)</string>
@@ -66,7 +68,7 @@
     <string name="head_risklevel_value_traffic_light_info">Risk Level and Traffic Light Explanation:</string>
     <string name="text_risklevel_value_traffic_light_info">To clarify to the user how high his risk of infection is, the CoW–App provides a risk level value, which is a numerical value between 0 (no risk) and 100 (existing infection).For further clarity and how the user should best behave, the CoWApp divides and simplifies the risk level via the traffic light display. A risk value less than 35 (i.e. 0 – 34) results in a green traffic light color, which signals to the user that an infection is very unlikely and that he can therefore be unconcerned. A value between 35 and 70 results in a yellow traffic light color, which means that an infection is already possible but not very likely.If the risk level is in the lower range, close to 35, an infection is unlikely. In order to relieve the health care system, no measures should be considered that burden the health care system. However, if the risk level is close to the upper limit of 70, measures such as a corona test are recommended, as the possibility of infection is more likely.A risk level above 70 causes the traffic light to turn red, indicating a high probability of infection. Measures such as a corona test, keeping distance from other people and even quarantine are strongly recommended.</string>
     <string name="head_risklevel_calculation_info">Explanation of the Calculation</string>
-    <string name="text_risklevel_calculation_info">To understand the calculation the following terms should be clarified first. contact: A so-called contact was determined by the exchange of keys between end devices. Only contacts with users who are already infected or subsequently reported as infected are included in the risk calculation. These contacts are further specified by evaluating them as either direct or indirect contact.Direct contact: means that there has been contact with a person reported as infected.Indirect contact means a contact with a person who is not reported as infected himself, but has had contact with a third person who is reported as infected. To calculate the risk level, all direct and indirect contacts as well as the users self-infection report from the last 14 days are taken into account.The duration of the contacts is also included in the calculation.</string>
+    <string name="text_risklevel_calculation_info">To understand the calculation the following terms should be clarified first. contact: A so-called contact was determined by the exchange of keys between end devices. Only contacts with users who are already infected or subsequently reported as infected are included in the risk calculation. These contacts are further specified by evaluating them as either direct or indirect contact. Direct contact: means that there has been contact with a person reported as infected. Indirect contact means a contact with a person who is not reported as infected itself, but has had contact with a third person who is reported as infected To calculate the risk level, all direct and indirect contacts as well as the user\'s self-infection report from the last 14 days are taken into account. The duration of the contacts is also included in the calculation.</string>
     //Infection info
     <string name="head_infection_info">Current Infection - How to act?</string>
     <string name="text_infection_info">In the event of an acute infection, you are obliged to go into quarantine immediately and remain in quarantine for 14 days or until you receive a negative PCR test result. You are also obliged to notify your local health department. Any roommates should also be tested immediately and you are encouraged to distance yourself from them. Further information at the page of the federal government or the WHO: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen for German speaking people or https://www.who.int/health-topics/coronavirus#tab=tab_1 for general information.</string>
@@ -86,7 +88,7 @@
     <string name="text_moreInfoPush">Tap for further information.</string>
     <string name="head_indirectContactPush">Indirect contact with an infected person detected</string>
     <string name="head_noConnectionPush">Currently no connection to the server</string>
-    <string name="text_noConnectionPush">Trying to connect again in 5 minutes...</string>
+    <string name="text_noConnectionPush">Trying to connect again in 5 minutes…</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Protection active</string>
     //Debug Menu
