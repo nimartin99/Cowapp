@@ -47,6 +47,8 @@
     <string name="risk_level">Risk Level: %1$d of 100</string>
     <string name="current_infection">Current Infection</string>
     //Report Infection / negative test result
+    <string name="report_no_button">No</string>
+    <string name="report_yes_button">Yes</string>
     <string name="head_report_infection">Report Infection</string>
     <string name="head_report_negative">Report Negative Test Result</string>
     <string name="text_report_infection">Do you really want to report yourself infected? (Only with positive PCR test result.)</string>
