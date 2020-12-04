@@ -2,6 +2,8 @@
 <resources>
     //General
     <string name="app_name">CoWApp</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
     //Data Protection
     <string name="accept_button">Akzeptieren</string>
     <string name="decline_button">Ablehnen</string>
@@ -24,6 +26,8 @@
     <string name="infoRiskCalcButton_description">Anklicken, um auf die Informationsseite zur Risikoberechnung zu gelangen.</string>
     <string name="check_bluetooth_enabled_title">Bluetooth ist ausgeschaltet</string>
     <string name="check_bluetooth_enabled_message">Bluetooth ist ausgeschaltet.\nDamit Covid Kontakte verfolgt werden können muss Bluetooth und GPS (Standort) immer aktiviert sein.</string>
+    <string name="check_gps_enabled_title">GPS (Standort) ist ausgeschaltet</string>
+    <string name="check_gps_enabled_message">GPS (Standort) ist ausgeschaltet.\nDamit Covid Kontakte verfolgt werden können muss Bluetooth und GPS (Standort) immer aktiviert sein.</string>
     //Main risk status
     <string name="risk_status_default">Aktuelles Risiko</string>
     <string name="risk_status_low">Geringes Risiko</string>

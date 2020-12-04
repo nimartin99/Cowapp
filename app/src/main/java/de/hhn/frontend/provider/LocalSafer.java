@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
+import de.hhn.frontend.BufferFileLogActivity;
 import de.hhn.frontend.Constants;
 import de.hhn.frontend.DebugLog;
 import de.hhn.frontend.MainActivity;
@@ -136,7 +138,7 @@ public class LocalSafer {
      *
      * @return A list of Strings. If there are no saved keys, the return-value is null.
      */
-    private static String[] getValuesAsArray(String datafileName, Context context) {
+    public static String[] getValuesAsArray(String datafileName, Context context) {
         Log.d(TAG, "getValuesAsArray() was called with datafile: " + datafileName);
         String values = readDataFile(datafileName, null);
 
@@ -208,11 +210,13 @@ public class LocalSafer {
         if (contactKey == null) {
             String[] result = getValuesAsArray(DATAFILE09, context);
             clearBufferFile(context);
+            BufferFileLogActivity.renewTheLog();
             return result;
         } else {
             String alreadySavedKeyPairs = readDataFile(DATAFILE09, context);
             String allKeyPairsToSafe = alreadySavedKeyPairs + "-<>-" + contactKey;
             safeStringAtDatafile(DATAFILE09, allKeyPairsToSafe, context);
+            BufferFileLogActivity.renewTheLog();
             return null;
         }
     }
