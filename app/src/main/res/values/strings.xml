@@ -1,6 +1,8 @@
 <resources>
     //General
     <string name="app_name">CoWApp</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     //Data Protection
     <string name="accept_button">Accept</string>
     <string name="decline_button">Decline</string>
@@ -34,7 +36,9 @@
     <string name="traffic_light_description">View to show the current risk status via traffic light status.</string>
     <string name="infoRiskCalcButton_description">Click to show the information page about the risk level calculation.</string>
     <string name="check_bluetooth_enabled_title">Please enable Bluetooth</string>
-    <string name="check_bluetooth_enabled_message">Your Bluetooth is disabled.\nThe App needs Bluetooth and GPS (Location) always turned on to detect Covid contacts.</string>
+    <string name="check_bluetooth_enabled_message">Your Bluetooth is disabled.\nThe App needs Bluetooth and GPS (Location) to be always turned on to detect Covid contacts.</string>
+    <string name="check_gps_enabled_title">Please enable GPS (Location)</string>
+    <string name="check_gps_enabled_message">Your GPS (Location) is disabled.\nThe App needs Bluetooth and GPS (Location) to be always turned on to detect Covid contacts.</string>
     //Main risk status
     <string name="risk_status_default">Current risk</string>
     <string name="risk_status_low">Low Risk</string>
@@ -43,8 +47,6 @@
     <string name="risk_level">Risk Level: %1$d of 100</string>
     <string name="current_infection">Current Infection</string>
     //Report Infection / negative test result
-    <string name="report_no_button">No</string>
-    <string name="report_yes_button">Yes</string>
     <string name="head_report_infection">Report Infection</string>
     <string name="head_report_negative">Report Negative Test Result</string>
     <string name="text_report_infection">Do you really want to report yourself infected? (Only with positive PCR test result.)</string>
