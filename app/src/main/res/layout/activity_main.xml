@@ -26,7 +26,7 @@
             <ImageView
                 android:id="@+id/trafficLightView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/main_trafficLightView_height"
                 android:layout_marginStart="@dimen/main_trafficLightView_marginStart_and_End"
                 android:layout_marginTop="@dimen/main_trafficLightView_marginTop"
                 android:layout_marginEnd="@dimen/main_trafficLightView_marginStart_and_End"
@@ -87,7 +87,7 @@
 
             <TextView
                 android:id="@+id/DateDisplay"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/main_date_marginStart_and_End"
                 android:layout_marginEnd="@dimen/main_date_marginStart_and_End"

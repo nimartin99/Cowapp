@@ -51,14 +51,15 @@
     <dimen name="main_trafficLightView_marginStart_and_End">20dp</dimen>
     <dimen name="main_trafficLightView_marginTop">-15dp</dimen>
     <dimen name="main_trafficLightView_marginBottom">300dp</dimen>
+    <dimen name="main_trafficLightView_height">300dp</dimen>
     <dimen name="main_riskView_marginStart">50dp</dimen>
     <dimen name="main_risklevelView_marginStart">30dp</dimen>
-    <dimen name="main_riskView_marginTop">70dp</dimen>
+    <dimen name="main_riskView_marginTop">85dp</dimen>
     <dimen name="main_riskView_marginEnd">170dp</dimen>
-    <dimen name="main_riskView_textSize">25sp</dimen>
+    <dimen name="main_riskView_textSize">20sp</dimen>
     <dimen name="main_risklevelView_marginTop">15dp</dimen>
     <dimen name="main_riskCalcInfoButton_marginStart">50dp</dimen>
-    <dimen name="main_riskCalcInfoButton_marginBottom">30dp</dimen>
+    <dimen name="main_riskCalcInfoButton_marginBottom">15dp</dimen>
     //push notification activity
     <dimen name="image_view_marginStart_and_End">40dp</dimen>
     <dimen name="image_view_marginTop">80dp</dimen>
