@@ -118,6 +118,7 @@ public class RiskLevel {
     public static void deleteAllContacts() {
         LocalSafer.clearDirectContacts(null);
         LocalSafer.clearIndirectContacts(null);
+        Log.d(TAG, "All Contacts were deleted");
     }
 
     /**
