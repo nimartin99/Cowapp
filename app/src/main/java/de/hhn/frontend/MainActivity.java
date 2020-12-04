@@ -15,8 +15,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -61,7 +63,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-12-03
+ * @version 2020-12-04
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
@@ -155,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         showDateDisplay();
         if(Constants.SCAN_AND_TRANSMIT) {
             checkIfBluetoothIsEnabled();
+            checkIfGPSIsEnabled();
         }
     }
 
@@ -208,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if(Constants.SCAN_AND_TRANSMIT) {
             checkIfBluetoothIsEnabled();
+            checkIfGPSIsEnabled();
         }
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
@@ -270,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setTitle(getString(R.string.head_report_negative));
                 builder.setMessage(getString(R.string.text_report_negative));
                 //approval button
-                builder.setPositiveButton(getString(R.string.report_yes_button),
+                builder.setPositiveButton(getString(R.string.yes),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -295,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                 //button to exit the app
-                builder.setNegativeButton(getString(R.string.report_no_button),
+                builder.setNegativeButton(getString(R.string.no),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -399,7 +403,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setMessage(getString(R.string.text_report_infection));
         }
         //approval button
-        builder.setPositiveButton(getString(R.string.report_yes_button),
+        builder.setPositiveButton(getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -448,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         //button to stop the report
-        builder.setNegativeButton(getString(R.string.report_no_button),
+        builder.setNegativeButton(getString(R.string.no),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -801,16 +805,20 @@ public class MainActivity extends AppCompatActivity {
             if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.check_bluetooth_enabled_title));
-                builder.setMessage(getString(R.string.check_bluetooth_enabled_message));
-                builder.setPositiveButton(android.R.string.ok, null);
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        //finish();
-                        //System.exit(0);
-                    }
-                });
-                builder.show();
+                builder.setMessage(getString(R.string.check_bluetooth_enabled_message))
+                    .setCancelable(false)
+                        .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                            public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                                dialog.cancel();
+                            }
+                        });
+                final AlertDialog alert = builder.create();
+                alert.show();
             }
         } catch (RuntimeException e) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -828,6 +836,33 @@ public class MainActivity extends AppCompatActivity {
             });
             builder.show();
         }
+    }
+
+    /**
+     * Check if GPS is enabled
+     */
+    public void checkIfGPSIsEnabled() {
+        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if ( !manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.check_gps_enabled_title));
+            builder.setMessage(getString(R.string.check_gps_enabled_message))
+                    .setCancelable(false)
+                    .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }
+
     }
 
     public static Context getContext() {
