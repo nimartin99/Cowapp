@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import de.hhn.frontend.date.DateHelper;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
@@ -228,7 +229,23 @@ public class TestMenuActivity extends AppCompatActivity {
             }
         }));
 
+        final EditText simulateKeyExchangePlainText = findViewById(R.id.simulateKeyExchangePlainText);
+        Button simulateKeyExchangeButton = findViewById(R.id.simulateKeyExchangeButton);
+        simulateKeyExchangeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String simulatedBeacon = simulateKeyExchangePlainText.getText().toString();
+                if (simulatedBeacon.substring(0, 8).equals(Constants.cowappBeaconIdentifier) && simulatedBeacon.length() == 36) {
+                    String context = "Beacon found: id1=" + simulatedBeacon;
+                    Log.d(TAG, context);
+                    LocalSafer.addReceivedKey(simulatedBeacon, null);
 
+                    if (Constants.DEBUG_MODE && LocalSafer.isKeyTransmitLogged(null)) {
+                        LocalSafer.addLogValueToDebugLog(getString(R.string.received_a_key) + simulatedBeacon, null);
+                    }
+                }
+            }
+        });
     }
 }
 
