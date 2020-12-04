@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    //General
     <string name="app_name">CoWApp</string>
+    //Data Protection
+    <string name="accept_button">Akzeptieren</string>
+    <string name="decline_button">Ablehnen</string>
+    <string name="head_data_protection">Nutzungsbedingungen</string>
+    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel und Standort sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.Nur so ist die Funktion der Corona-Warn-App gegeben.</string>
+    <string name="decline_info_title">Zustimmung notwendig </string>
+    <string name="decline_info_message">Sie müssen die Nutzungsbedingungen akzeptieren, um die App nutzen zu können. </string>
+    <string name="decline_info_ok_button">Okay</string>
+    <string name="exit_app">Exit</string>
     //Main
     <string name="menu_log">LOG</string>
-    <string name="menu_settings">Einstellungen</string>
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
+    <string name="menu_report_negative">Negativmeldung</string>
     <string name="report_infection_button">Infektion melden</string>
     <string name="report_infection_button_ci">Weitere Informationen</string>
     <string name="suspicion_button">Verdacht? - Was tun?</string>
     <string name="suspicion_button_ci">Negativmeldung</string>
     <string name="traffic_light_description">Anzeige, die das aktuelle Risikolevel durch eine Ampel veranschaulicht.</string>
     <string name="infoRiskCalcButton_description">Anklicken, um auf die Informationsseite zur Risikoberechnung zu gelangen.</string>
+    <string name="check_bluetooth_enabled_title">Bluetooth ist ausgeschaltet</string>
+    <string name="check_bluetooth_enabled_message">Bluetooth ist ausgeschaltet.\nDamit Covid Kontakte verfolgt werden können muss Bluetooth und GPS (Standort) immer aktiviert sein.</string>
     //Main risk status
     <string name="risk_status_default">Aktuelles Risiko</string>
     <string name="risk_status_low">Geringes Risiko</string>
@@ -32,26 +44,18 @@
     <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. Vielen Dank!</string>
     //Date and days since use
     <string name="daysSinceText">Seit dem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
-    //Data Protection
-    <string name="accept_button">Akzeptieren</string>
-    <string name="decline_button">Ablehnen</string>
-    <string name="head_data_protection">Nutzungsbedingungen</string>
-    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel und Standort sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.Nur so ist die Funktion der Corona-Warn-App gegeben.</string>
-    <string name="decline_info_title">Zustimmung notwendig </string>
-    <string name="decline_info_message">Sie müssen die Nutzungsbedingungen akzeptieren, um die App nutzen zu können. </string>
-    <string name="decline_info_ok_button">Okay</string>
-    <string name="exit_app">Exit</string>
     //Permission Requesting
     <string name="background_location_access_title">Die App benötigt den Standort Zugriff</string>
     <string name="background_location_access_message">Bitte erlaube der App deinen Standort zu verwenden, dieser wird benötigt um die App zu nutzen. Es werden keine Standortdaten von der App erhoben</string>
     <string name="background_location_access_denied_title">Funktionalität ist eingeschränkt</string>
     <string name="background_location_access_denied_message">Der Standortzugriff wurde nicht erlaubt, das bedeutet, dass keine Covid Kontakte im Hintergrund erkannt werden können. Bitte aktiviere den Standortzugriff in Einstellungen -> Anwendungen -> Berechtigung (hier die CoWApp suchen und den Zugriff aktivieren)</string>
     <string name="bluetooth_enabled_title">Bluetooth ist deaktiviert</string>
-    <string name="bluetooth_enabled_message">Bitte aktiviere Bluetooth und starte die App neu</string>
+    <string name="bluetooth_enabled_message">Bitte aktiviere Bluetooth und starte die App neu oder nutze "Berechtigung erneut anfragen"</string>
     <string name="ble_available_title">Bluetooth LE not available</string>
     <string name="ble_available_message">Das Gerät unterstützt nicht die Bluetooth-Low-Energy Technologie. Deshalb funktioniert die App auf diesem Gerät nicht</string>
     <string name="location_access_denied_message">Der Zugriff auf den Gerätestandort wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
     <string name="background_location_denied">Der Zugriff auf den Gerätestandort im Hintergrund wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
+    <string name="request_permission">Berechtigungen erneut anfragen</string>
     //Info Menu and pages
     <string name="head_info_menu">Weitere Informationen</string>
     <string name="head_general_info">Allg. Informationen</string>
@@ -60,6 +64,9 @@
     <string name="text_risklevel_info">Ticket 96</string>
     <string name="head_infection_info">Akute Infektion - Wie verhalte ich mich?</string>
     <string name="text_infection_info">Bei akuter Infektion sind Sie verpflichtet, sich umgehend in Quarantäne zu begeben und 14 Tage oder bis Erhalt eines negativen PCR-Testergebnisses in Quarantäne zu bleiben. Des weiteren sind Sie verpflichtet, ihr örtliches Gesundheitsamt zu benachrichtigen. Eventuelle Mitbewohner sollten sich ebenfalls umgehend testen lassen und Sie sind angehalten, sich von diesen zu distanzieren. Weitere Informationen unter: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen</string>
+    //Suspicion
+    <string name="head_suspicion_info">Verdacht? - Was tun?</string>
+    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in 14-tägiger Quarantäne. Ist das Testergebnis negativ, dürfen Sie die Quarantäne beenden. Vielen Dank für Ihre Mithilfe, der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
     //LOG
     <string name="text_log">Notification Log</string>
     <string name="log">Dies ist eine Benachrichtigung</string>
@@ -73,26 +80,10 @@
     <string name="text_moreInfoPush">Hier klicken für weitere Informationen.</string>
     <string name="head_indirectContactPush">Indirekten Kontakt zu einer infizierten Person festgestellt</string>
     <string name="head_noConnectionPush">Es konnte keine Verbindung zum Server hergestellt werden</string>
-    <string name="text_noConnectionPush">Versuche Verbindungsaufbau in 5 Minuten erneut…</string>
-    //Settings
-    <string name="setting_1">Setting 1</string>
-    <string name="setting_2">Setting 2</string>
-    //Suspicion
-    <string name="head_suspicion_info">Verdacht? - Was tun?</string>
-    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in 14-tägiger Quarantäne. Ist das Testergebnis negativ, dürfen Sie die Quarantäne beenden. Vielen Dank für Ihre Mithilfe, der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
-    //Test Menu
-    <string name="head_test_menu">Test Menü</string>
-    <string name="test_button_1">Push-Benachrichtigung Test</string>
-    <string name="test_button_2">Schlüsselgenerierung Test</string>
-    <string name="test_button_3">Risikolevel Test</string>
-    <string name="test_button_4">Infektionsstatus überprüfen Test</string>
-    <string name="test_button_5">Logge eigene Schlüssel Test</string>
-    <string name="test_button_6">Lösche eigene Schlüssel Test</string>
-    <string name="reset_button_risklevel">Reset Risk Level</string>
-    <string name="test_button_7">Übertragung an/aus</string>
-    <string name="test_button_8">Scannen an/aus</string>
+    <string name="text_noConnectionPush">Versuche Verbindungsaufbau in 5 Minuten erneut...</string>
     //BeaconBackgroundService (foreground) Notification
     <string name="foreground_Notificaiton">Schutz aktiv</string>
+    //Debug Menu
     <string name="actions">Test-Aktionen</string>
     <string name="logs">Debug-Log-Einstellungen</string>
     <string name="debuglog">Debug-Log</string>
@@ -113,5 +104,15 @@
     <string name="confirm">BESTÄTIGEN</string>
     <string name="debug_log_was_cleared">Der DebugLog wurde geleert.</string>
     <string name="action_canceled">Aktion abgebrochen</string>
-    <string name="request_permission">Berechtigungen erneut anfragen</string>
+    //Test Menu
+    <string name="head_test_menu">Test Menü</string>
+    <string name="test_button_1">Push-Benachrichtigung Test</string>
+    <string name="test_button_2">Schlüsselgenerierung Test</string>
+    <string name="test_button_3">Risikolevel Test</string>
+    <string name="test_button_4">Infektionsstatus überprüfen Test</string>
+    <string name="test_button_5">Logge eigene Schlüssel Test</string>
+    <string name="test_button_6">Lösche eigene Schlüssel Test</string>
+    <string name="reset_button_risklevel">Reset Risk Level</string>
+    <string name="test_button_7">Übertragung an/aus</string>
+    <string name="test_button_8">Scannen an/aus</string>
 </resources>

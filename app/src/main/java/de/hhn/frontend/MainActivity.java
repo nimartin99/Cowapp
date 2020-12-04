@@ -27,6 +27,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.altbeacon.beacon.BeaconManager;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -59,7 +61,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-12-02
+ * @version 2020-12-03
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
@@ -76,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private static RetrofitService retrofitService;
-    private String BASE_URL = "http://10.0.2.2:3000"; // for emulated phone
-    private String PHONE_URL = "http://" + Personal_Constants.OWN_IP + ":3000";
+    private String BASE_URL = "https://cowapp.glitch.me";
 
     //For the once-a-day-alarm-clock for deleting keys that are older than 3 weeks
     private PendingIntent myPendingIntent;
@@ -152,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
         }
         //show current Info about days since usage.
         showDateDisplay();
+        if(Constants.SCAN_AND_TRANSMIT) {
+            checkIfBluetoothIsEnabled();
+        }
     }
 
     @Override
@@ -159,6 +163,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * First initialization of the application. The date the user starts the app for the first time is saved, the
+     * client requests his first key and the alarm is set.
+     */
     public void firstinit() {
         //TODO get best place to save first app start date
         if (LocalSafer.getFirstStartDate(null) == null || LocalSafer.getFirstStartDate(null).isEmpty()) {
@@ -198,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(Constants.SCAN_AND_TRANSMIT) {
+            checkIfBluetoothIsEnabled();
+        }
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
@@ -223,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!Constants.DEBUG_MODE) {
             MenuItem it = menu.getItem(2);
-            menu.removeItem(it.getItemId()); //its the ID of the Test-menu for some reason
+            menu.removeItem(it.getItemId()); //ID of the test menu button because of its place in the dropdown menu
         }
         return true;
     }
@@ -242,15 +253,58 @@ public class MainActivity extends AppCompatActivity {
                 Intent nextActivityItem1 = new Intent(MainActivity.this, LogActivity.class);
                 startActivity(nextActivityItem1);
                 return true;
-            case R.id.item3:
+            case R.id.item2:
                 //Go to info screen
                 Intent nextActivity = new Intent(MainActivity.this, InfoMenuActivity.class);
                 startActivity(nextActivity);
                 return true;
-            case R.id.item4:
+            case R.id.item3:
                 //Go to test menu screen
                 Intent testActivity = new Intent(MainActivity.this, DebugActivity.class);
                 startActivity(testActivity);
+                return true;
+            case R.id.item4:
+                //ask the user if he really wants to report himself negative
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setCancelable(true);
+                builder.setTitle(getString(R.string.head_report_negative));
+                builder.setMessage(getString(R.string.text_report_negative));
+                //approval button
+                builder.setPositiveButton(getString(R.string.report_yes_button),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //report yourself negative and reset risk level
+                                RiskLevel.reportNegativeInfectionTestResult();
+                                //update buttons if there was a current infection
+                                initButtons();
+                                //pop up dialog to inform the user that the negative report was successful
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+                                builder.setCancelable(true);
+                                builder.setTitle(getString(R.string.head_report_successful));
+                                builder.setMessage(getString(R.string.text_report_successful));
+                                builder.setPositiveButton(getString(R.string.ok_button),
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                //pop up disappears
+                                            }
+                                        });
+                                AlertDialog thankYouDialog = builder.create();
+                                thankYouDialog.show();
+                            }
+                        });
+                //button to exit the app
+                builder.setNegativeButton(getString(R.string.report_no_button),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //just shows the main screen again
+
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -736,6 +790,43 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(nextActivity);
                 }
             });
+        }
+    }
+
+    /**
+     * Check if Bluetooth is enabled and BLE is supported
+     */
+    private void checkIfBluetoothIsEnabled() {
+        try {
+            if (!BeaconManager.getInstanceForApplication(this).checkAvailability()) {
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.check_bluetooth_enabled_title));
+                builder.setMessage(getString(R.string.check_bluetooth_enabled_message));
+                builder.setPositiveButton(android.R.string.ok, null);
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        //finish();
+                        //System.exit(0);
+                    }
+                });
+                builder.show();
+            }
+        } catch (RuntimeException e) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(getString(R.string.ble_available_title));
+            builder.setMessage(getString(R.string.ble_available_message));
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    //finish();
+                    //System.exit(0);
+                }
+
+            });
+            builder.show();
         }
     }
 

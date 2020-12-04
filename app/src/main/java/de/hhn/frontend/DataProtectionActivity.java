@@ -48,7 +48,6 @@ public class DataProtectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //terms of use have been accepted - set boolean of first app start to false
                 LocalSafer.setIsFirstAppStart(false, null);
-                //main.prefDataProtection = "false";
                 //Start app functionality
                 BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
                 application.changeMonitoringState(true);

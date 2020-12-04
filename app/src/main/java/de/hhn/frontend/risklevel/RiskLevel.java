@@ -10,11 +10,12 @@ import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.provider.LocalSafer;
 
 /**
- * New Risk Level Class.
+ * Risk Level Class.
  * Contains everything needed to calculate the RiskLevel value
  *
- * @author jonas
- * @version 23.11.2020
+ * @author Jonas Klein
+ * @author Mergim Miftari
+ * @version 2020-12-03
  */
 
 public class RiskLevel {
