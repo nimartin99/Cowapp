@@ -21,6 +21,7 @@ public class DebugActivity extends AppCompatActivity {
     private Button debugLog;
     private Button ownKeys;
     private Button collectedKeys;
+    private Button bufferFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class DebugActivity extends AppCompatActivity {
         debugLog = this.findViewById(R.id.debugLog);
         ownKeys = this.findViewById(R.id.listOfOwnKeys);
         collectedKeys = this.findViewById(R.id.collectedKeysButton);
+        bufferFile = this.findViewById(R.id.listOfBufferFileValues);
 
         testActions.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +71,14 @@ public class DebugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent nextActivity = new Intent(DebugActivity.this, OtherKeysActivity.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        bufferFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent nextActivity = new Intent(DebugActivity.this, BufferFileLogActivity.class);
                 startActivity(nextActivity);
             }
         });

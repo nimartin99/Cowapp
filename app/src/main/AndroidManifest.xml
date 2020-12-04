@@ -20,7 +20,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".OtherKeysActivity"></activity>
+        <activity android:name=".BufferFileLogActivity"></activity>
+        <activity android:name=".OtherKeysActivity" />
         <activity android:name=".OwnKeyActivity" />
         <activity
             android:name=".PermissionActivity"
