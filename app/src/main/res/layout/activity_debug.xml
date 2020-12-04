@@ -41,7 +41,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp"
             android:text="@string/debuglog"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/listOfOwnKeys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp"
+            android:text="list of own keys"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/collectedKeysButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:layout_marginBottom="20sp"
+            android:text="List of Collected Keys"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/listOfBufferFileValues"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:text="List of Keys in BufferFile"
             android:textSize="20sp" />
     </LinearLayout>
 

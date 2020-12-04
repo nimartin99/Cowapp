@@ -68,6 +68,9 @@
     <string name="text_risklevel_info">Ticket 96</string>
     <string name="head_infection_info">Akute Infektion - Wie verhalte ich mich?</string>
     <string name="text_infection_info">Bei akuter Infektion sind Sie verpflichtet, sich umgehend in Quarantäne zu begeben und 14 Tage oder bis Erhalt eines negativen PCR-Testergebnisses in Quarantäne zu bleiben. Des weiteren sind Sie verpflichtet, ihr örtliches Gesundheitsamt zu benachrichtigen. Eventuelle Mitbewohner sollten sich ebenfalls umgehend testen lassen und Sie sind angehalten, sich von diesen zu distanzieren. Weitere Informationen unter: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen</string>
+    //Suspicion
+    <string name="head_suspicion_info">Verdacht? - Was tun?</string>
+    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in 14-tägiger Quarantäne. Ist das Testergebnis negativ, dürfen Sie die Quarantäne beenden. Vielen Dank für Ihre Mithilfe, der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
     //LOG
     <string name="text_log">Notification Log</string>
     <string name="log">Dies ist eine Benachrichtigung</string>

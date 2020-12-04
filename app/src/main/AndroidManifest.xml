@@ -20,29 +20,38 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".PermissionActivity"
+        <activity android:name=".BufferFileLogActivity"></activity>
+        <activity android:name=".OtherKeysActivity" />
+        <activity android:name=".OwnKeyActivity" />
+        <activity
+            android:name=".PermissionActivity"
+            android:configChanges="orientation"
             android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DebugLog"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DebugLog"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DebugActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DebugActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".RiskLevelInfoActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".RiskLevelInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".InfectionActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".InfectionActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".provider.NotificationService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -51,31 +60,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestMenuActivity"
+        <activity
+            android:name=".TestMenuActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PushNotificationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PushNotificationActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SuspicionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SuspicionActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".InfoMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".InfoMenuActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".GeneralInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".GeneralInfoActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LogActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LogActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DataProtectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DataProtectionActivity"
+            android:configChanges="orientation"
             android:noHistory="true"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <service
             android:name="org.altbeacon.beacon.service.BeaconService"
