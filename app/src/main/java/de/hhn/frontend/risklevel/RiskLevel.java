@@ -146,7 +146,7 @@ public class RiskLevel {
             //disable scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(false);
-            BeaconBackgroundService.stopTransmittingAsBeacon();
+            application.stopTransmittingAsBeacon();
 
             Log.d("Jonas", "Due to a current infection the Key Exchange was stopped");
 
@@ -155,7 +155,7 @@ public class RiskLevel {
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(true);
-            BeaconBackgroundService.transmitAsBeacon();
+            application.transmitAsBeacon();
 
             Log.d("Jonas", "Due to no current infection the Key Exchange was started");
         }
@@ -175,7 +175,7 @@ public class RiskLevel {
         //disable scanning and transmitting of the bluetoothLE key exchange
         BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
         application.changeMonitoringState(false);
-        BeaconBackgroundService.stopTransmittingAsBeacon();
+        application.stopTransmittingAsBeacon();
 
         Log.d("Jonas", "Due to a current infection the Key Exchange was stopped");
 
@@ -195,7 +195,7 @@ public class RiskLevel {
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(true);
-            BeaconBackgroundService.transmitAsBeacon();
+            application.transmitAsBeacon();
 
             Log.d("Jonas", "Due to no current infection the Key Exchange was started");
             calculateRiskLevel();

@@ -102,10 +102,12 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(clickedTransmit) {
-                    BeaconBackgroundService.transmitAsBeacon();
+                    BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                    application.transmitAsBeacon();
                     clickedTransmit = false;
                 } else {
-                    BeaconBackgroundService.stopTransmittingAsBeacon();
+                    BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                    application.stopTransmittingAsBeacon();
                     clickedTransmit = true;
                 }
             }
@@ -256,7 +258,7 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
-                application.buildForegroundNotification("onlyBuildForeground");
+                application.buildNewForegroundNotification("onlyBuildForeground");
             }
         });
     }
