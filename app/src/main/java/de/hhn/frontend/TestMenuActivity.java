@@ -250,6 +250,15 @@ public class TestMenuActivity extends AppCompatActivity {
                 application.stopForegroundNotification();
             }
         });
+
+        Button onlyBuildForeground = findViewById(R.id.onlyBuildForeground);
+        onlyBuildForeground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                application.buildForegroundNotification("onlyBuildForeground");
+            }
+        });
     }
 }
 

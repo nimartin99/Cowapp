@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.BeaconConsumer;
@@ -31,6 +32,7 @@ import java.util.Collection;
 import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.R;
 import de.hhn.frontend.Constants;
+import de.hhn.frontend.TestMenuActivity;
 import de.hhn.frontend.provider.LocalSafer;
 
 /**
@@ -76,7 +78,29 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
             beaconManager.getBeaconParsers().add(new BeaconParser().
                     setBeaconLayout("s:0-1=fd6f,p:-:-59,i:2-17,d:18-21"));
 
-            buildForegroundNotification(getString(R.string.foreground_Notificaiton));
+            // Uncomment the code below to use a foreground service to scan for beacons. This unlocks
+            // the ability to continually scan for long periods of time in the background on Android 8+
+            // in exchange for showing an icon at the top of the screen and a always-on notification to
+            // communicate to users that your app is using resources in the background.
+            Notification.Builder builder = new Notification.Builder(this);
+            builder.setSmallIcon(R.mipmap.ic_cowapp);
+            builder.setContentTitle(getString(R.string.foreground_Notificaiton));
+            Intent intent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            builder.setContentIntent(pendingIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel("My Notification Channel ID",
+                        "My Notification Name", NotificationManager.IMPORTANCE_LOW);
+                channel.setDescription("My Notification Channel Description");
+                NotificationManager notificationManager = (NotificationManager) getSystemService(
+                        Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(channel);
+                builder.setChannelId(channel.getId());
+            }
+            beaconManager.enableForegroundServiceScanning(builder.build(), NOTIFICATION_CHANNEL_ID);
+
             // For the above foreground scanning service to be useful, you need to disable
             // JobScheduler-based scans (used on Android 8+) and set a fast background scan
             // cycle that would otherwise be disallowed by the operating system.
@@ -278,6 +302,7 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
     public void stopForegroundNotification() {
         Log.d(TAG, "BeaconManager.unbind(this);");
         beaconManager.unbind(this);
+        changeMonitoringState(false);
         beaconManager.disableForegroundServiceScanning();
         NotificationManager notificationManager = (NotificationManager) getSystemService(
                 Context.NOTIFICATION_SERVICE);
@@ -287,35 +312,40 @@ public class BeaconBackgroundService extends Application implements BootstrapNot
     }
 
     public void buildForegroundNotification(String contentTitle) {
-        Log.d(TAG, "Build a new foregroundNotification");
-                // Uncomment the code below to use a foreground service to scan for beacons. This unlocks
-        // the ability to continually scan for long periods of time in the background on Android 8+
-        // in exchange for showing an icon at the top of the screen and a always-on notification to
-        // communicate to users that your app is using resources in the background.
-        Notification.Builder builder = new Notification.Builder(this);
-        builder.setSmallIcon(R.mipmap.ic_cowapp);
-        builder.setContentTitle(contentTitle);
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        builder.setContentIntent(pendingIntent);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("My Notification Channel ID",
-                    "My Notification Name", NotificationManager.IMPORTANCE_LOW);
-            channel.setDescription("My Notification Channel Description");
-            NotificationManager notificationManager = (NotificationManager) getSystemService(
-                    Context.NOTIFICATION_SERVICE);
-            notificationManager.createNotificationChannel(channel);
-            builder.setChannelId(channel.getId());
+        if(!beaconManager.isBound(this)) {
+            Log.d(TAG, "Build a new foregroundNotification");
+            // Uncomment the code below to use a foreground service to scan for beacons. This unlocks
+            // the ability to continually scan for long periods of time in the background on Android 8+
+            // in exchange for showing an icon at the top of the screen and a always-on notification to
+            // communicate to users that your app is using resources in the background.
+
+            Notification.Builder builder = new Notification.Builder(this);
+            builder.setSmallIcon(R.mipmap.ic_cowapp);
+            builder.setContentTitle(contentTitle);
+            Intent intent = new Intent(this, MainActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(
+                    this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT
+            );
+            builder.setContentIntent(pendingIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel("My Notification Channel ID",
+                        "My Notification Name", NotificationManager.IMPORTANCE_LOW);
+                channel.setDescription("My Notification Channel Description");
+                NotificationManager notificationManager = (NotificationManager) getSystemService(
+                        Context.NOTIFICATION_SERVICE);
+                notificationManager.createNotificationChannel(channel);
+                builder.setChannelId(channel.getId());
+            }
+            beaconManager.enableForegroundServiceScanning(builder.build(), NOTIFICATION_CHANNEL_ID);
+            beaconManager.setEnableScheduledScanJobs(false);
+            beaconManager.setBackgroundBetweenScanPeriod(Constants.BACKGROUND_SCAN_PERIOD);
+            beaconManager.setForegroundBetweenScanPeriod(Constants.FOREGROUND_SCAN_PERIOD);
+
+            beaconManager.bind(this);
+            changeMonitoringState(true);
+        } else{
+            Log.d(TAG, "Already showing an foregroundNotification (Consumer Bound)");
         }
-        beaconManager.enableForegroundServiceScanning(builder.build(), NOTIFICATION_CHANNEL_ID);
-
-        beaconManager.setEnableScheduledScanJobs(false);
-        beaconManager.setBackgroundBetweenScanPeriod(Constants.BACKGROUND_SCAN_PERIOD);
-        beaconManager.setForegroundBetweenScanPeriod(Constants.FOREGROUND_SCAN_PERIOD);
-
-        beaconManager.bind(this);
     }
 
     /**
