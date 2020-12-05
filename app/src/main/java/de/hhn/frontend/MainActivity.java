@@ -357,14 +357,16 @@ public class MainActivity extends AppCompatActivity {
                         // safe new key
                         LocalSafer.safeOwnKey(Key.getKey(), null);
                         //Update the Transmission
-                        BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
+                        BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                        application.updateTransmissionBeaconKey(requestedKey);
                     } else if (response.code() == 404) {
                         Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
                         // set last response state
                         ResponseState.setLastResponseState(ResponseState.State.NO_EXISTING_KEY);
                         // key is not successfully requested
                         Key.setKeyRequested(false);
-                        BeaconBackgroundService.stopTransmittingAsBeacon();
+                        BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                        application.stopTransmittingAsBeacon();
                     }
                 }
 

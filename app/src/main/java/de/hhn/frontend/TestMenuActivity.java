@@ -100,10 +100,12 @@ public class TestMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(clickedTransmit) {
-                    BeaconBackgroundService.transmitAsBeacon();
+                    BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                    application.transmitAsBeacon();
                     clickedTransmit = false;
                 } else {
-                    BeaconBackgroundService.stopTransmittingAsBeacon();
+                    BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                    application.stopTransmittingAsBeacon();
                     clickedTransmit = true;
                 }
             }
@@ -244,6 +246,35 @@ public class TestMenuActivity extends AppCompatActivity {
                         LocalSafer.addLogValueToDebugLog(getString(R.string.received_a_key) + simulatedBeacon, null);
                     }
                 }
+            }
+        });
+
+        //Button and EditText to update the foregroundNotification
+        final EditText updateForegroundEditText = findViewById(R.id.updateForegroundEditText);
+        Button updateForegroundButton = findViewById(R.id.updateForegroundButton);
+        updateForegroundButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                application.updateForegroundNotification(updateForegroundEditText.getText().toString());
+            }
+        });
+
+        Button stopForegroundNotificationButton = findViewById(R.id.stopForegroundNotificationButton);
+        stopForegroundNotificationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                application.stopForegroundNotification();
+            }
+        });
+
+        Button onlyBuildForeground = findViewById(R.id.onlyBuildForeground);
+        onlyBuildForeground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
+                application.buildNewForegroundNotification("onlyBuildForeground");
             }
         });
     }

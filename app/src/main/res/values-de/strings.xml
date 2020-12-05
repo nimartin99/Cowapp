@@ -47,7 +47,7 @@
     <string name="head_report_successful">Meldung erfolgreich</string>
     <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. Vielen Dank!</string>
     //Date and days since use
-    <string name="daysSinceText">Seitdem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
+    <string name="daysSinceText">Seit dem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
     //Permission Requesting
     <string name="background_location_access_title">Die App benötigt den Standort Zugriff</string>
     <string name="background_location_access_message">Bitte erlaube der App deinen Standort zu verwenden, dieser wird benötigt um die App zu nutzen. Es werden keine Standortdaten von der App erhoben</string>
