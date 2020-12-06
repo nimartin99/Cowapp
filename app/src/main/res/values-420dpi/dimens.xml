@@ -47,6 +47,7 @@
     <dimen name="main_buttons_textSize">24sp</dimen>
     <dimen name="main_date_marginStart_and_End">30dp</dimen>
     <dimen name="main_date_marginBottom">5dp</dimen>
+    <dimen name="main_date_marginTop">5dp</dimen>
     <dimen name="main_date_textSize">18sp</dimen>
     <dimen name="main_trafficLightView_height">350dp</dimen>
     <dimen name="main_trafficLightView_marginStart_and_End">10dp</dimen>
