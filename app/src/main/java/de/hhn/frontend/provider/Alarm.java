@@ -42,7 +42,6 @@ public class Alarm {
 
         if (LocalSafer.getRiskLevel(null) != 100) {
             MainActivity.requestInfectionStatus();
-            RiskLevel.calculateRiskLevel();
         } else {
             Log.d("Alarm", "due to a current infection no contacts were requested and no risk level was calculated");
         }

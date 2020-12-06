@@ -594,6 +594,8 @@ public class MainActivity extends AppCompatActivity {
                                     // set last response state
                                     ResponseState.setLastResponseState(ResponseState.State.NO_DEFINED_INFECTION_STATUS);
                                 }
+                                // update risk level
+                                RiskLevel.calculateRiskLevel();
                             } else if (response.code() == 400) {
                                 // user has had no contact
                                 Log.d(TAG, "User has had no contact with an infected person");
