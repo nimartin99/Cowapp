@@ -12,15 +12,16 @@ import de.hhn.frontend.risklevel.RiskLevel;
  * This class has the method which is called once a day.
  *
  * @author Miftari, Leibl, Alessandrini, Klein
- * @version 2020-11-11
+ * @version 2020-12-06
  */
 public class Alarm {
+    private static final String TAG = Alarm.class.getSimpleName();
 
     /**
      * This method is called all fifteen Minutes.
      */
     public static void fifteenMinutesBusiness() {
-        Log.d("requestLine", "Alarm: fifteenMinutesBusiness() was called ");
+        Log.d(TAG, "Alarm: fifteenMinutesBusiness() was called ");
 
         LocalSafer.analyzeBufferFile(null);
 
@@ -39,7 +40,6 @@ public class Alarm {
         }
 
         //request contacts from the server and calculates the risk level if there is no current infection
-
         if (LocalSafer.getRiskLevel(null) != 100) {
             MainActivity.requestInfectionStatus();
         } else {

@@ -63,7 +63,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-12-04
+ * @version 2020-12-06
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
@@ -336,53 +336,60 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Request a new key from the server.
      */
-    public static boolean requestKey() {
-        Log.d("requestLine", "MainActivity: requestKey() was called. ");
-        if (LocalSafer.getRiskLevel(null) != 100) {
-            Call<String> call = retrofitService.requestKey();
-            RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    if (response.code() == 200) {
-                        // log newest key
-                        Log.d(TAG, "Key: " + response.body());
+    public static void requestKey() {
+        Runnable runnable = new Runnable() {
+            public void run() {
+                // give the thread some time until stating
+                try {
+                    Thread.sleep(7000);
+                } catch (InterruptedException e) {
+                    Log.w(TAG, "requestKey: " + e.getMessage());
+                }
+                Log.d("requestLine", "MainActivity: requestKey() was called. ");
+                Call<String> call = retrofitService.requestKey();
+                RetryCallUtil.enqueueWithRetry(call, new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.code() == 200) {
+                            // log newest key
+                            Log.d(TAG, "Key: " + response.body());
+                            // set last response state
+                            ResponseState.setLastResponseState(ResponseState.State.KEY_SUCCESSFULLY_REQUESTED);
+                            // key is successfully requested
+                            Key.setKeyRequested(true);
+                            // reference requested key
+                            String requestedKey = response.body();
+                            // set the key
+                            Key.setKey(requestedKey);
+                            // safe new key
+                            LocalSafer.safeOwnKey(Key.getKey(), null);
+                            //Update the Transmission
+                            BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
+                        } else if (response.code() == 404) {
+                            Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST - repeating request...");
+                            // set last response state
+                            ResponseState.setLastResponseState(ResponseState.State.NO_EXISTING_KEY);
+                            // key is not successfully requested
+                            Key.setKeyRequested(false);
+                            BeaconBackgroundService.stopTransmittingAsBeacon();
+                            // retry the request
+                            requestKey();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Log.w(TAG, Objects.requireNonNull(t.getMessage()));
+                        serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                         // set last response state
-                        ResponseState.setLastResponseState(ResponseState.State.KEY_SUCCESSFULLY_REQUESTED);
-                        // key is successfully requested
-                        Key.setKeyRequested(true);
-                        // reference requested key
-                        String requestedKey = response.body();
-                        // set the key
-                        Key.setKey(requestedKey);
-                        // safe new key
-                        LocalSafer.safeOwnKey(Key.getKey(), null);
-                        //Update the Transmission
-                        BeaconBackgroundService.updateTransmissionBeaconKey(requestedKey);
-                    } else if (response.code() == 404) {
-                        Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST");
-                        // set last response state
-                        ResponseState.setLastResponseState(ResponseState.State.NO_EXISTING_KEY);
+                        ResponseState.setLastResponseState(ResponseState.State.NO_CONNECTION);
                         // key is not successfully requested
                         Key.setKeyRequested(false);
-                        BeaconBackgroundService.stopTransmittingAsBeacon();
                     }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                    Log.w(TAG, Objects.requireNonNull(t.getMessage()));
-                    serverResponseNotification("NO_CONNECTION_NOTIFICATION");
-                    // set last response state
-                    ResponseState.setLastResponseState(ResponseState.State.NO_CONNECTION);
-                    // key is not successfully requested
-                    Key.setKeyRequested(false);
-                }
-            });
-
-            return Key.isKeyRequested();
-        } else {
-            return false;
-        }
+                });
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
     /**
@@ -468,8 +475,6 @@ public class MainActivity extends AppCompatActivity {
      * Report an infection by sending the current key to the server.
      */
     public static void reportInfection(final String contactType) {
-        Log.d(TAG, "Sending all contact keys to the server, therefore the response may take some time...");
-
         Runnable runnable = new Runnable() {
             public void run() {
                 LocalSafer.analyzeBufferFile(null);
@@ -507,9 +512,11 @@ public class MainActivity extends AppCompatActivity {
                                 // set last response state
                                 ResponseState.setLastResponseState(ResponseState.State.NO_DEFINED_CONTACT_TYPE);
                             } else if (response.code() == 404) {
-                                Log.w(TAG, "reportInfection: UNDEFINED_REQUEST_BODY_VALUE");
+                                Log.w(TAG, "reportInfection: UNDEFINED_REQUEST_BODY_VALUE - repeating request...");
                                 // set last response state
                                 ResponseState.setLastResponseState(ResponseState.State.UNDEFINED_REQUEST_BODY_VALUE);
+                                // retry the request
+                                reportInfection(contactType);
                             }
                         }
 
@@ -522,7 +529,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Log.d(TAG, "User doesn't have contacts registered");
+                    Log.d(TAG, "User doesn't have contacts registered to inform about an indirect contact");
                     // set last response state
                     ResponseState.setLastResponseState(ResponseState.State.NO_REGISTERED_CONTACTS);
                 }
@@ -536,9 +543,14 @@ public class MainActivity extends AppCompatActivity {
      * Request the infection status of the user from the server.
      */
     public static void requestInfectionStatus() {
-        Log.d(TAG, "Sending all own keys to the server, therefore the response may take some time...");
         Runnable runnable = new Runnable() {
             public void run() {
+                // give the thread some time until stating
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Log.w(TAG, "requestInfectionStatus_THREAD: " + e.getMessage());
+                }
                 if (LocalSafer.getOwnKeys(null) != null) {
                     // get all own keys
                     HashMap<String, String> ownKeysMap = new HashMap<>();
@@ -602,9 +614,11 @@ public class MainActivity extends AppCompatActivity {
                                 // set last response state
                                 ResponseState.setLastResponseState(ResponseState.State.NO_CONTACT);
                             } else if (response.code() == 404) {
-                                Log.w(TAG, "onResponse: UNDEFINED_REQUEST_BODY_VALUE");
+                                Log.w(TAG, "onResponse: UNDEFINED_REQUEST_BODY_VALUE - repeating request...");
                                 // set last response state
                                 ResponseState.setLastResponseState(ResponseState.State.UNDEFINED_REQUEST_BODY_VALUE);
+                                // retry the request
+                                requestInfectionStatus();
                             }
                         }
 
