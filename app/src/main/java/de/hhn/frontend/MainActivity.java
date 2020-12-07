@@ -63,7 +63,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-12-04
+ * @version 2020-12-05
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
@@ -296,6 +296,7 @@ public class MainActivity extends AppCompatActivity {
                                         });
                                 AlertDialog thankYouDialog = builder.create();
                                 thankYouDialog.show();
+                                //TODO: Neustart Notification
                             }
                         });
                 //button to exit the app
@@ -414,6 +415,7 @@ public class MainActivity extends AppCompatActivity {
                             RiskLevel.reportNegativeInfectionTestResult();
                             //update buttons
                             initButtons();
+                            //TODO: Neustart Notification
                             //pop up dialog to inform the user that the negative report was successful
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);

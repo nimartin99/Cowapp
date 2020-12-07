@@ -132,6 +132,7 @@ public class RiskLevel {
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(false);
             application.stopTransmittingAsBeacon();
+            //TODO: Stop Notification
 
             Log.d(TAG, "Due to a current infection the Key Exchange was stopped");
 
@@ -142,6 +143,7 @@ public class RiskLevel {
             application.changeMonitoringState(true);
             application.transmitAsBeacon();
 
+            //TODO: Neustart Notification
             Log.d(TAG, "Due to no current infection the Key Exchange was started");
         }
 
@@ -161,6 +163,7 @@ public class RiskLevel {
         BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
         application.changeMonitoringState(false);
         application.stopTransmittingAsBeacon();
+        //TODO: Stop Notification
 
         Log.d(TAG, "Due to a current infection the Key Exchange was stopped.");
 
@@ -196,6 +199,7 @@ public class RiskLevel {
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.changeMonitoringState(true);
             application.transmitAsBeacon();
+            //TODO: Neustart Notification
 
             Log.d(TAG, "Due to no current infection the Key Exchange was started");
             calculateRiskLevel();
