@@ -12,16 +12,18 @@ import de.hhn.frontend.risklevel.RiskLevel;
  * This class has the method which is called once a day.
  *
  * @author Miftari, Leibl, Alessandrini, Klein
- * @version 2020-11-11
+ * @version 2020-12-06
  */
 public class Alarm {
+    private static final String TAG = Alarm.class.getSimpleName();
 
     /**
      * This method is called all fifteen Minutes.
      */
     public static void fifteenMinutesBusiness() {
-        Log.d("requestLine", "Alarm: fifteenMinutesBusiness() was called ");
+        Log.d(TAG, "Alarm: fifteenMinutesBusiness() was called ");
 
+        //analyze the buffer file
         LocalSafer.analyzeBufferFile(null);
 
         //delete all keys older then 3 weeks.
@@ -33,25 +35,13 @@ public class Alarm {
             MainActivity.showDateDisplay();
         }
 
-        // in case of a current infection, check if it is older than 14 days and if that is true, set the infection status from infected to not infected and start the BLE key exchange.
         if (LocalSafer.getRiskLevel(null) == 100) {
             RiskLevel.checkIfInfectionHasExpired();
-        }
-
-        //request contacts from the server and calculates the risk level if there is no current infection
-
-        if (LocalSafer.getRiskLevel(null) != 100) {
-            MainActivity.requestInfectionStatus();
-            RiskLevel.calculateRiskLevel();
-        } else {
             Log.d("Alarm", "due to a current infection no contacts were requested and no risk level was calculated");
-        }
-
-        //request a new key when the User is not infected.
-        if (LocalSafer.getRiskLevel(null) != 100) {
-            MainActivity.requestKey();
-        } else {
             Log.d("Alarm", "due to a current infection no key was requested");
+        } else {
+            MainActivity.requestInfectionStatus();
+            MainActivity.requestKey();
         }
     }
 

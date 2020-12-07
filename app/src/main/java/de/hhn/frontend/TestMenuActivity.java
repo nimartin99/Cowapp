@@ -166,9 +166,7 @@ public class TestMenuActivity extends AppCompatActivity {
         addIndirectContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Date notOutDatedDate1 = new GregorianCalendar(2020, Calendar.NOVEMBER, 22).getTime();
-                RiskLevel.addContact(new IndirectContact(notOutDatedDate1));
-
+                RiskLevel.addContact(new IndirectContact(new Date()));
             }
         });
 
@@ -176,10 +174,7 @@ public class TestMenuActivity extends AppCompatActivity {
         addDirectContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Date notOutDatedDate1 = new GregorianCalendar(2020, Calendar.NOVEMBER, 22).getTime();
-                RiskLevel.addContact(new DirectContact(notOutDatedDate1));
-
-
+                RiskLevel.addContact(new DirectContact(new Date()));
             }
         });
 

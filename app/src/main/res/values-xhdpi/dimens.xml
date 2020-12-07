@@ -47,11 +47,12 @@
     <dimen name="main_buttons_textSize">24sp</dimen>
     <dimen name="main_date_marginStart_and_End">30dp</dimen>
     <dimen name="main_date_marginBottom">5dp</dimen>
+    <dimen name="main_date_marginTop">8dp</dimen>
     <dimen name="main_date_textSize">18sp</dimen>
     <dimen name="main_trafficLightView_marginStart_and_End">20dp</dimen>
     <dimen name="main_trafficLightView_marginTop">5dp</dimen>
     <dimen name="main_trafficLightView_marginBottom">260dp</dimen>
-    <dimen name="main_trafficLightView_height">300dp</dimen>
+    <dimen name="main_trafficLightView_height">320dp</dimen>
     <dimen name="main_riskView_marginStart">40dp</dimen>
     <dimen name="main_risklevelView_marginStart">30dp</dimen>
     <dimen name="main_riskView_marginTop">70dp</dimen>

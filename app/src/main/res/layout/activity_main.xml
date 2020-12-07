@@ -90,6 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/main_date_marginStart_and_End"
+                android:layout_marginTop="@dimen/main_date_marginTop"
                 android:layout_marginEnd="@dimen/main_date_marginStart_and_End"
                 android:layout_marginBottom="@dimen/main_date_marginBottom"
                 android:text="@string/daysSinceText"
