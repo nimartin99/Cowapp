@@ -17,7 +17,6 @@ public class Contact implements Serializable {
 
     public Contact(Date date) {
         this.date = date;
-
     }
 
     public Date getDate() {

@@ -24,7 +24,7 @@ import de.hhn.frontend.risklevel.IndirectContact;
 /**
  * This is the class for persistent saving of data at the client-side.
  *
- * @author Miftari, Leibl, Klein
+ * @author Miftari
  * @version 2020-11-30
  */
 public class LocalSafer {
