@@ -37,7 +37,7 @@
     <dimen name="log_textSize">30sp</dimen>
     <dimen name="log_notification_margins">20dp</dimen>
     //main
-    <dimen name="main_button_height">78dp</dimen>
+    <dimen name="main_button_height">62dp</dimen>
     <dimen name="date_display_width">343dp</dimen>
     <dimen name="date_display_height">63dp</dimen>
     <dimen name="risk_view_width">160dp</dimen>
@@ -49,7 +49,7 @@
     <dimen name="main_date_marginBottom">5dp</dimen>
     <dimen name="main_date_marginTop">0dp</dimen>
     <dimen name="main_date_textSize">18sp</dimen>
-    <dimen name="main_trafficLightView_height">270dp</dimen>
+    <dimen name="main_trafficLightView_height">300dp</dimen>
     <dimen name="main_trafficLightView_marginStart_and_End">10dp</dimen>
     <dimen name="main_trafficLightView_marginTop">15dp</dimen>
     <dimen name="main_trafficLightView_marginBottom">260dp</dimen>
