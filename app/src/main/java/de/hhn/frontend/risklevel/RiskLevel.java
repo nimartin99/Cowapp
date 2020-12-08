@@ -65,8 +65,10 @@ public class RiskLevel {
         }
         //if currently reported infected
         else{
-            MainActivity.showRiskStatus();
-            MainActivity.showTrafficLightStatus();
+            if (MainActivity.getMainActivity() != null) {
+                MainActivity.showRiskStatus();
+                MainActivity.showTrafficLightStatus();
+            }
         }
     }
 
