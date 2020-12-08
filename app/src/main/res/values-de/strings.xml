@@ -8,7 +8,7 @@
     <string name="accept_button">Akzeptieren</string>
     <string name="decline_button">Ablehnen</string>
     <string name="head_data_protection">Nutzungsbedingungen</string>
-    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel und Standort sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. Des weiteren erklären Sie sich damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf.Nur so ist die Funktion der Corona-Warn-App gegeben.</string>
+    <string name="text_data_protection">Sie erklären sich damit einverstanden, dass die CoWApp das Bluetooth ihres Mobilgerätes aktivieren und darüber Daten (generierte und empfangene anonyme Schlüssel mit Zeitstempel sowie Informationen des aktuellen Infektionsstatus) senden und empfangen darf. \nHierfür wird ebenfalls die Erlaubnis auf das Aktivieren Ihres GPS-Standortes benötigt, um eine Bluetooth-Übertragung mit Personen in der Nähe möglich zu machen. \nDes weiteren erklären Sie sich damit einverstanden, dass die App zu jeder Zeit als Prozess im Hintergrund auf Ihrem Mobilgerät laufen darf, auch wenn sie geschlossen ist, und Ihnen auch Push-Benachrichtigungen schicken darf. \nNur so ist die Funktion der Corona-Warn-App gegeben.</string>
     <string name="decline_info_title">Zustimmung notwendig </string>
     <string name="decline_info_message">Sie müssen die Nutzungsbedingungen akzeptieren, um die App nutzen zu können. </string>
     <string name="decline_info_ok_button">Okay</string>
@@ -25,9 +25,9 @@
     <string name="traffic_light_description">Anzeige, die das aktuelle Risikolevel durch eine Ampel veranschaulicht.</string>
     <string name="infoRiskCalcButton_description">Anklicken, um auf die Informationsseite zur Risikoberechnung zu gelangen.</string>
     <string name="check_bluetooth_enabled_title">Bluetooth ist ausgeschaltet</string>
-    <string name="check_bluetooth_enabled_message">Bluetooth ist ausgeschaltet.\nDamit Covid Kontakte verfolgt werden können muss Bluetooth und GPS (Standort) immer aktiviert sein.</string>
+    <string name="check_bluetooth_enabled_message">Bluetooth ist ausgeschaltet.\nDamit COVID-Kontakte verfolgt werden können, muss sowohl Bluetooth als auch GPS (Standort) immer aktiviert sein.</string>
     <string name="check_gps_enabled_title">GPS (Standort) ist ausgeschaltet</string>
-    <string name="check_gps_enabled_message">GPS (Standort) ist ausgeschaltet.\nDamit Covid Kontakte verfolgt werden können muss Bluetooth und GPS (Standort) immer aktiviert sein.</string>
+    <string name="check_gps_enabled_message">GPS (Standort) ist ausgeschaltet.\nDamit COVID-Kontakte verfolgt werden können, muss sowohl Bluetooth als auch GPS (Standort) immer aktiviert sein.</string>
     //Main risk status
     <string name="risk_status_default">Aktuelles Risiko</string>
     <string name="risk_status_low">Geringes Risiko</string>
@@ -40,30 +40,30 @@
     <string name="report_yes_button">Ja</string>
     <string name="head_report_infection">Infektion melden</string>
     <string name="head_report_negative">Negativmeldung</string>
-    <string name="text_report_infection">Möchten Sie sich wirklich als infiziert melden? (Nur mit positivem PCR-Testergebnis)</string>
-    <string name="text_report_negative">Möchten Sie sich wirklich als nicht mehr infiziert melden? (Nur mit negativem PCR-Testergebnis)</string>
+    <string name="text_report_infection">Möchten Sie sich wirklich als infiziert melden? \n(Nur mit positivem PCR-Testergebnis)</string>
+    <string name="text_report_negative">Möchten Sie sich wirklich als nicht mehr infiziert melden? \n(Nur mit negativem PCR-Testergebnis)</string>
     <string name="head_thank_you">Vielen Dank für die Meldung!</string>
     <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
     <string name="head_report_successful">Meldung erfolgreich</string>
-    <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. Vielen Dank!</string>
+    <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. \nVielen Dank!</string>
     //Date and days since use
-    <string name="daysSinceText">Seitdem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
+    <string name="daysSinceText">Seit dem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
     //Permission Requesting
-    <string name="background_location_access_title">Die App benötigt den Standort Zugriff</string>
-    <string name="background_location_access_message">Bitte erlaube der App deinen Standort zu verwenden, dieser wird benötigt um die App zu nutzen. Es werden keine Standortdaten von der App erhoben</string>
-    <string name="background_location_access_denied_title">Funktionalität ist eingeschränkt</string>
-    <string name="background_location_access_denied_message">Der Standortzugriff wurde nicht erlaubt, das bedeutet, dass keine Covid Kontakte im Hintergrund erkannt werden können. Bitte aktiviere den Standortzugriff in Einstellungen -> Anwendungen -> Berechtigung (hier die CoWApp suchen und den Zugriff aktivieren)</string>
-    <string name="bluetooth_enabled_title">Bluetooth ist deaktiviert</string>
-    <string name="bluetooth_enabled_message">Bitte aktiviere Bluetooth und starte die App neu oder nutze "Berechtigung erneut anfragen"</string>
+    <string name="background_location_access_title">Die App benötigt den Standort-Zugriff</string>
+    <string name="background_location_access_message">Bitte erlauben Sie der App, Ihren Standort zu verwenden. Dieser wird benötigt, um die App zu nutzen. \nEs werden keine Standortdaten von der App erhoben.</string>
+    <string name="background_location_access_denied_title">Funktionalität ist eingeschränkt.</string>
+    <string name="background_location_access_denied_message">Der Standortzugriff wurde nicht erlaubt. Das bedeutet, dass keine COVID-Kontakte im Hintergrund erkannt werden können. \nBitte aktivieren Sie den Standortzugriff in Einstellungen -> Anwendungen -> Berechtigung (hier die CoWApp suchen und den Zugriff aktivieren)</string>
+    <string name="bluetooth_enabled_title">Bluetooth ist deaktiviert.</string>
+    <string name="bluetooth_enabled_message">Bitte aktivieren Sie Bluetooth und starten Sie die App neu oder nutzen Sie "Berechtigung erneut anfragen"</string>
     <string name="ble_available_title">Bluetooth LE not available</string>
-    <string name="ble_available_message">Das Gerät unterstützt nicht die Bluetooth-Low-Energy Technologie. Deshalb funktioniert die App auf diesem Gerät nicht</string>
-    <string name="location_access_denied_message">Der Zugriff auf den Gerätestandort wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
-    <string name="background_location_denied">Der Zugriff auf den Gerätestandort im Hintergrund wurde nicht zugelassen, dieser wird benötigt um Covid Kontakte zu verfolgen</string>
+    <string name="ble_available_message">Das Gerät unterstützt nicht die Bluetooth-Low-Energy Technologie. Daher funktioniert die App auf diesem Gerät nicht.</string>
+    <string name="location_access_denied_message">Der Zugriff auf den Gerätestandort wurde nicht zugelassen. Dieser wird benötigt, um COVID-Kontakte zu verfolgen.</string>
+    <string name="background_location_denied">Der Zugriff auf den Gerätestandort im Hintergrund wurde nicht zugelassen. Dieser wird benötigt, um COVID-Kontakte zu verfolgen.</string>
     <string name="request_permission">Berechtigungen erneut anfragen</string>
     //Info Menu and pages
     <string name="head_info_menu">Weitere Informationen</string>
     <string name="head_general_info">Allg. Informationen</string>
-    <string name="text_general_info">Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann, das Coronavirus weiter einzudämmen.Mit dieser kann potenzieller Kontakt zu Corona-infizierten Personen im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und eines Risikowerts von 1 bis 100 dargestellt werden. Des weiteren erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen, wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen.Unter Verdacht? - Was tun? erhalten Sie Informationen, was Sie bei einem Infektionsverdacht tun können.</string>
+    <string name="text_general_info">Die CoWApp (Corona-Warn-App) ist eine Applikation, mit der jeder mithelfen kann, das Coronavirus weiter einzudämmen. \nMit dieser kann potenzieller Kontakt zu Corona-infizierten Personen im Alltag festgestellt und ein Infektionsrisiko berechnet und in Form des Ampelprinzips und eines Risikowerts von 1 bis 100 dargestellt werden. \nDes weiteren erhalten Sie eine Push-Benachrichtigung, wenn ein mögliches Gesundheitsrisiko festgestellt wurde, damit Sie wissen, wie sie weiter verfahren, um sich und Ihre Mitmenschen zu schützen. \nUnter Verdacht? - Was tun? erhalten Sie Informationen, was Sie bei einem Infektionsverdacht tun können.</string>
     //Info screen about the risk level
     <string name="head_risklevel_info">Risiko Level Information</string>
     <string name="head_risklevel_value_traffic_light_info">Erklärung - Risiko Wert und Ampelanzeige</string>
@@ -72,16 +72,16 @@
     <string name="text_risklevel_calculation_info">Um die Berechnung zu verstehen sollten zuerst folgende Begriffe geklärt werden. Kontakt: Durch den Austausch von Schlüsseln zwischen Endgeräten wurde ein sogenannter Kontakt ermittelt. In die Risikoberechnung fließen nur Kontakte mit bereits infizierten oder nachträglich als infiziert gemeldeten Nutzern ein. Diese Kontakte werden spezifiziert indem sie entweder als Direkter oder Indirekter Kontakt gewertet werden. Direkter Kontakt: bedeutet, es hat ein Kontakt mit einer als infiziert gemeldeten Person stattgefunden. Indirekter Kontakt steht für einen Kontakt mit einer Person die selbst nicht als infiziert gemeldet ist, jedoch Kontakt mit einer dritten, als infiziert gemeldeten Person hatte. Zur Berechnung des Risikolevels werden alle direkten und indirekten Kontakte sowie die Selbst-Infektionsmeldung des Nutzers aus den letzten 14 Tagen berücksichtigt. Ein Indirekte Kontakt erzeugt ein Risiko Level von 35, je mehr Kontakte gemeldet werden desto weiter erhöht das Level bis auf einen Wert von 70. Ein Direkter Kontakt erzeugt automatisch ein Risikowert von 70. Je mehr direkte Kontakte es gibt desto höher steigt das Level bis hin zum Maximalwert von 95. Eine bestehende Infektion wird durch einen Wert von 100 signalisiert. Die Dauer der Kontakte fließt ebenfalls in die Berechnung mit ein. Dazu werden lange Kontakte umgerechnet in viele kurze Kontakte. Ein direkter Kontakt, der beispielsweise eine volle Stunde angedauert hat, wird als 12 direkte Kontakte, die maximal 5 Minuten angedauert haben, angesehen.</string>
     //Infection info
     <string name="head_infection_info">Akute Infektion - Wie verhalte ich mich?</string>
-    <string name="text_infection_info">Bei akuter Infektion sind Sie verpflichtet, sich umgehend in Quarantäne zu begeben und 14 Tage oder bis Erhalt eines negativen PCR-Testergebnisses in Quarantäne zu bleiben. Des weiteren sind Sie verpflichtet, ihr örtliches Gesundheitsamt zu benachrichtigen. Eventuelle Mitbewohner sollten sich ebenfalls umgehend testen lassen und Sie sind angehalten, sich von diesen zu distanzieren. Weitere Informationen unter: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen</string>
+    <string name="text_infection_info">Bei akuter Infektion sind Sie verpflichtet, sich umgehend in Quarantäne zu begeben und 14 Tage oder bis Erhalt eines negativen PCR-Testergebnisses in Quarantäne zu bleiben. \nDes weiteren sind Sie verpflichtet, ihr örtliches Gesundheitsamt zu benachrichtigen. \nEventuelle Mitbewohner sollten sich ebenfalls umgehend testen lassen und Sie sind angehalten, sich von diesen zu distanzieren. \nWeitere Informationen unter: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen</string>
     //Suspicion
     <string name="head_suspicion_info">Verdacht? - Was tun?</string>
-    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich testen. Bei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in 14-tägiger Quarantäne. Ist das Testergebnis negativ, dürfen Sie die Quarantäne beenden. Vielen Dank für Ihre Mithilfe, der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
+    <string name="text_suspicion_info">Bei Verdachtsfall begeben Sie sich bitte umgehend in Quarantäne und lassen sich testen. \nBei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in 14-tägiger Quarantäne. \nIst das Testergebnis negativ, dürfen Sie die Quarantäne beenden. \nVielen Dank für Ihre Mithilfe, der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
     //LOG
     <string name="text_log">Notification Log</string>
-    <string name="log">Dies ist eine Benachrichtigung</string>
+    <string name="log">Dies ist eine Benachrichtigung.</string>
     //Push Notification
     <string name="channel_name">NotificationChannel</string>
-    <string name="channel_description">This channel is for push notifications to inform about possible health risk</string>
+    <string name="channel_description">Dieser Channel dient zum Senden von Push-Benachrichtigungen.</string>
     <string name="ok_button">Okay</string>
     <string name="head_notification">Mögliches Gesundheitsrisiko</string>
     <string name="text_notification">Eine Person, mit der Sie in direktem oder indirektem Kontakt standen, hat sich mit dem Coronavirus infiziert. Bitte lassen Sie sich testen und begeben sich bis zu einem negativen Testergebnis in Quarantäne.</string>
