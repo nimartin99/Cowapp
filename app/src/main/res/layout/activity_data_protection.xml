@@ -7,59 +7,70 @@
     android:layout_height="match_parent"
     tools:context=".DataProtectionActivity">
 
-    <Button
-        android:id="@+id/AcceptButton"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/data_protection_button_height"
-        android:layout_marginStart="@dimen/data_protection_buttons_marginStart_or_End"
-        android:layout_marginBottom="@dimen/data_protection_buttons_marginBottom"
-        android:backgroundTint="#27496D"
-        android:text="@string/accept_button"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/data_protection_buttons_and_text_textSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/DeclineButton"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/data_protection_button_height"
-        android:layout_marginEnd="@dimen/data_protection_buttons_marginStart_or_End"
-        android:layout_marginBottom="@dimen/data_protection_buttons_marginBottom"
-        android:backgroundTint="#27496D"
-        android:text="@string/decline_button"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/data_protection_buttons_and_text_textSize"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <TextView
-        android:id="@+id/TextDataProtection"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/data_protection_text_marginStart_and_End"
-        android:layout_marginTop="@dimen/data_protection_text_marginTop"
-        android:layout_marginEnd="@dimen/data_protection_text_marginStart_and_End"
-        android:layout_marginBottom="@dimen/data_protection_text_marginBottom"
-        android:text="@string/text_data_protection"
-        android:textColor="#000000"
-        android:textSize="@dimen/data_protection_buttons_and_text_textSize"
-        app:layout_constraintBottom_toTopOf="@+id/AcceptButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HeadDataProtection" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/HeadDataProtection"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="@dimen/data_protection_head_marginStart"
-        android:layout_marginTop="@dimen/data_protection_head_marginTop"
-        android:text="@string/head_data_protection"
-        android:textColor="#142850"
-        android:textSize="@dimen/data_protection_head_textSize"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/HeadDataProtection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/data_protection_head_marginStart"
+                android:layout_marginTop="@dimen/data_protection_head_marginTop"
+                android:text="@string/head_data_protection"
+                android:textColor="#142850"
+                android:textSize="@dimen/data_protection_head_textSize"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/TextDataProtection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/data_protection_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/data_protection_text_marginTop"
+                android:layout_marginEnd="@dimen/data_protection_text_marginStart_and_End"
+                android:layout_marginBottom="@dimen/data_protection_text_marginBottom"
+                android:text="@string/text_data_protection"
+                android:textColor="#000000"
+                android:textSize="@dimen/data_protection_buttons_and_text_textSize"
+                app:layout_constraintBottom_toTopOf="@+id/AcceptButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/HeadDataProtection" />
+
+            <Button
+                android:id="@+id/AcceptButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/data_protection_button_height"
+                android:layout_marginStart="@dimen/data_protection_buttons_marginStart_or_End"
+                android:layout_marginBottom="@dimen/data_protection_buttons_marginBottom"
+                android:backgroundTint="#27496D"
+                android:text="@string/accept_button"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/data_protection_buttons_and_text_textSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Button
+                android:id="@+id/DeclineButton"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/data_protection_button_height"
+                android:layout_marginEnd="@dimen/data_protection_buttons_marginStart_or_End"
+                android:layout_marginBottom="@dimen/data_protection_buttons_marginBottom"
+                android:backgroundTint="#27496D"
+                android:text="@string/decline_button"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/data_protection_buttons_and_text_textSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
