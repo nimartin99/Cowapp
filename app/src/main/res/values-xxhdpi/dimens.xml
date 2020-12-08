@@ -65,16 +65,16 @@
     <dimen name="image_view_marginStart_and_End">20dp</dimen>
     <dimen name="image_view_marginTop">10dp</dimen>
     <dimen name="image_view_marginBottom">90dp</dimen>
-    <dimen name="view_height">360dp</dimen>
+    <dimen name="view_height">290dp</dimen>
     <dimen name="view_marginStart_and_End">15dp</dimen>
-    <dimen name="view_marginTop">218dp</dimen>
+    <dimen name="view_marginTop">210dp</dimen>
     <dimen name="push_not_button_marginBottom">15dp</dimen>
     <dimen name="push_not_button_textSize">30sp</dimen>
     <dimen name="push_not_text_marginStart_and_End">30dp</dimen>
     <dimen name="push_not_text_marginTop">16dp</dimen>
     <dimen name="push_not_text_textSize">20sp</dimen>
     <dimen name="push_not_head_marginStart_and_End">30dp</dimen>
-    <dimen name="push_not_head_marginTop">240dp</dimen>
+    <dimen name="push_not_head_marginTop">220dp</dimen>
     <dimen name="push_not_head_textSize">30sp</dimen>
     //risk level info
     <dimen name="risk_info_head_and_text_marginStart_and_End">20dp</dimen>
