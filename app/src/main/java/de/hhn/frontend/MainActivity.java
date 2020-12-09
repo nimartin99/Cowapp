@@ -15,6 +15,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.ic_cowapp);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#142850")));
         setContentView(R.layout.activity_main);
 
         //traffic light image view and risk status text view
@@ -163,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+      //not wanted on main screen
     }
 
     /**

@@ -3,6 +3,8 @@ package de.hhn.frontend;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.util.Linkify;
 import android.widget.TextView;
@@ -22,6 +24,7 @@ public class InfectionActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.ic_cowapp);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#142850")));
         setContentView(R.layout.activity_infection);
         TextView generalInfoTextView = (TextView) findViewById(R.id.TextGeneralInfo);
         Linkify.addLinks(generalInfoTextView, Linkify.ALL);

@@ -3,6 +3,8 @@ package de.hhn.frontend;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,6 +35,7 @@ public class LogActivity extends AppCompatActivity {
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.ic_cowapp);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#142850")));
         setContentView(R.layout.activity_log);
 
         notificationLayout = findViewById(R.id.notificationlayout);

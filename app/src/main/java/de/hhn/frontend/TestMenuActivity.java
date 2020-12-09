@@ -1,6 +1,8 @@
 package de.hhn.frontend;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.EditText;
 import de.hhn.frontend.date.DateHelper;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Arrays;
@@ -42,6 +45,13 @@ public class TestMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //logo of the app in the action bar
+        ActionBar actionBar= getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.mipmap.ic_cowapp);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#142850")));
+
         setContentView(R.layout.activity_test_menu);
 
         //Push notification test button listener
