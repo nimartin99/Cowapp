@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import de.hhn.frontend.MainActivity;
 import de.hhn.frontend.date.DateHelper;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.provider.LocalSafer;
@@ -15,7 +16,7 @@ import de.hhn.frontend.provider.LocalSafer;
  *
  * @author Jonas Klein
  * @author Mergim Miftari
- * @version 2020-12-03
+ * @version 2020-12-08
  */
 
 public class RiskLevel {
@@ -34,6 +35,7 @@ public class RiskLevel {
         indirectContactArrayList = LocalSafer.getListOfIndirectContacts(null);
         directContactArrayList = LocalSafer.getListOfDirectContacts(null);
 
+        //if the user is not reported infected
         if (LocalSafer.getRiskLevel(null) != 100) {
             newRiskLevelValue = 0;
             deleteOldContacts();
@@ -60,6 +62,13 @@ public class RiskLevel {
 
             LocalSafer.safeRiskLevel(newRiskLevelValue, null);
             Log.d(TAG, "calulated risk Level: " + newRiskLevelValue);
+        }
+        //if currently reported infected
+        else{
+            if (MainActivity.getMainActivity() != null) {
+                MainActivity.showRiskStatus();
+                MainActivity.showTrafficLightStatus();
+            }
         }
     }
 
