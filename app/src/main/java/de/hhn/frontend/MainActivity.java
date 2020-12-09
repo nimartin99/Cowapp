@@ -68,6 +68,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
     protected static final String TAG = "CoWAppMainActivity";
+    public static boolean checkedBluetoothAndLocation = false;
 
     private static MainActivity mainActivity;
 
@@ -156,8 +157,10 @@ public class MainActivity extends AppCompatActivity {
         //show current Info about days since usage.
         showDateDisplay();
         if(Constants.SCAN_AND_TRANSMIT) {
-            checkIfBluetoothIsEnabled();
-            checkIfGPSIsEnabled();
+            if(!checkedBluetoothAndLocation) {
+                checkIfBluetoothIsEnabled();
+                checkIfGPSIsEnabled();
+            }
         }
     }
 
@@ -209,10 +212,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(Constants.SCAN_AND_TRANSMIT) {
-            checkIfBluetoothIsEnabled();
-            checkIfGPSIsEnabled();
-        }
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
@@ -296,7 +295,8 @@ public class MainActivity extends AppCompatActivity {
                                         });
                                 AlertDialog thankYouDialog = builder.create();
                                 thankYouDialog.show();
-                                //TODO: Neustart Notification
+                                BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+                                application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
                             }
                         });
                 //button to exit the app
@@ -422,7 +422,8 @@ public class MainActivity extends AppCompatActivity {
                             RiskLevel.reportNegativeInfectionTestResult();
                             //update buttons
                             initButtons();
-                            //TODO: Neustart Notification
+                            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+                            application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
                             //pop up dialog to inform the user that the negative report was successful
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);
@@ -836,6 +837,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                             public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
                                 startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
+                                checkedBluetoothAndLocation = true;
                             }
                         })
                         .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {

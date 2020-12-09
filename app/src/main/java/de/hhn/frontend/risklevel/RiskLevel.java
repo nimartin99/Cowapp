@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import de.hhn.frontend.MainActivity;
+import de.hhn.frontend.R;
 import de.hhn.frontend.date.DateHelper;
 import de.hhn.frontend.keytransfer.BeaconBackgroundService;
 import de.hhn.frontend.provider.LocalSafer;
@@ -139,20 +140,14 @@ public class RiskLevel {
         if (LocalSafer.getRiskLevel(null) == 100) {
             //disable scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-            application.changeMonitoringState(false);
-            application.stopTransmittingAsBeacon();
-            //TODO: Stop Notification
-
+            application.stopForegroundNotification();
             Log.d(TAG, "Due to a current infection the Key Exchange was stopped");
 
 
         } else if (LocalSafer.getRiskLevel(null) != 100) {
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-            application.changeMonitoringState(true);
-            application.transmitAsBeacon();
-
-            //TODO: Neustart Notification
+            application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
             Log.d(TAG, "Due to no current infection the Key Exchange was started");
         }
 
@@ -170,9 +165,7 @@ public class RiskLevel {
 
         //disable scanning and transmitting of the bluetoothLE key exchange
         BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-        application.changeMonitoringState(false);
-        application.stopTransmittingAsBeacon();
-        //TODO: Stop Notification
+        application.stopForegroundNotification();
 
         Log.d(TAG, "Due to a current infection the Key Exchange was stopped.");
 
@@ -206,10 +199,7 @@ public class RiskLevel {
             Log.d(TAG, "Risk level was set to 0");
             //activate scanning and transmitting of the bluetoothLE key exchange
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-            application.changeMonitoringState(true);
-            application.transmitAsBeacon();
-            //TODO: Neustart Notification
-
+            application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
             Log.d(TAG, "Due to no current infection the Key Exchange was started");
             calculateRiskLevel();
 

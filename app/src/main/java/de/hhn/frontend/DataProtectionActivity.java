@@ -32,10 +32,6 @@ public class DataProtectionActivity extends AppCompatActivity {
 
     public static MainActivity main;
 
-    //Expected Permission Values
-    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
-    private static final int PERMISSION_REQUEST_BACKGROUND_LOCATION = 2;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +44,6 @@ public class DataProtectionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //terms of use have been accepted - set boolean of first app start to false
                 LocalSafer.setIsFirstAppStart(false, null);
-                //Start app functionality
-                BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
-                application.changeMonitoringState(true);
-                //TODO: Löschen + Test
                 MainActivity.getMainActivity().firstinit();
                 //Go to main screen
                 Intent nextActivity = new Intent(DataProtectionActivity.this, PermissionActivity.class);
@@ -103,5 +95,9 @@ public class DataProtectionActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 }
