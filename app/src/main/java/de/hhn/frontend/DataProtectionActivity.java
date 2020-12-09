@@ -1,5 +1,6 @@
 package de.hhn.frontend;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
@@ -8,6 +9,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +27,7 @@ import de.hhn.frontend.provider.LocalSafer;
  * Data protection start screen activity for CoWApp
  *
  * @author Tabea leibl
- * @version 2020-11-30
+ * @version 2020-12-09
  */
 public class DataProtectionActivity extends AppCompatActivity {
 
@@ -35,7 +38,15 @@ public class DataProtectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //logo of the app in the action bar
+        ActionBar actionBar= getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setIcon(R.mipmap.ic_cowapp);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#142850")));
+
         setContentView(R.layout.activity_data_protection);
+
         //Accept-Button Listener
         Button acceptButton = (Button)findViewById(R.id.AcceptButton);
 

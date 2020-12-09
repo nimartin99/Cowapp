@@ -3,6 +3,8 @@ package de.hhn.frontend;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 /**
@@ -20,6 +22,7 @@ public class GeneralInfoActivity extends AppCompatActivity {
         ActionBar actionBar= getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
         actionBar.setIcon(R.mipmap.ic_cowapp);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#142850")));
         setContentView(R.layout.activity_general_info);
     }
 }

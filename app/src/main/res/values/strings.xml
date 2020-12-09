@@ -28,11 +28,11 @@
     <string name="menu_log">LOG</string>
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
-    <string name="menu_report_negative">Negative test result</string>
+    <string name="menu_report_negative">Negative test report</string>
     <string name="report_infection_button">Report Infection</string>
     <string name="report_infection_button_ci">Further Information</string>
     <string name="suspicion_button">Suspicion?</string>
-    <string name="suspicion_button_ci">Negative Test Result</string>
+    <string name="suspicion_button_ci">Negative Test Report</string>
     <string name="traffic_light_description">View to show the current risk status via traffic light status.</string>
     <string name="infoRiskCalcButton_description">Click to show the information page about the risk level calculation.</string>
     <string name="check_bluetooth_enabled_title">Please enable Bluetooth</string>
@@ -74,7 +74,7 @@
     <string name="text_infection_info">In the event of an acute infection, you are obliged to go into quarantine immediately and remain in quarantine for 14 days or until you receive a negative PCR test result. \nYou are also obliged to notify your local health department. \nAny roommates should also be tested immediately and you are encouraged to distance yourself from them. \nFurther information at the page of the federal government or the WHO: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen for German speaking people or https://www.who.int/health-topics/coronavirus#tab=tab_1 for general information.</string>
     //Suspicion
     <string name="head_suspicion_info">Suspicion? - What to do?</string>
-    <string name="text_suspicion_info">In case of suspicion, please go into quarantine immediately and let yourself be tested. \nIf the test result is positive, please inform the health department for your region and stay in quarantine for 14 days. \nIf the test result is negative, you can end the quarantine. \nThank you for your help to dam the further spread of the corona virus.</string>
+    <string name="text_suspicion_info">In case of suspicion, please go into quarantine immediately and let yourself be tested. \nIf the test result is positive, please inform the health department for your region and stay in quarantine for 14 days. \nIf the test result is negative, you can end the quarantine. \n You can report a negative test result even if you`re not currently infected, so your risk level can be adjusted. \nThank you for your help to dam the further spread of the corona virus.</string>
     //LOG
     <string name="text_log">Notification Log</string>
     <string name="log">This is a notification</string>
