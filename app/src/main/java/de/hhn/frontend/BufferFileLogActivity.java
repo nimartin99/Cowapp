@@ -12,6 +12,9 @@ import java.util.HashSet;
 
 import de.hhn.frontend.provider.LocalSafer;
 
+/**
+ * @author Mergim Miftari
+ */
 public class BufferFileLogActivity extends AppCompatActivity {
 
     private LinearLayout bufferLayout;

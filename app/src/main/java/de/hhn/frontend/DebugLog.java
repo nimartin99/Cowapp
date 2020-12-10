@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 import de.hhn.frontend.provider.LocalSafer;
 
+/**
+ * @author Mergim Miftari
+ */
 public class DebugLog extends AppCompatActivity {
 
 

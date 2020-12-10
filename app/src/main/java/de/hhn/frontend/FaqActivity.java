@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * @author Mergim Miftari
+ */
 public class FaqActivity extends AppCompatActivity {
 
     private ExpandableListView listView;

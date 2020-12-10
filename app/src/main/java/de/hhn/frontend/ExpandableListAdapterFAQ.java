@@ -15,6 +15,9 @@ import java.util.List;
 
 import de.hhn.frontend.R;
 
+/**
+ * @author Mergim Miftari
+ */
 public class ExpandableListAdapterFAQ extends BaseExpandableListAdapter {
     private Context context;
     private List<String> listDataHeader;
