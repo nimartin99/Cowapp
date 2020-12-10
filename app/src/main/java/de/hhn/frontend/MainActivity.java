@@ -218,9 +218,8 @@ public class MainActivity extends AppCompatActivity {
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-        }
-        else{
-            //show current risk level (updated once a day)
+        } else{
+            //show current risk level
             RiskLevel.calculateRiskLevel();
             //initialize buttons due to infection status of the user
             initButtons();
