@@ -63,6 +63,17 @@ public class InfoMenuActivity extends AppCompatActivity {
                 startActivity(nextActivity);
             }
         });
+
+        Button faqButton = (Button) findViewById(R.id.faqButton);
+
+        faqButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Go to screen for information about the risk level calculation
+                Intent nextActivity = new Intent(InfoMenuActivity.this, FaqActivity.class);
+                startActivity(nextActivity);
+            }
+        });
     }
 
 }

@@ -73,4 +73,21 @@
         app:layout_constraintHorizontal_bias="0.454"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infectionInfoButton" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/faqButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/info_menu_head_and_buttons_marginStart_and_End"
+        android:layout_marginTop="@dimen/info_menu_buttons_marginTop"
+        android:layout_marginEnd="@dimen/info_menu_head_and_buttons_marginStart_and_End"
+        android:backgroundTint="#DAE1E7"
+        android:text="@string/faq"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="#000000"
+        android:textSize="@dimen/info_menu_buttons_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/riskLevelInfoButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>
