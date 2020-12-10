@@ -3,7 +3,7 @@
  *
  * @author Mergim Miftari
  * @author Philipp Alessandrini
- * @version 2020-11-25
+ * @version 2020-12-10
  */
 
 // init web framework
@@ -104,8 +104,6 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                     });
                     // init variables to sum up the collections as one array
                     let currentKeyList = [];
-                    let i;
-                    let j;
                     // user has had direct contact
                     if (directContactNbr > 0) {
                         // init all relevant direct contact keys as an array
@@ -120,6 +118,12 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                             contactNbr: directContactNbr.toString(),
                             lastInfectionTime: notInfectedKeysNbr.toString()
                         }
+                        // delete all user keys in direct_contacts - collection
+                        await directContactsCollection.updateMany(
+                            { }, // all id's
+                            {$pull: {contactKey: {$in: userReport.userKey}}}
+                        )
+                        // send response
                         res.status(200).send(JSON.stringify(directInfectionStatus));
                     } else { // else check if user has had indirect contact
                         indirectContactsCollection.find({ contactKey: {$in: userReport.userKey}}, async function(err, result) {
@@ -143,6 +147,12 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                                     contactNbr: indirectContactNbr.toString(),
                                     lastInfectionTime: notInfectedKeysNbr.toString()
                                 }
+                                // delete all user keys in indirect_contacts - collection
+                                await indirectContactsCollection.updateMany(
+                                    { }, // all id's
+                                    {$pull: {contactKey: {$in: userReport.userKey}}}
+                                )
+                                // send response
                                 res.status(200).send(JSON.stringify(indirectInfectionStatus));
                             } else { // user has had no contact to an infected person
                                 res.status(400).send();
