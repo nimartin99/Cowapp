@@ -98,7 +98,7 @@ public class Alarm {
             }
         } else {
             Log.i(TAG, "onCreate: Alarm was already set. No resetting necessary");
-            Log.d("requestLine", "Main Activity: Alarm was not set, because already set.");
+            Log.d("requestLine", "Alarm: Alarm was not set, because already set.");
         }
     }
 
