@@ -129,7 +129,8 @@
                 android:tint="#142850"
                 app:layout_constraintBottom_toTopOf="@+id/InfektionMeldenButton"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@android:drawable/ic_menu_help" />
+                app:layout_constraintTop_toBottomOf="@+id/RisklevelView"
+                app:srcCompat="@drawable/ic_risklevel_info" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

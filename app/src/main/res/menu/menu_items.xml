@@ -8,6 +8,7 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/item2"
+        android:icon="@drawable/ic_menu_info"
         android:title="@string/menu_info"
         app:showAsAction="never"/>
 
@@ -16,6 +17,7 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/item4"
+        android:icon="@drawable/ic_menu_report"
         android:title="@string/menu_report_negative"
         app:showAsAction="never"/>
 
