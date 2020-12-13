@@ -2,8 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/item1"
+    <item
+        android:id="@+id/action_more"
         android:icon="@drawable/ic_dropdown_menu"
+        android:title=""
+        app:showAsAction="ifRoom">
+
+        <menu>
+
+    <item android:id="@+id/item1"
+        android:icon="@drawable/ic_menu_log"
         android:title="@string/menu_log"
         app:showAsAction="never"/>
 
@@ -13,6 +21,7 @@
         app:showAsAction="never"/>
 
     <item android:id="@+id/item3"
+        android:icon="@drawable/ic_menu_test"
         android:title="@string/menu_test"
         app:showAsAction="never"/>
 
@@ -20,6 +29,9 @@
         android:icon="@drawable/ic_menu_report"
         android:title="@string/menu_report_negative"
         app:showAsAction="never"/>
+
+        </menu>
+    </item>
 
 
 </menu>
