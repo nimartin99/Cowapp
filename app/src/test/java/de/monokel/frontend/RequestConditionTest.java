@@ -2,8 +2,8 @@ package de.monokel.frontend;
 
 import org.junit.Test;
 
-import de.hhn.frontend.MainActivity;
-import de.hhn.frontend.utils.ResponseState;
+import de.hhn.cowapp.gui.MainActivity;
+import de.hhn.cowapp.network.ResponseState;
 
 import static org.junit.Assert.assertEquals;
 

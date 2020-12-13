@@ -2,9 +2,9 @@ package de.monokel.frontend.mockserverdummy;
 
 import java.util.HashMap;
 
-import de.hhn.frontend.provider.RequestedObject;
-import de.hhn.frontend.provider.RetrofitService;
-import de.hhn.frontend.utils.ResponseState;
+import de.hhn.cowapp.network.RequestedObject;
+import de.hhn.cowapp.network.RetrofitService;
+import de.hhn.cowapp.network.ResponseState;
 import retrofit2.Call;
 import retrofit2.mock.BehaviorDelegate;
 

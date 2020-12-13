@@ -5,9 +5,9 @@ import org.junit.Test;
 
 import java.util.HashMap;
 
-import de.hhn.frontend.provider.RequestedObject;
-import de.hhn.frontend.provider.RetrofitService;
-import de.hhn.frontend.utils.ResponseState;
+import de.hhn.cowapp.network.RequestedObject;
+import de.hhn.cowapp.network.RetrofitService;
+import de.hhn.cowapp.network.ResponseState;
 import de.monokel.frontend.mockserverdummy.MockRetrofitService;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OtherKeysActivity">
+    tools:context=".utils.OtherKeysActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

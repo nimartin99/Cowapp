@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import java.util.Date;
 
-import de.hhn.frontend.provider.LocalSafer;
+import de.hhn.cowapp.datastorage.LocalSafer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
