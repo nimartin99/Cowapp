@@ -4,35 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E9F6F8"
     tools:context=".SuspicionActivity">
 
-
-    <TextView
-        android:id="@+id/textSuspicionInfo"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/susp_info_head_and_text_marginStart_and_End"
-        android:layout_marginTop="@dimen/susp_info_text_marginTop"
-        android:layout_marginEnd="@dimen/susp_info_head_and_text_marginStart_and_End"
-        android:text="@string/text_suspicion_info"
-        android:textColor="#000000"
-        android:textSize="@dimen/susp_info_text_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headSuspicionInfo" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/headSuspicionInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/susp_info_head_and_text_marginStart_and_End"
-        android:layout_marginTop="@dimen/susp_info_head_marginTop"
-        android:layout_marginEnd="@dimen/susp_info_head_and_text_marginStart_and_End"
-        android:text="@string/head_suspicion_info"
-        android:textColor="#142850"
-        android:textSize="@dimen/susp_info_head_textSize"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/headSuspicionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/susp_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/susp_info_head_marginTop"
+                android:layout_marginEnd="@dimen/susp_info_head_and_text_marginStart_and_End"
+                android:text="@string/head_suspicion_info"
+                android:textColor="#142850"
+                android:textSize="@dimen/susp_info_head_textSize"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textSuspicionInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/susp_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/susp_info_text_marginTop"
+                android:layout_marginEnd="@dimen/susp_info_head_and_text_marginStart_and_End"
+                android:text="@string/text_suspicion_info"
+                android:textColor="#000000"
+                android:textSize="@dimen/susp_info_text_textSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/headSuspicionInfo" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

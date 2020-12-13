@@ -1,39 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#E9F6F8"
     tools:context=".GeneralInfoActivity">
 
-    <TextView
-        android:id="@+id/TextGeneralInfo"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/gen_info_text_marginStart_and_End"
-        android:layout_marginTop="@dimen/gen_info_text_marginTop"
-        android:layout_marginEnd="@dimen/gen_info_text_marginStart_and_End"
-        android:text="@string/text_general_info"
-        android:textColor="#000000"
-        android:textSize="@dimen/gen_info_text_textSize"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HeadInfo" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/HeadInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/gen_info_head_marginStart_and_End"
-        android:layout_marginTop="@dimen/gen_info_head_marginTop"
-        android:layout_marginEnd="@dimen/gen_info_head_marginStart_and_End"
-        android:text="@string/head_general_info"
-        android:textColor="#142850"
-        android:textSize="@dimen/gen_info_head_textSize"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/HeadInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/gen_info_head_marginStart_and_End"
+                android:layout_marginTop="@dimen/gen_info_head_marginTop"
+                android:layout_marginEnd="@dimen/gen_info_head_marginStart_and_End"
+                android:text="@string/head_general_info"
+                android:textColor="#142850"
+                android:textSize="@dimen/gen_info_head_textSize"
+                android:textStyle="bold"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+            <TextView
+                android:id="@+id/TextGeneralInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/gen_info_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/gen_info_text_marginTop"
+                android:layout_marginEnd="@dimen/gen_info_text_marginStart_and_End"
+                android:text="@string/text_general_info"
+                android:textColor="#000000"
+                android:textSize="@dimen/gen_info_text_textSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/HeadInfo" />
+
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

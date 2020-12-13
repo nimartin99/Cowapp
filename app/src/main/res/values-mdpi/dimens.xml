@@ -14,14 +14,14 @@
     //general info
     <dimen name="gen_info_text_marginStart_and_End">20dp</dimen>
     <dimen name="gen_info_text_marginTop">5dp</dimen>
-    <dimen name="gen_info_text_textSize">18sp</dimen>
+    <dimen name="gen_info_text_textSize">22sp</dimen>
     <dimen name="gen_info_head_marginStart_and_End">20dp</dimen>
     <dimen name="gen_info_head_marginTop">25dp</dimen>
     <dimen name="gen_info_head_textSize">36sp</dimen>
     //infection info
     <dimen name="infection_info_text_marginStart_and_End">20dp</dimen>
     <dimen name="infection_info_text_marginTop">5dp</dimen>
-    <dimen name="infection_info_text_textSize">18sp</dimen>
+    <dimen name="infection_info_text_textSize">22sp</dimen>
     <dimen name="infection_info_head_marginStart_and_End">20dp</dimen>
     <dimen name="infection_info_head_marginTop">25dp</dimen>
     <dimen name="infection_info_head_textSize">36sp</dimen>
@@ -81,13 +81,13 @@
     <dimen name="risk_info_head_marginTop">5dp</dimen>
     <dimen name="risk_info_text_marginTop">25dp</dimen>
     <dimen name="risk_info_head_textSize">36sp</dimen>
-    <dimen name="risk_info_text_textSize">18sp</dimen>
+    <dimen name="risk_info_text_textSize">22sp</dimen>
     //suspicion info
     <dimen name="susp_info_head_and_text_marginStart_and_End">20dp</dimen>
     <dimen name="susp_info_head_marginTop">25dp</dimen>
     <dimen name="susp_info_text_marginTop">5dp</dimen>
     <dimen name="susp_info_head_textSize">30sp</dimen>
-    <dimen name="susp_info_text_textSize">18sp</dimen>
+    <dimen name="susp_info_text_textSize">22sp</dimen>
     //test menu
     <dimen name="reset_button_width">81dp</dimen>
     <dimen name="reset_button_height">69dp</dimen>
