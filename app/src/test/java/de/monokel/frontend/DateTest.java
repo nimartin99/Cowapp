@@ -2,7 +2,7 @@ package de.monokel.frontend;
 import org.junit.Test;
 import java.util.Date;
 
-import de.hhn.frontend.date.DateHelper;
+import de.hhn.cowapp.utils.DateHelper;
 import static org.junit.Assert.assertEquals;
 public class DateTest {
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="de.hhn.frontend">
+    package="de.hhn.cowapp">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".keytransfer.BeaconBackgroundService"
+        android:name="de.hhn.cowapp.keytransfer.BeaconBackgroundService"
         android:allowBackup="true"
         android:icon="@mipmap/ic_cowapp"
         android:label="@string/app_name"
@@ -20,39 +20,39 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".FaqActivity"></activity>
-        <activity android:name=".BufferFileLogActivity" />
-        <activity android:name=".OtherKeysActivity" />
-        <activity android:name=".OwnKeyActivity" />
+        <activity android:name="de.hhn.cowapp.gui.FaqActivity"></activity>
+        <activity android:name="de.hhn.cowapp.utils.BufferFileLogActivity" />
+        <activity android:name="de.hhn.cowapp.utils.OtherKeysActivity" />
+        <activity android:name="de.hhn.cowapp.utils.OwnKeyActivity" />
         <activity
-            android:name=".PermissionActivity"
+            android:name="de.hhn.cowapp.gui.PermissionActivity"
             android:configChanges="orientation"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DebugLog"
+            android:name="de.hhn.cowapp.utils.DebugLog"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DebugActivity"
+            android:name="de.hhn.cowapp.utils.DebugActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RiskLevelInfoActivity"
+            android:name="de.hhn.cowapp.gui.RiskLevelInfoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".InfectionActivity"
+            android:name="de.hhn.cowapp.gui.InfectionActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <service
-            android:name=".provider.NotificationService"
+            android:name="de.hhn.cowapp.notificationservice.NotificationService"
             android:enabled="true"
             android:exported="true" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="de.hhn.cowapp.gui.MainActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -62,35 +62,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TestMenuActivity"
+            android:name="de.hhn.cowapp.utils.TestMenuActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".PushNotificationActivity"
+            android:name="de.hhn.cowapp.gui.PushNotificationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SuspicionActivity"
+            android:name="de.hhn.cowapp.gui.SuspicionActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".InfoMenuActivity"
+            android:name="de.hhn.cowapp.gui.InfoMenuActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".GeneralInfoActivity"
+            android:name="de.hhn.cowapp.gui.GeneralInfoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SettingsActivity"
+            android:name="de.hhn.cowapp.utils.SettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LogActivity"
+            android:name="de.hhn.cowapp.gui.LogActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DataProtectionActivity"
+            android:name="de.hhn.cowapp.gui.DataProtectionActivity"
             android:configChanges="orientation"
             android:noHistory="true"
             android:screenOrientation="portrait" />
