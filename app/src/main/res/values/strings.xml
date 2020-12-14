@@ -56,7 +56,8 @@
     <string name="head_thank_you">Thank you for the report!</string>
     <string name="text_thank_you">The app warns your surroundings. Please inform your local health department and immediately go into 14-day quarantine.</string>
     <string name="head_report_successful">Report successful</string>
-    <string name="text_report_successful">You have been successfully reported negative. Thank you!</string>
+    <string name="text_report_successful">You have been successfully reported negative. Thank you! \n(Caution: A negative test result does not rule out an infection.)</string>
+    <string name="ci_text_report_successful">You have been successfully reported negative. Thank you!</string>
     //Date and days since use
     <string name="daysSinceText">Since %1$s you are helping for %2$d days to fight the Coronavirus.</string>
     //Info Menu and pages

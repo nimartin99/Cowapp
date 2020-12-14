@@ -375,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);
                             builder.setTitle(getString(R.string.head_report_successful));
-                            builder.setMessage(getString(R.string.text_report_successful));
+                            builder.setMessage(getString(R.string.ci_text_report_successful));
                             builder.setPositiveButton(getString(R.string.ok_button),
                                     new DialogInterface.OnClickListener() {
                                         @Override
