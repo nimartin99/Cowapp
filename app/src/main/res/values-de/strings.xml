@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     //General
-    <string name="app_name">CoWApp</string>
+    <string name="app_name">CoW-App</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     //Data Protection
@@ -14,7 +14,7 @@
     <string name="decline_info_ok_button">Okay</string>
     <string name="exit_app">Exit</string>
     //Main
-    <string name="menu_log">LOG</string>
+    <string name="menu_log">Historie</string>
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
     <string name="menu_report_negative">Negativmeldung</string>
@@ -45,7 +45,8 @@
     <string name="head_thank_you">Vielen Dank für die Meldung!</string>
     <string name="text_thank_you">Die App warnt Ihre Mitmenschen. Informieren Sie Ihr örtliches Gesundheitsamt und begeben sich augenblicklich in 14-tägige Quarantäne.</string>
     <string name="head_report_successful">Meldung erfolgreich</string>
-    <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. \nVielen Dank!</string>
+    <string name="text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet. \nVielen Dank! \n(Achtung: Ein negatives Testergebnis schließt eine Infektion nicht aus.)</string>
+    <string name="ci_text_report_successful">Sie wurden erfolgreich als negativ getestet gemeldet.</string>
     //Date and days since use
     <string name="daysSinceText">Seit dem %1$s helfen Sie seit %2$d Tagen, Corona einzudämmen.</string>
     //Permission Requesting
@@ -84,8 +85,8 @@
     //Suspicion
     <string name="head_suspicion_info">Verdacht? - Was tun?</string>
     <string name="text_suspicion_info">Bei Verdachtsfall können Sie sich bei einer nahe gelegenen Teststelle oder Ihrem Hausarzt testen lassen. \nBei positivem Testergebnis informieren Sie bitte das Gesundheitsamt für Ihre Region (Suchen Sie Ihr Gesundheitsamt: https://tools.rki.de/plztool/ ) und bleiben in 14-tägiger Quarantäne. \nIst das Testergebnis negativ, ist keine Quarantäne notwenig. \n Ein negatives Testergebnis können Sie der App jederzeit melden, um Ihr Risikolevel entsprechend anzupassen. \nVielen Dank für Ihre Mithilfe, der weiteren Ausbreitung des Corona-Virus entgegenzuwirken.</string>
-    //LOG
-    <string name="text_log">Notification Log</string>
+    //History
+    <string name="text_log">Historie</string>
     <string name="log">Dies ist eine Benachrichtigung.</string>
     //Push Notification
     <string name="channel_name">NotificationChannel</string>

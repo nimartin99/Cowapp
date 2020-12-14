@@ -9,7 +9,7 @@
     <dimen name="data_protection_text_marginTop">10dp</dimen>
     <dimen name="data_protection_text_marginBottom">15dp</dimen>
     <dimen name="data_protection_head_marginStart">20dp</dimen>
-    <dimen name="data_protection_head_marginTop">50dp</dimen>
+    <dimen name="data_protection_head_marginTop">10dp</dimen>
     <dimen name="data_protection_head_textSize">30sp</dimen>
     //general info
     <dimen name="gen_info_text_marginStart_and_End">20dp</dimen>
