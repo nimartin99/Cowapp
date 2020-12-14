@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     //General
-    <string name="app_name">CoWApp</string>
+    <string name="app_name">CoW-App</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     //Data Protection

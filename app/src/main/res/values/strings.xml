@@ -1,6 +1,6 @@
 <resources>
     //General
-    <string name="app_name">CoWApp</string>
+    <string name="app_name">CoW-App</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     //Data Protection
