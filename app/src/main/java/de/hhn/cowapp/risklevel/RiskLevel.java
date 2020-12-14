@@ -122,7 +122,8 @@ public class RiskLevel {
                 Log.d(TAG, "Direct contact was removed due to outdated date");
             }
         }
-
+        LocalSafer.safeListOfIndirectContacts(indirectContactArrayList, null);
+        LocalSafer.safeListOfDirectContacts(directContactArrayList, null);
     }
 
     public static void deleteAllContacts() {

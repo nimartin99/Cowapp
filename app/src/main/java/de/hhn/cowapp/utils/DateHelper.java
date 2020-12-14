@@ -76,8 +76,22 @@ public class DateHelper {
     }
 
     public static String convertDateToString(Date dateToConvert) {
+        String strDate = new String();
 
-        return getDateFormat().format(dateToConvert);
+        if (dateToConvert != null && !dateToConvert.equals("")) {
+            try {
+                Log.d(TAG, "Formatting a date to a string");
+                strDate = getDateFormat().format(dateToConvert);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                Log.d(TAG, "Formatting gone Wrong @convertDateToString");
+            }
+
+        } else {
+            Log.d(TAG, "Cant format the date to a string cause it seems to be empty or null");
+        }
+
+        return strDate;
     }
 
     public static Date convertStringToDate(String stringToConvert) {
@@ -89,10 +103,10 @@ public class DateHelper {
 
             try {
                 date = format.parse(stringToConvert);
+                Log.d(TAG, "parsing a string to a date");
             } catch (ParseException e) {
                 e.printStackTrace();
                 Log.d(TAG, "Parse gone Wrong @convertStringToDate");
-                System.out.println("Parsing the String of getFirstStartDate to a Date went wrong!");
             }
         } else {
             Log.d(TAG, "Cant parse the string cause it seems to be empty or null");
