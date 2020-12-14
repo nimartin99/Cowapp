@@ -65,7 +65,7 @@
         android:layout_marginTop="@dimen/info_menu_buttons_marginTop"
         android:layout_marginEnd="@dimen/info_menu_head_and_buttons_marginStart_and_End"
         android:backgroundTint="#DAE1E7"
-        android:text="@string/head_risklevel_info"
+        android:text="@string/head_risk_level_info"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="#000000"
         android:textSize="@dimen/info_menu_buttons_textSize"
