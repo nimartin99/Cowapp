@@ -72,7 +72,7 @@
     <string name="head_traffic_light_green">Green Traffic Light</string>
     <string name="text_traffic_light_green">A risk value less than 35 (i.e. 0 – 34) results in a green traffic light color, which signals to the user that an infection is very unlikely and that he can therefore be unconcerned.</string>
     <string name="head_traffic_light_yellow">Yellow Traffic Light</string>
-    <string name="text_traffic_light_yellow">A value between 35 and 70 results in a yellow traffic light color, which means that an infection is already possible but not very likely.\nIf the risk level is in the lower range, close to 35,\nan infection is unlikely. If the risk level is close to the value of 70,\nthe possibility of an infection is more likely</string>
+    <string name="text_traffic_light_yellow">A value between 35 and 70 results in a yellow traffic light color, which means that an infection is already possible but not very likely.\nIf the risk level is in the lower range, close to 35,\nan infection is unlikely. If the risk level is close to the value of 70,\nthe possibility of an infection is more likely.</string>
     <string name="head_traffic_light_red">Red Traffic Light</string>
     <string name="text_traffic_light_red">A risk level above 70 causes the traffic light to turn red, indicating a high probability of infection.</string>
     <string name="head_risk_level_calculation_info">Explanation of the Calculation</string>
