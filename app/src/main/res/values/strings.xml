@@ -25,7 +25,7 @@
     <string name="background_location_denied">Since background location access has not been granted, this app will not be able to discover beacons when in the background</string>
     <string name="request_permission">Request permissions again</string>
     //Main
-    <string name="menu_log">LOG</string>
+    <string name="menu_log">History</string>
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
     <string name="menu_report_negative">Negative test report</string>
@@ -76,7 +76,7 @@
     <string name="head_suspicion_info">Suspicion? - What to do?</string>
     <string name="text_suspicion_info">In case of suspicion, you can let yourself be tested at a near test station or your family doctor. \nIf the test result is positive, please inform the health department for your region and stay in quarantine for 14 days. \nIf the test result is negative, no quarantine is needed. \n You can report a negative test result even if you`re not currently infected, so your risk level can be adjusted. \nThank you for your help to dam the further spread of the corona virus.</string>
     //LOG
-    <string name="text_log">Notification Log</string>
+    <string name="text_log">Notification History</string>
     <string name="log">This is a notification</string>
     //Push Notification
     <string name="channel_name">NotificationChannel</string>
