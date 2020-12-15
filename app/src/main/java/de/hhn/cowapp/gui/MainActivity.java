@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,14 +17,19 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
@@ -52,6 +58,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static android.text.InputType.*;
 
 /**
  * Main screen for CoWApp
@@ -353,51 +361,43 @@ public class MainActivity extends AppCompatActivity {
         final int riskValue = LocalSafer.getRiskLevel(null);
         if(riskValue == 100){ //user wants to report negative test result
             builder.setTitle(getString(R.string.head_report_negative));
-            builder.setMessage(getString(R.string.text_report_negative));
+            builder.setMessage(getString(R.string.text_report_negative) + "\n");
         }
         else{
             builder.setTitle(getString(R.string.head_report_infection));
-            builder.setMessage(getString(R.string.text_report_infection));
+            builder.setMessage(getString(R.string.text_report_infection) + "\n");
         }
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setBackgroundColor(Color.rgb(233, 246, 248));
+        input.setHint(getString(R.string.input));
+        input.setInputType(TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+
+        builder.setView(input);
+
         //approval button
         builder.setPositiveButton(getString(R.string.yes),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(riskValue == 100){ //report negative test result
-                            //report yourself negative and reset risk level
-                            RiskLevel.reportNegativeInfectionTestResult();
-                            //update buttons
-                            initButtons();
-                            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-                            application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
-                            //pop up dialog to inform the user that the negative report was successful
+                        if (idCodeHasGoodSyntax(input.getText().toString())) {
+
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);
-                            builder.setTitle(getString(R.string.head_report_successful));
-                            builder.setMessage(getString(R.string.ci_text_report_successful));
-                            builder.setPositiveButton(getString(R.string.ok_button),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            //pop up disappears
-                                        }
-                                    });
+                            builder.setTitle("Please Wait");
+                            builder.setMessage("Your Infection is beeing reported.");
+                            builder.setCancelable(false);
                             AlertDialog thankYouDialog = builder.create();
                             thankYouDialog.show();
-                        }
-                        else{ //report infection
-                            //send infected key to the server
-                            reportInfection("DIRECT");
-                            //set the risk level corresponding to the infection
-                            RiskLevel.reportInfection();
-                            //update buttons
-                            initButtons();
-                            //pop up dialog to thank the user and inform about what to do now
+
+                            actionForPositiveButtonOfReportInfection(riskValue, input.getText().toString());
+
+                        } else {
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);
-                            builder.setTitle(getString(R.string.head_thank_you));
-                            builder.setMessage(getString(R.string.text_thank_you));
+                            builder.setTitle(getString(R.string.wronghead));
+                            builder.setMessage(getString(R.string.wrong));
                             builder.setPositiveButton(getString(R.string.ok_button),
                                     new DialogInterface.OnClickListener() {
                                         @Override
@@ -420,6 +420,76 @@ public class MainActivity extends AppCompatActivity {
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    /**
+     * This method checks if the Input has the right syntax.
+     * @param toString
+     * @return
+     */
+    private boolean idCodeHasGoodSyntax(String toString) {
+        if (toString == null) {
+            return false;
+        }
+        if (toString.length() != 8) {
+            return false;
+        }
+        if (!toString.matches("[a-zA-Z0-9]*")) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * This Method is called, when the positive-Button of the report-Infection-Dialog is pressed.
+     * @param riskValue the current RiskLevel
+     * @param idCode the input of the TextField.
+     */
+    private void actionForPositiveButtonOfReportInfection(int riskValue, String idCode) {
+        if(riskValue == 100){ //report negative test result
+            //report yourself negative and reset risk level
+            RiskLevel.reportNegativeInfectionTestResult();
+            //update buttons
+            initButtons();
+            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+            application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
+            //pop up dialog to inform the user that the negative report was successful
+            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+            builder.setCancelable(true);
+            builder.setTitle(getString(R.string.head_report_successful));
+            builder.setMessage(getString(R.string.ci_text_report_successful));
+            builder.setPositiveButton(getString(R.string.ok_button),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //pop up disappears
+                        }
+                    });
+            AlertDialog thankYouDialog = builder.create();
+            thankYouDialog.show();
+        }
+        else{ //report infection
+            //send infected key to the server
+            reportInfection("DIRECT");
+            //set the risk level corresponding to the infection
+            RiskLevel.reportInfection();
+            //update buttons
+            initButtons();
+            //pop up dialog to thank the user and inform about what to do now
+            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+            builder.setCancelable(true);
+            builder.setTitle(getString(R.string.head_thank_you));
+            builder.setMessage(getString(R.string.text_thank_you));
+            builder.setPositiveButton(getString(R.string.ok_button),
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //pop up disappears
+                        }
+                    });
+            AlertDialog thankYouDialog = builder.create();
+            thankYouDialog.show();
+        }
     }
 
 
