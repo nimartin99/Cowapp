@@ -689,6 +689,7 @@ public class MainActivity extends AppCompatActivity {
         int riskValue = LocalSafer.getRiskLevel(null);
         String risk = "";
         String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
+
         if (riskValue <= 33) {
                 risk = riskStatus.getResources().getString(R.string.risk_status_low);
         } else if (riskValue <= 70) {
@@ -699,6 +700,7 @@ public class MainActivity extends AppCompatActivity {
                 risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
                 risklevel = "";
         }
+
         riskStatus.setText(risk);
         risklevelStatus.setText(risklevel);
     }
