@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private static RetrofitService retrofitService;
-    private String BASE_URL = "https://cowapp.glitch.me";
+    private String BASE_URL = "http://10.0.2.2:3000";
 
     //To display the current risk status
     private static ImageView trafficLight;
@@ -351,6 +351,57 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Verify, if the entered id exists in the database.
+     */
+    public void verifyId(final int riskValue, String id, boolean infection) {
+        // init hash map
+        HashMap<String, String> idMap = new HashMap<>();
+        idMap.put("id", id);
+        if (infection) {
+            idMap.put("infection", "TRUE");
+        } else {
+            idMap.put("infection", "FALSE");
+        }
+        // send request
+        Call<Void> call = retrofitService.verifyId(idMap);
+        // handle response
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    if (riskValue == 100) { //report negative test result
+                        //report yourself negative and reset risk level
+                        RiskLevel.reportNegativeInfectionTestResult();
+                        //update buttons
+                        initButtons();
+                        BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+                        application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
+                    }
+                    else { //report infection
+                        //send infected key to the server
+                        reportInfection("DIRECT");
+                        //set the risk level corresponding to the infection
+                        RiskLevel.reportInfection();
+                        //update buttons
+                        initButtons();
+                    }
+                    // pop up dialog to thank the user for reporting
+                    startThankYouDiaglog();
+                } else if (response.code() == 400) {
+                    startWrongCodeDialog();
+                } else if (response.code() == 404) {
+                    startWrongCodeDialog();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                startNoConnectionDialog();
+            }
+        });
+    }
+
+    /**
      * Method called when the user clicks the report infection or negative test result button.
      * A dialog pops up which asks for approval to report or not.
      * If an infection has been reported a dialog pops up to thank the user for the report
@@ -485,25 +536,13 @@ public class MainActivity extends AppCompatActivity {
      * @param idCode the input of the TextField.
      */
     private void actionForPositiveButtonOfReportInfection(int riskValue, String idCode) {
-        if(riskValue == 100){ //report negative test result
-            //report yourself negative and reset risk level
-            RiskLevel.reportNegativeInfectionTestResult();
-            //update buttons
-            initButtons();
-            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-            application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
-            //pop up dialog to inform the user that the negative report was successful
-            startThankYouDiaglog();
+        if (riskValue == 100) { // report negative test result
+            // verify entered id for negative infection
+            verifyId(riskValue, idCode, false);
         }
-        else{ //report infection
-            //send infected key to the server
-            reportInfection("DIRECT");
-            //set the risk level corresponding to the infection
-            RiskLevel.reportInfection();
-            //update buttons
-            initButtons();
-            //pop up dialog to thank the user and inform about what to do now
-            startThankYouDiaglog();
+        else { // report infection
+            // verify entered id for positive infection
+            verifyId(riskValue, idCode, true);
         }
     }
 
