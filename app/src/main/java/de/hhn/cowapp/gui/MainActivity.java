@@ -394,19 +394,7 @@ public class MainActivity extends AppCompatActivity {
                             actionForPositiveButtonOfReportInfection(riskValue, input.getText().toString());
 
                         } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
-                            builder.setCancelable(true);
-                            builder.setTitle(getString(R.string.wronghead));
-                            builder.setMessage(getString(R.string.wrong));
-                            builder.setPositiveButton(getString(R.string.ok_button),
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            //pop up disappears
-                                        }
-                                    });
-                            AlertDialog thankYouDialog = builder.create();
-                            thankYouDialog.show();
+                            startWrongCodeDialog();
                         }
                     }
                 });
@@ -440,6 +428,57 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void startThankYouDiaglog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+        builder.setCancelable(true);
+        builder.setTitle(getString(R.string.head_report_successful));
+        builder.setMessage(getString(R.string.ci_text_report_successful));
+        builder.setPositiveButton(getString(R.string.ok_button),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //pop up disappears
+                    }
+                });
+        AlertDialog thankYouDialog = builder.create();
+        thankYouDialog.show();
+    }
+
+    /**
+     * A dialog, which tells you that the Test-ID was wrong.
+     */
+    public void startWrongCodeDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+        builder.setCancelable(true);
+        builder.setTitle(getString(R.string.wronghead));
+        builder.setMessage(getString(R.string.wrong));
+        builder.setPositiveButton(getString(R.string.ok_button),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //pop up disappears
+                    }
+                });
+        AlertDialog thankYouDialog = builder.create();
+        thankYouDialog.show();
+    }
+
+    public void startNoConnectionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+        builder.setCancelable(true);
+        builder.setTitle(getString(R.string.problemhead));
+        builder.setMessage(getString(R.string.problem));
+        builder.setPositiveButton(getString(R.string.ok_button),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //pop up disappears
+                    }
+                });
+        AlertDialog thankYouDialog = builder.create();
+        thankYouDialog.show();
+    }
+
     /**
      * This Method is called, when the positive-Button of the report-Infection-Dialog is pressed.
      * @param riskValue the current RiskLevel
@@ -454,19 +493,7 @@ public class MainActivity extends AppCompatActivity {
             BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
             application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
             //pop up dialog to inform the user that the negative report was successful
-            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
-            builder.setCancelable(true);
-            builder.setTitle(getString(R.string.head_report_successful));
-            builder.setMessage(getString(R.string.ci_text_report_successful));
-            builder.setPositiveButton(getString(R.string.ok_button),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //pop up disappears
-                        }
-                    });
-            AlertDialog thankYouDialog = builder.create();
-            thankYouDialog.show();
+            startThankYouDiaglog();
         }
         else{ //report infection
             //send infected key to the server
@@ -476,19 +503,7 @@ public class MainActivity extends AppCompatActivity {
             //update buttons
             initButtons();
             //pop up dialog to thank the user and inform about what to do now
-            AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
-            builder.setCancelable(true);
-            builder.setTitle(getString(R.string.head_thank_you));
-            builder.setMessage(getString(R.string.text_thank_you));
-            builder.setPositiveButton(getString(R.string.ok_button),
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //pop up disappears
-                        }
-                    });
-            AlertDialog thankYouDialog = builder.create();
-            thankYouDialog.show();
+            startThankYouDiaglog();
         }
     }
 

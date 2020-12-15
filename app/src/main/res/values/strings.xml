@@ -174,4 +174,6 @@
     <string name="wronghead">Wrong Test ID</string>
     <string name="wait">Transmission is in progress.</string>
     <string name="waithead">Please wait ...</string>
+    <string name="problem">A connection to the server could not be established. Please try again later!</string>
+    <string name="problemhead">No Connection!</string>
 </resources>

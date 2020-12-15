@@ -165,4 +165,6 @@
     <string name="wrong">Die von Ihnen eingegebene Test-ID ist falsch.</string>
     <string name="wait">Übermittlung läuft.</string>
     <string name="waithead">Bitte warten ...</string>
+    <string name="problemhead">Keine Verbindung</string>
+    <string name="problem">Es konnte keine Verbindung zum Server aufgebaut werden. Bitte versuchen Sie es später erneut!</string>
 </resources>
