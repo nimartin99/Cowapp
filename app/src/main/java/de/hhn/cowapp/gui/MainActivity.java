@@ -371,19 +371,7 @@ public class MainActivity extends AppCompatActivity {
                         //update buttons if there was a current infection
                         initButtons();
                         //pop up dialog to inform the user that the negative report was successful
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
-                        builder.setCancelable(true);
-                        builder.setTitle(getString(R.string.head_report_successful));
-                        builder.setMessage(getString(R.string.text_report_successful));
-                        builder.setPositiveButton(getString(R.string.ok_button),
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        //pop up disappears
-                                    }
-                                });
-                        AlertDialog thankYouDialog = builder.create();
-                        thankYouDialog.show();
+                        startThankYouDiaglog();
                         BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
                         application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
                     } else {
