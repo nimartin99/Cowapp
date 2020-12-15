@@ -5,10 +5,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,19 +16,15 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Space;
 import android.widget.TextView;
 
 import org.altbeacon.beacon.BeaconManager;
@@ -91,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private static RetrofitService retrofitService;
-    private String BASE_URL = "http://10.0.2.2:3000";
+    private String BASE_URL = "https://cowapp.glitch.me";
 
     //To display the current risk status
     private static ImageView trafficLight;
@@ -287,26 +281,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void actionForNegativReportDropDownMenu(String testID) {
-        //report yourself negative and reset risk level
-        RiskLevel.reportNegativeInfectionTestResult();
-        //update buttons if there was a current infection
-        initButtons();
-        //pop up dialog to inform the user that the negative report was successful
-        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
-        builder.setCancelable(true);
-        builder.setTitle(getString(R.string.head_report_successful));
-        builder.setMessage(getString(R.string.text_report_successful));
-        builder.setPositiveButton(getString(R.string.ok_button),
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //pop up disappears
-                    }
-                });
-        AlertDialog thankYouDialog = builder.create();
-        thankYouDialog.show();
-        BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
-        application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
+        // verify entered id for negative infection in the drop down menu
+        verifyId(true, -1, testID, false);
     }
 
     /**
@@ -373,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Verify, if the entered id exists in the database.
      */
-    public void verifyId(final int riskValue, String id, boolean infection) {
+    public void verifyId(final boolean isDropdown, final int riskValue, String id, boolean infection) {
         // init hash map
         HashMap<String, String> idMap = new HashMap<>();
         idMap.put("id", id);
@@ -389,24 +365,47 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 200) {
-                    if (riskValue == 100) { //report negative test result
+                    if (isDropdown) {
                         //report yourself negative and reset risk level
                         RiskLevel.reportNegativeInfectionTestResult();
-                        //update buttons
+                        //update buttons if there was a current infection
                         initButtons();
+                        //pop up dialog to inform the user that the negative report was successful
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
+                        builder.setCancelable(true);
+                        builder.setTitle(getString(R.string.head_report_successful));
+                        builder.setMessage(getString(R.string.text_report_successful));
+                        builder.setPositiveButton(getString(R.string.ok_button),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        //pop up disappears
+                                    }
+                                });
+                        AlertDialog thankYouDialog = builder.create();
+                        thankYouDialog.show();
                         BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
                         application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
+                    } else {
+                        if (riskValue == 100) { //report negative test result
+                            //report yourself negative and reset risk level
+                            RiskLevel.reportNegativeInfectionTestResult();
+                            //update buttons
+                            initButtons();
+                            BeaconBackgroundService application = (BeaconBackgroundService) BeaconBackgroundService.getAppContext();
+                            application.updateForegroundNotification(application.getString(R.string.foreground_Notificaiton));
+                        }
+                        else { //report infection
+                            //send infected key to the server
+                            reportInfection("DIRECT");
+                            //set the risk level corresponding to the infection
+                            RiskLevel.reportInfection();
+                            //update buttons
+                            initButtons();
+                        }
+                        // pop up dialog to thank the user for reporting
+                        startThankYouDiaglog();
                     }
-                    else { //report infection
-                        //send infected key to the server
-                        reportInfection("DIRECT");
-                        //set the risk level corresponding to the infection
-                        RiskLevel.reportInfection();
-                        //update buttons
-                        initButtons();
-                    }
-                    // pop up dialog to thank the user for reporting
-                    startThankYouDiaglog();
                 } else if (response.code() == 400) {
                     startWrongCodeDialog();
                 } else if (response.code() == 404) {
@@ -565,14 +564,8 @@ public class MainActivity extends AppCompatActivity {
      * @param idCode the input of the TextField.
      */
     private void actionForPositiveButtonOfReportInfection(int riskValue, String idCode) {
-        if (riskValue == 100) { // report negative test result
-            // verify entered id for negative infection
-            verifyId(riskValue, idCode, false);
-        }
-        else { // report infection
-            // verify entered id for positive infection
-            verifyId(riskValue, idCode, true);
-        }
+        // verify entered id for positive or negative infection depended on the risk value
+        verifyId(false, riskValue, idCode, riskValue != 100);
     }
 
 
