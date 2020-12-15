@@ -66,6 +66,7 @@ public class InfoMenuActivity extends AppCompatActivity {
             }
         });
 
+        //FAQ button listener
         Button faqButton = (Button) findViewById(R.id.faqButton);
 
         faqButton.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +74,18 @@ public class InfoMenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 //Go to screen for information about the risk level calculation
                 Intent nextActivity = new Intent(InfoMenuActivity.this, FaqActivity.class);
+                startActivity(nextActivity);
+            }
+        });
+
+        //FAQ button listener
+        Button dataProtectionButton = (Button) findViewById(R.id.dataProtectionButton);
+
+        dataProtectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Go to screen to re-read the terms of use
+                Intent nextActivity = new Intent(InfoMenuActivity.this, DataProtectionResumeActivity.class);
                 startActivity(nextActivity);
             }
         });

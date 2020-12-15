@@ -10,8 +10,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
-        android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,48 +23,143 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/HeadRiskLevelInfoPage"
+                android:id="@+id/head_riskLevel_info_page_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
                 android:layout_marginTop="@dimen/risk_info_head_marginTop"
                 android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
-                android:text="@string/head_risklevel_info"
+                android:text="@string/head_risk_level_info"
                 android:textColor="#142850"
                 android:textSize="@dimen/risk_info_head_textSize"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textRiskLevelInfo"
+                android:id="@+id/head_short_risk_level_info_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
                 android:layout_marginTop="@dimen/risk_info_text_marginTop"
                 android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
-                android:text="@string/text_risklevel_value_traffic_light_info"
-                android:textColor="#000000"
-                android:textSize="@dimen/risk_info_text_textSize" />
-
-            <TextView
-                android:id="@+id/headCalculationInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
-                android:layout_marginTop="@dimen/risk_info_text_marginTop"
-                android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
-                android:text="@string/head_risklevel_calculation_info"
+                android:text="@string/short_Risk_Level_Info_Head"
                 android:textColor="#142850"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/textCalculationInfo"
+                android:id="@+id/text_short_riskLevel_info_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:text="@string/short_Risk_Level_Info_Text"
+                android:textColor="#000000"
+                android:textSize="@dimen/risk_info_text_textSize" />
+
+            <TextView
+                android:id="@+id/head_trafficLight_explanation_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:text="@string/head_traffic_light_info"
+                android:textColor="#142850"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_trafficLight_explanation_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:text="@string/text_traffic_light_info"
+                android:textColor="#000000"
+                android:textSize="@dimen/risk_info_text_textSize" />
+
+            <TextView
+                android:id="@+id/head_green_traffic_light_explanation_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:text="@string/head_traffic_light_green"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_green_traffic_light_explanation_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:text="@string/text_traffic_light_green"
+                android:textColor="#000000"
+                android:textSize="@dimen/risk_info_text_textSize" />
+
+            <TextView
+                android:id="@+id/head_traffic_light_yellow_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:text="@string/head_traffic_light_yellow"
+                android:textColor="@android:color/holo_orange_light"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_traffic_light_yellow_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:text="@string/text_traffic_light_yellow"
+                android:textColor="#000000"
+                android:textSize="@dimen/risk_info_text_textSize" />
+
+            <TextView
+                android:id="@+id/head_traffic_light_red_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:text="@string/head_traffic_light_red"
+                android:textColor="#FF0000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_traffic_light_red_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:text="@string/text_traffic_light_red"
+                android:textColor="#000000"
+                android:textSize="@dimen/risk_info_text_textSize" />
+
+            <TextView
+                android:id="@+id/head_risk_level_calculation_info_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
                 android:layout_marginTop="@dimen/risk_info_text_marginTop"
                 android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
-                android:text="@string/text_risklevel_calculation_info"
+                android:text="@string/head_risk_level_calculation_info"
+                android:textColor="#142850"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_riskLevel_calculation_info_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:layout_marginTop="@dimen/risk_info_text_marginTop"
+                android:layout_marginEnd="@dimen/risk_info_head_and_text_marginStart_and_End"
+                android:text="@string/text_risk_level_calculation_info"
                 android:textColor="#000000"
                 android:textSize="@dimen/risk_info_text_textSize" />
 

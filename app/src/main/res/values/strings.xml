@@ -1,6 +1,6 @@
 <resources>
     //General
-    <string name="app_name">CoWApp</string>
+    <string name="app_name">CoW-App</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     //Data Protection
@@ -25,7 +25,7 @@
     <string name="background_location_denied">Since background location access has not been granted, this app will not be able to discover beacons when in the background</string>
     <string name="request_permission">Request permissions again</string>
     //Main
-    <string name="menu_log">LOG</string>
+    <string name="menu_log">History</string>
     <string name="menu_info">Info</string>
     <string name="menu_test">Test</string>
     <string name="menu_report_negative">Negative test report</string>
@@ -56,7 +56,8 @@
     <string name="head_thank_you">Thank you for the report!</string>
     <string name="text_thank_you">The app warns your surroundings. Please inform your local health department and immediately go into 14-day quarantine.</string>
     <string name="head_report_successful">Report successful</string>
-    <string name="text_report_successful">You have been successfully reported negative. Thank you!</string>
+    <string name="text_report_successful">You have been successfully reported negative. Thank you! \n(Caution: A negative test result does not rule out an infection.)</string>
+    <string name="ci_text_report_successful">You have been successfully reported negative. Thank you!</string>
     //Date and days since use
     <string name="daysSinceText">Since %1$s you are helping for %2$d days to fight the Coronavirus.</string>
     //Info Menu and pages
@@ -64,11 +65,20 @@
     <string name="head_general_info">General Information</string>
     <string name="text_general_info">The CoWApp (Corona Warning App) is an application that anyone can use to further contain the spread of the coronavirus. \nWith it potential contact with corona-infected people can be determined in everyday life and an infection risk can be calculated. It is displayed by the traffic light principle and a risk value of 1 to 100. \nYou will also receive a push notification when a potential health risk has been identified so you know how to act correctly to protect yourself and those around you. \nUnder Suspicion? you can receive information on what to do if you suspect an infection, in the info menu further information.</string>
     //Info screen about the risk level
-    <string name="head_risklevel_info">Risk Level Information</string>
-    <string name="head_risklevel_value_traffic_light_info">Risk Level and Traffic Light Explanation:</string>
-    <string name="text_risklevel_value_traffic_light_info">To clarify to the user how high his risk of infection is, the CoW–App provides a risk level value, which is a numerical value between 0 (no risk) and 100 (existing infection).For further clarity and how the user should best behave, the CoWApp divides and simplifies the risk level via the traffic light display. A risk value less than 35 (i.e. 0 – 34) results in a green traffic light color, which signals to the user that an infection is very unlikely and that he can therefore be unconcerned. A value between 35 and 70 results in a yellow traffic light color, which means that an infection is already possible but not very likely.If the risk level is in the lower range, close to 35, an infection is unlikely. In order to relieve the health care system, no measures should be considered that burden the health care system. However, if the risk level is close to the upper limit of 70, measures such as a corona test are recommended, as the possibility of infection is more likely.A risk level above 70 causes the traffic light to turn red, indicating a high probability of infection. Measures such as a corona test, keeping distance from other people and even quarantine are strongly recommended.</string>
-    <string name="head_risklevel_calculation_info">Explanation of the Calculation</string>
-    <string name="text_risklevel_calculation_info">To understand the calculation the following terms should be clarified first. contact: A so-called contact was determined by the exchange of keys between end devices. Only contacts with users who are already infected or subsequently reported as infected are included in the risk calculation. These contacts are further specified by evaluating them as either direct or indirect contact. Direct contact: means that there has been contact with a person reported as infected. Indirect contact means a contact with a person who is not reported as infected itself, but has had contact with a third person who is reported as infected To calculate the risk level, all direct and indirect contacts as well as the user\'s self-infection report from the last 14 days are taken into account. The duration of the contacts is also included in the calculation.</string>
+    <string name="head_risk_level_info">Risk Level Information</string>
+    <string name="short_Risk_Level_Info_Head">What is the risk level?</string>
+    <string name="short_Risk_Level_Info_Text">The risk level is a numerical value between 0 and 100,\nwhich CoWApp calculates for you.\nThe risk value represents in a number how likely it is that you have been infected with Covid-19 in the last 14 days.</string>
+    <string name="head_traffic_light_info">Explanation of the Traffic Light</string>
+    <string name="text_traffic_light_info">For further clarity and how the user should best behave, the CoWApp divides and simplifies the risk level via the traffic light display.</string>
+    <string name="head_traffic_light_green">Green Traffic Light</string>
+    <string name="text_traffic_light_green">A risk value less than 35 (i.e. 0 – 34) results in a green traffic light color, which signals to the user that an infection is very unlikely and that he can therefore be unconcerned.</string>
+    <string name="head_traffic_light_yellow">Yellow Traffic Light</string>
+    <string name="text_traffic_light_yellow">A value between 35 and 70 results in a yellow traffic light color, which means that an infection is already possible but not very likely.\nIf the risk level is in the lower range, close to 35,\nan infection is unlikely. If the risk level is close to the value of 70,\nthe possibility of an infection is more likely.</string>
+    <string name="head_traffic_light_red">Red Traffic Light</string>
+    <string name="text_traffic_light_red">A risk level above 70 causes the traffic light to turn red, indicating a high probability of infection.</string>
+    <string name="head_risk_level_calculation_info">Explanation of the Calculation</string>
+    <string name="text_risk_level_calculation_info">To understand the calculation the following terms should be clarified first.\n\n<u>Contact</u>: A so-called contact was determined by the exchange of keys between end devices.\n\nOnly contacts with persons who have already been exchanged at the time of an infection report are included in the risk level calculation.\n\nThese contacts are further specified by evaluating them as either direct or indirect contact.\n\n<u>Direct contact</u>: means that there has been contact with a person reported as infected.\n\n<u>Indirect contact</u> means a contact with a person who is not reported as infected itself, but has had contact with a third person who is reported as infected To calculate the risk level.\n\nAll direct and indirect contacts as well as the user\'s self-infection report from the last 14 days are taken into account.\n\nThe Duration of the contacts is also included in the calculation.\nFor this purpose, long contacts are converted into several short contacts.\n\nAn existing infection is signaled by a value of 100.</string>
+    //Infection info
     //Infection info
     <string name="head_infection_info">Current Infection - How to act?</string>
     <string name="text_infection_info">In the event of an acute infection, you are obliged to go into quarantine immediately and remain in quarantine for 14 days or until you receive a negative PCR test result. \nYou are also obliged to notify your local health department. \nAny roommates should also be tested immediately and you are encouraged to distance yourself from them. \nFurther information at the page of the federal government or the WHO: https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen \nfor German speaking people or \n https://www.who.int/health-topics/coronavirus#tab=tab_1 \nfor general information.</string>
@@ -76,7 +86,7 @@
     <string name="head_suspicion_info">Suspicion? - What to do?</string>
     <string name="text_suspicion_info">In case of suspicion, you can let yourself be tested at a near test station or your family doctor. \nIf the test result is positive, please inform the health department for your region and stay in quarantine for 14 days. \nIf the test result is negative, no quarantine is needed. \n You can report a negative test result even if you`re not currently infected, so your risk level can be adjusted. \nThank you for your help to dam the further spread of the corona virus.</string>
     //LOG
-    <string name="text_log">Notification Log</string>
+    <string name="text_log">Notification History</string>
     <string name="log">This is a notification</string>
     //Push Notification
     <string name="channel_name">NotificationChannel</string>
