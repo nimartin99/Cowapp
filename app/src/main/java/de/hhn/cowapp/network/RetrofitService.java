@@ -11,7 +11,7 @@ import retrofit2.http.POST;
  * Interface for Retrofit which provides operations for client-server-communication.
  *
  * @author Philipp Alessandrini
- * @version 2020-11-22
+ * @version 2020-12-15
  */
 public interface RetrofitService {
     /**
@@ -39,4 +39,11 @@ public interface RetrofitService {
      */
     @POST("/request_infection_status")
     Call<RequestedObject> requestInfectionStatus(@Body HashMap<String, String> ownUserKeysMap);
+
+    /**
+     * POST-request to send own id to the database for verifying if it exists there.
+     * @param idMap own id
+     */
+    @POST("/verify_id")
+    Call<Void> verifyId(@Body HashMap<String, String> idMap);
 }
