@@ -687,27 +687,20 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void showRiskStatus() {
         int riskValue = LocalSafer.getRiskLevel(null);
+        String risk = "";
+        String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
         if (riskValue <= 33) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_low);
-                riskStatus.setText(risk);
-                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
-                risklevelStatus.setText(risklevel);
+                risk = riskStatus.getResources().getString(R.string.risk_status_low);
         } else if (riskValue <= 70) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_moderate);
-                riskStatus.setText(risk);
-                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
-                risklevelStatus.setText(risklevel);
+                risk = riskStatus.getResources().getString(R.string.risk_status_moderate);
         } else if (riskValue > 70 && riskValue < 100) {
-                String risk = riskStatus.getResources().getString(R.string.risk_status_high);
-                riskStatus.setText(risk);
-                String risklevel = riskStatus.getResources().getString(R.string.risk_level, riskValue);
-                risklevelStatus.setText(risklevel);
+                risk = riskStatus.getResources().getString(R.string.risk_status_high);
         } else if (riskValue == 100) {
-                String risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
-                riskStatus.setText(risk);
-                String risklevel = "";
-                risklevelStatus.setText(risklevel);
+                risk = "\n \n" + riskStatus.getResources().getString(R.string.current_infection);
+                risklevel = "";
         }
+        riskStatus.setText(risk);
+        risklevelStatus.setText(risklevel);
     }
 
     /**
