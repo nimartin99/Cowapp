@@ -33,7 +33,7 @@
     <string name="risk_status_low">Geringes Risiko</string>
     <string name="risk_status_moderate">Moderates Risiko</string>
     <string name="risk_status_high">Hohes Risiko</string>
-    <string name="risk_level">Risikolevel: %1$d von 100</string>
+    <string name="risk_level">Risikolevel: \n%1$d von 100</string>
     <string name="current_infection">Bestehende Infektion</string>
     //Report Infection or negative test result
     <string name="report_no_button">Nein</string>

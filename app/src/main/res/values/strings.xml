@@ -44,7 +44,7 @@
     <string name="risk_status_low">Low Risk</string>
     <string name="risk_status_moderate">Moderate Risk</string>
     <string name="risk_status_high">High Risk</string>
-    <string name="risk_level">Risk Level: %1$d of 100</string>
+    <string name="risk_level">Risk Level: \n%1$d of 100</string>
     <string name="current_infection">Current Infection</string>
     //Report Infection / negative test result
     <string name="report_no_button">No</string>

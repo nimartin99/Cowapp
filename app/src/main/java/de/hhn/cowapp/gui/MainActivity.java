@@ -61,7 +61,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-12-07
+ * @version 2020-12-15
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
