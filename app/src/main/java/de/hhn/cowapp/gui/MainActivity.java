@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (idCodeHasGoodSyntax(input.getText().toString())) {
                                     startWaitDialog();
-                                    actionForNegativReportDropDownMenu();
+                                    actionForNegativReportDropDownMenu(input.getText().toString());
                                 } else {
                                     startWrongCodeDialog();
                                 }
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void actionForNegativReportDropDownMenu() {
+    public void actionForNegativReportDropDownMenu(String testID) {
         //report yourself negative and reset risk level
         RiskLevel.reportNegativeInfectionTestResult();
         //update buttons if there was a current infection
