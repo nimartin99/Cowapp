@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity {
 
     // application context that allows stating android services from static methods
     private static Context context;
+
+    /** The Waiting Dialog. */
+    private static AlertDialog waitingDialog;
 
     //For push notification
     public static final String CHANNEL_ID = "pushNotifications";
@@ -400,7 +404,6 @@ public class MainActivity extends AppCompatActivity {
                         if (idCodeHasGoodSyntax(input.getText().toString())) {
                             startWaitDialog();
                             actionForPositiveButtonOfReportInfection(riskValue, input.getText().toString());
-
                         } else {
                             startWrongCodeDialog();
                         }
@@ -424,8 +427,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(getString(R.string.waithead));
         builder.setMessage(getString(R.string.wait));
         builder.setCancelable(false);
-        AlertDialog wait = builder.create();
-        wait.show();
+        waitingDialog = builder.create();
+        waitingDialog.show();
     }
 
     /**
@@ -447,6 +450,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startThankYouDiaglog() {
+        if (waitingDialog != null) {
+            waitingDialog.dismiss();
+            waitingDialog = null;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
         builder.setCancelable(true);
         builder.setTitle(getString(R.string.head_report_successful));
@@ -466,6 +473,10 @@ public class MainActivity extends AppCompatActivity {
      * A dialog, which tells you that the Test-ID was wrong.
      */
     public void startWrongCodeDialog() {
+        if (waitingDialog != null) {
+            waitingDialog.dismiss();
+            waitingDialog = null;
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
         builder.setCancelable(true);
         builder.setTitle(getString(R.string.wronghead));
