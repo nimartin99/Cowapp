@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
         if(LocalSafer.isFirstAppStart(null)){
             Intent nextActivity = new Intent(MainActivity.this, DataProtectionActivity.class);
             startActivity(nextActivity);
-        } else{
+        } else {
             //show current risk level
             RiskLevel.calculateRiskLevel();
             //initialize buttons due to infection status of the user
@@ -351,11 +351,11 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(true);
         final int riskValue = LocalSafer.getRiskLevel(null);
-        if(riskValue == 100){ //user wants to report negative test result
+        if(riskValue == 100) { //user wants to report negative test result
             builder.setTitle(getString(R.string.head_report_negative));
             builder.setMessage(getString(R.string.text_report_negative));
         }
-        else{
+        else {
             builder.setTitle(getString(R.string.head_report_infection));
             builder.setMessage(getString(R.string.text_report_infection));
         }
@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(riskValue == 100){ //report negative test result
+                        if(riskValue == 100) { //report negative test result
                             //report yourself negative and reset risk level
                             RiskLevel.reportNegativeInfectionTestResult();
                             //update buttons
@@ -386,7 +386,7 @@ public class MainActivity extends AppCompatActivity {
                             AlertDialog thankYouDialog = builder.create();
                             thankYouDialog.show();
                         }
-                        else{ //report infection
+                        else { //report infection
                             //send infected key to the server
                             reportInfection("DIRECT");
                             //set the risk level corresponding to the infection
@@ -718,7 +718,7 @@ public class MainActivity extends AppCompatActivity {
         Button reportInfectionButton = (Button) findViewById(R.id.InfektionMeldenButton);
         Button suspicionButton = (Button) findViewById(R.id.VerdachtButton);
         //set button text and listener
-        if(riskValue == 100){ //the user has a current infection
+        if (riskValue == 100) { //the user has a current infection
             //change report infection button to further information button and suspicion button to negative test result
             reportInfectionButton.setText(R.string.report_infection_button_ci);
             suspicionButton.setText(R.string.suspicion_button_ci);
@@ -740,8 +740,7 @@ public class MainActivity extends AppCompatActivity {
                     reportApproval();
                 }
             });
-        }
-        else{  //normal app usage
+        } else {  //normal app usage
             //normal button texts (report infection and suspicion button)
             reportInfectionButton.setText(R.string.report_infection_button);
             suspicionButton.setText(R.string.suspicion_button);
