@@ -163,4 +163,6 @@
     <string name="input">Bitte Test-ID eingeben!</string>
     <string name="wronghead">Falsche Test-ID</string>
     <string name="wrong">Die von Ihnen eingegebene Test-ID ist falsch.</string>
+    <string name="wait">Übermittlung läuft.</string>
+    <string name="waithead">Bitte warten ...</string>
 </resources>

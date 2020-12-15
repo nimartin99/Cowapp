@@ -385,11 +385,11 @@ public class MainActivity extends AppCompatActivity {
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(getMainActivity());
                             builder.setCancelable(true);
-                            builder.setTitle("Please Wait");
-                            builder.setMessage("Your Infection is beeing reported.");
+                            builder.setTitle(getString(R.string.waithead));
+                            builder.setMessage(getString(R.string.wait));
                             builder.setCancelable(false);
-                            AlertDialog thankYouDialog = builder.create();
-                            thankYouDialog.show();
+                            AlertDialog wait = builder.create();
+                            wait.show();
 
                             actionForPositiveButtonOfReportInfection(riskValue, input.getText().toString());
 

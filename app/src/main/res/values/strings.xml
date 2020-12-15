@@ -172,4 +172,6 @@
     <string name="input">Please enter Test-ID!</string>
     <string name="wrong">The Test ID you entered is incorrect.</string>
     <string name="wronghead">Wrong Test ID</string>
+    <string name="wait">Transmission is in progress.</string>
+    <string name="waithead">Please wait ...</string>
 </resources>
