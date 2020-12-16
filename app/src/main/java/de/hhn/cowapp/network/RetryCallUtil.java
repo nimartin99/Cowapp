@@ -1,6 +1,5 @@
 package de.hhn.cowapp.network;
 
-import de.hhn.cowapp.network.CallbackWithRetry;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -8,7 +7,7 @@ import retrofit2.Response;
 /**
  * Util class which specifies the behavior of a enqueue process.
  * @author Philipp Alessandrini
- * @version 2020-10-28
+ * @version 2020-12-16
  */
 public class RetryCallUtil {
     private static boolean connected = true;
