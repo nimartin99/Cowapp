@@ -207,8 +207,9 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_items, menu);
 
         if (!Constants.DEBUG_MODE) {
-            MenuItem it = menu.getItem(2);
-            menu.removeItem(it.getItemId()); //ID of the test menu button because of its place in the dropdown menu
+            MenuItem it = menu.getItem(0);
+            Menu subMenu = it.getSubMenu();
+            subMenu.removeItem(R.id.item3); //ID of the test menu button because of its place in the dropdown menu
         }
         return true;
     }
