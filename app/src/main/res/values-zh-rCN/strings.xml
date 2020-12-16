@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CoWApp</string>
+    <string name="accept_button">接受</string>
+    <string name="decline_button">衰落</string>
+    <string name="yes">是的</string>
+    <string name="no">不是</string>
+    <string name="head_data_protection">使用条款</string>
+    <string name="text_data_protection">您同意CoWApp被允许激活您设备上的蓝牙并发送或接收数据（生成的密钥，包括时间戳和位置以及您当前的感染状态信息）。此外，您同意该应用程序可以在任何时候作为后台进程在您的移动设备上运行，并允许将您生成和收集的匿名密钥发送到服务器，如果存在现有的感染，以及向您发送推送通知。这是实现 Corona-Warn-App 正确功能的唯一途径。</string>
+    <string name="decline_info_title">"我们需要你的同意 "</string>
+    <string name="decline_info_message">您必须接受使用条款才能使用该应用程序。</string>
+    <string name="decline_info_ok_button">好的</string>
+    <string name="exit_app">退出 </string>
+    <string name="request_permission">我们须要再次徵得您的同意</string>
+    <string name="menu_info">资讯</string>
+    <string name="menu_test">测试</string>
+    <string name="menu_report_negative">阴性结果</string>
+    <string name="report_infection_button">报告感染</string>
+    <string name="report_infection_button_ci">"更多信息 "</string>
+    <string name="suspicion_button">疑似病例</string>
+    <string name="suspicion_button_ci">阴性结果</string>
+    <string name="traffic_light_description">查看通过交通灯状态来显示当前的风险状态。</string>
+    <string name="infoRiskCalcButton_description">点击显示风险等级计算的信息页面。</string>
+    <string name="risk_status_default">当前风险</string>
+    <string name="risk_status_low">低风险</string>
+    <string name="risk_status_moderate">中度风险</string>
+    <string name="risk_status_high">高风险</string>
+    <string name="risk_level">风险等级: %1$d of 100</string>
+    <string name="current_infection">现行感染 / 现有的感染</string>
+    <string name="report_no_button">不是</string>
+    <string name="report_yes_button">是的</string>
+    <string name="head_report_infection">报告感染</string>
+    <string name="text_report_infection">你真的想报告自己被感染了吗？(只适用于PCR检测结果呈阳性的情况)</string>
+    <string name="text_report_negative">你真的要自报检结果呈阴性吗？(只限PCR检测结果为阴性者)</string>
+    <string name="head_thank_you">谢谢你的报告!</string>
+    <string name="text_thank_you">该应用程序警告你周围的人。请通知当地卫生部门，并立即进入14天隔离期。</string>
+    <string name="daysSinceText">自%1$s您已迸行%2%d天抗疫。</string>
+    <string name="head_info_menu">"更多信息 "</string>
+    <string name="head_general_info">一般信息</string>
+    <string name="text_general_info">CoWApp (Corona-Warn-App)是一款任何人都可以使用的应用程序，用于进一步遏制冠状病毒的传播。    通过该应用程序可以确定日常生活中与冠状病毒感染者的潜在接触，并计算出感染风险。它通过交通灯原理和1到100的风险值来显示。当发现潜在的健康风险时，您还会收到推送通知，这样您就知道如何采取正确的行动来保护自己和周围的人。受到怀疑？您可以收到关于怀疑感染时该如何处理的信息。</string>
+    <string name="head_infection_info">当前感染--如何行动？</string>
+    <string name="text_infection_info">如果发生急性感染，您有义务立即进行隔离，并在隔离期内保持14天或直到您收到PCR检测结果呈阴性。您也有义务通知当地的卫生部门。任何室友也应立即接受检测，并鼓励您与他们保持距离。更多信息请访问联邦政府或世界卫生组织的网页(德语)：https://www.bundesregierung.de/breg-de/themen/coronavirus/coronavirus-wissen； 或透过https://www.who.int/health-topics/coronavirus#tab=tab_1  以获取一般信息。</string>
+    <string name="head_suspicion_info">有怀疑？怎麽办？</string>
+    <string name="text_suspicion_info">如有怀疑，请立即进入隔离区并进行检测，如检测结果呈阳性，请通知所在地区的卫生部门，并在隔离区停留14天. 如果检测结果为阴性，您可以结束隔离。感谢您的帮助，以阻止冠状病毒的进一步传播。</string>
+    <string name="ok_button">好的</string>
+    <string name="head_notification">潛在健康风险</string>
+    <string name="foreground_Notificaiton">保护已被激活</string>
+</resources>

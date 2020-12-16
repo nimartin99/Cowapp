@@ -1,0 +1,12 @@
+<root>
+    <appeal>Bitte geben sie den 8-stelligen ID-Code ein: </appeal>
+    <connection>Es konnte leider keine Verbindung zum Server aufgebaut werden. Versuchen Sie es bitte später erneut, oder kontaktieren sie den Betreiber.</connection>
+    <succesful>Der ID-Code wurde erfolgreich übermittelt.</succesful>
+    <confirm>Bestätigen</confirm>
+    <language>Sprache</language>
+    <syntax>Bitte geben Sie nur Zahlen von 0 bis 9, sowie Buchstaben von A bis Z ein.</syntax>
+    <wait>Bitte warten ... Übermittlung läuft</wait>
+    <choose>Bitte Test-Ergebnis wählen:</choose>
+    <positive>Positiv</positive>
+    <negative>Negativ</negative>
+</root>
