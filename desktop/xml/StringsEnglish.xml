@@ -1,0 +1,12 @@
+<root>
+    <appeal>Please enter the 8-digit ID code:</appeal>
+    <connection>Unfortunately, no connection to the server could be established. Please try again later or contact the operator.</connection>
+    <succesful>The ID code was successfully transmitted.</succesful>
+    <confirm>Confirm</confirm>
+    <language>Language</language>
+    <syntax>Please only enter numbers from 0 to 9 and letters from A to Z.</syntax>
+    <wait>Please wait ... transmission is in progress.</wait>
+    <choose>Please select test result:</choose>
+    <positive>Positive</positive>
+    <negative>Negative</negative>
+</root>

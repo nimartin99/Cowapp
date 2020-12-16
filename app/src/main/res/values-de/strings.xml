@@ -160,4 +160,11 @@
     <string name="answer12">Die Berechtigung zur Verwendung des Standortes ist technisch notwendig, um die Bluetooth-Technik zu verwenden. Der Standort eines Nutzers oder einer Nutzerin wird zu keinem Zeitpunkt ausgelesen oder auf irgendeine Art und Weise verwendet.</string>
     <string name="answer13">Ihre Daten sind jederzeit sicher. Wenn Sie die App nutzen, bleiben Sie jederzeit anonym. Um die App zu nutzen, müssen Sie sich nicht registrieren. Alle Daten – beispielsweise zu Begegnungen mit anderen die App nutzenden Personen – werden anonym und nur kurzfristig gespeichert. Es werden kurzlebige Zufalls-ID-Codes von anderen Smartphones, auf denen die App installiert ist, gespeichert, wenn eine Begegnung stattfindet. Im Falle einer Infektion können dann freiwillig die eigenen gesammelten Zufalls-ID-Codes freigegeben werden, welche es anderen App-Nutzerinnen und Nutzern erlauben, dass auf ihren Smartphones ihr Risiko-Level berechnet wird. Mit diesen Daten und den lokal gespeicherten Daten ist es dem Server möglich, einen Kontakt mit einer Corona-positiv getesteten Person zu erkennen und entsprechend zu warnen. Daten, die eine Person identifizierbar machen, insbesondere Positionsdaten, werden nicht ausgelesen, verwendet oder gespeichert. Sichergestellt ist: Eine Corona-positiv getestete Person erfährt nicht, welche Personen, mit denen eine Begegnung stattgefunden hat, informiert werden. Kontaktpersonen erhalten keine Informationen über die Corona-positiv getestete Person. </string>
     <string name="faq">FAQ</string>
+    <string name="input">Bitte Test-ID eingeben!</string>
+    <string name="wronghead">Falsche Test-ID</string>
+    <string name="wrong">Die von Ihnen eingegebene Test-ID ist falsch.</string>
+    <string name="wait">Übermittlung läuft.</string>
+    <string name="waithead">Bitte warten ...</string>
+    <string name="problemhead">Keine Verbindung</string>
+    <string name="problem">Es konnte keine Verbindung zum Server aufgebaut werden. Bitte versuchen Sie es später erneut!</string>
 </resources>

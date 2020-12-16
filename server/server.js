@@ -3,7 +3,7 @@
  *
  * @author Mergim Miftari
  * @author Philipp Alessandrini
- * @version 2020-12-10
+ * @version 2020-12-15
  */
 
 // init web framework
@@ -27,6 +27,8 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
         const keyCollection = cowappDb.collection('key');
         const directContactsCollection = cowappDb.collection('direct_contacts');
         const indirectContactsCollection = cowappDb.collection('indirect_contacts');
+        const infectionIdsCollection = cowappDb.collection('infection_ids');
+        const nonInfectionIdsCollection = cowappDb.collection('non_infection_ids');
 
         // request a key from mongodb
         app.get('/request_key', (req, res) => {
@@ -160,6 +162,72 @@ MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
                         });
                     }
                 });
+            } else {
+                res.status(404).send();
+            }
+        });
+
+        // send pin id to mongodb
+        app.post('/send_id', (req, res) => {
+            // delete ids after some time
+            infectionIdsCollection.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 3*24*60*60 });
+            nonInfectionIdsCollection.createIndex({ "createdAt": 1 }, { expireAfterSeconds: 3*24*60*60 });
+            // check if id is reported
+            if (typeof req.body.id !== 'undefined') {
+                // pack a id report const which will be sent to mongodb
+                const infection = { infection: req.body.infection }
+                const idReport = {
+                    "createdAt": new Date(),
+                    id: req.body.id
+                }
+                // if it's an infection report
+                if (infection.infection === "TRUE") {
+                    infectionIdsCollection.insertOne(idReport, (err, result) => {
+                        if (err) throw err;
+                        res.status(200).send();
+                    });
+                } else if (infection.infection === "FALSE") { // if it's a non infection report
+                    nonInfectionIdsCollection.insertOne(idReport, (err, result) => {
+                        if (err) throw err;
+                        res.status(200).send();
+                    });
+                } else {
+                    res.status(400).send();
+                }
+            } else {
+                res.status(404).send();
+            }
+        });
+
+        // verify pin id in mongodb
+        app.post('/verify_id', (req, res) => {
+            // check if id ist reported
+            if (typeof req.body.id !== 'undefined') {
+                // pack a id report const which will be sent to mongodb
+                const infection = { infection: req.body.infection }
+                const idToCheck = { id: req.body.id }
+                // if it's an infection report
+                if (infection.infection === "TRUE") {
+                    infectionIdsCollection.deleteOne(idToCheck)
+                        .then(result => {
+                            if (result.deletedCount > 0) {
+                                res.status(200).send();
+                            } else {
+                                res.status(404).send();
+                            }
+                        }).catch(err => console.error(`Delete failed with error: ${err}`));
+                } else if (infection.infection === "FALSE") { // if it's a non infection report
+                    nonInfectionIdsCollection.deleteOne(idToCheck)
+                        .then(result => {
+                            if (result.deletedCount > 0) {
+                                res.status(200).send();
+                            } else {
+                                res.status(404).send();
+                            }
+                        }).catch(err => console.error(`Delete failed with error: ${err}`));
+                } else {
+                    res.status(400).send();
+                }
             } else {
                 res.status(404).send();
             }
