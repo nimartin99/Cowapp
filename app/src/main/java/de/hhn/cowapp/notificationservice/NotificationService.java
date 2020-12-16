@@ -20,7 +20,7 @@ import de.hhn.cowapp.datastorage.LocalSafer;
  *
  * @author Tabea leibl
  * @author Philipp Alessandrini
- * @version 2020-10-28
+ * @version 2020-12-16
  */
 public class NotificationService extends Service {
 
@@ -41,6 +41,13 @@ public class NotificationService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    /**
+     * Initializes the notification attributes.
+     * @param intent intent to start notification
+     * @param flags additional flags
+     * @param startId unique startId
+     * @return initialization
+     */
     public int onStartCommand(Intent intent, int flags, int startId){
         notificationTitle = intent.getStringExtra("TITLE");
         notificationText = intent.getStringExtra("TEXT");
@@ -57,6 +64,13 @@ public class NotificationService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    /**
+     * Displays all notification attributes within the notification
+     * @param title notification-title
+     * @param text notification-text
+     * @param intentClass class to show the notification
+     * @param shouldBeLogged true = logged in history | false = not logged in history
+     */
     private void displayNotification(String title, String text, Class intentClass, boolean shouldBeLogged){
         if (shouldBeLogged) {
             LocalSafer.addNotificationToSavedNotifications(title, null);

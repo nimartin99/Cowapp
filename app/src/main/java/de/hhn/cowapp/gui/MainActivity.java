@@ -64,7 +64,7 @@ import static android.text.InputType.*;
  * @author Mergim Miftari
  * @author Nico Martin
  * @author Jonas Klein
- * @version 2020-12-15
+ * @version 2020-12-16
  */
 public class MainActivity extends AppCompatActivity {
     //TAG for Logging example: Log.d(TAG, "fine location permission granted"); -> d for debug
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private static RetrofitService retrofitService;
-    private String BASE_URL = "https://cowapp.glitch.me";
+    private static final String BASE_URL = "https://cowapp.glitch.me";
 
     //To display the current risk status
     private static ImageView trafficLight;
@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
      * client requests his first key and the alarm is set.
      */
     public void firstInit() {
-        //TODO get best place to save first app start date
         if (LocalSafer.getFirstStartDate(null) == null || LocalSafer.getFirstStartDate(null).isEmpty()) {
             LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
         }
@@ -308,8 +307,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, "Key: " + response.body());
                             // set last response state
                             ResponseState.setLastResponseState(ResponseState.State.KEY_SUCCESSFULLY_REQUESTED);
-                            // key is successfully requested
-                            Key.setKeyRequested(true);
                             // reference requested key
                             String requestedKey = response.body();
                             // set the key
@@ -323,8 +320,6 @@ public class MainActivity extends AppCompatActivity {
                             Log.w(TAG, "requestKey: KEY_DOES_NOT_EXIST - repeating request...");
                             // set last response state
                             ResponseState.setLastResponseState(ResponseState.State.NO_EXISTING_KEY);
-                            // key is not successfully requested
-                            Key.setKeyRequested(false);
                             BeaconBackgroundService application = ((BeaconBackgroundService) BeaconBackgroundService.getAppContext());
                             application.stopTransmittingAsBeacon();
                             // retry the request
@@ -337,8 +332,6 @@ public class MainActivity extends AppCompatActivity {
                         serverResponseNotification("NO_CONNECTION_NOTIFICATION");
                         // set last response state
                         ResponseState.setLastResponseState(ResponseState.State.NO_CONNECTION);
-                        // key is not successfully requested
-                        Key.setKeyRequested(false);
                     }
                 });
             }
@@ -367,6 +360,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.code() == 200) {
                     if (isDropdown) {
+                        Log.d(TAG, "ID verified");
                         //report yourself negative and reset risk level
                         RiskLevel.reportNegativeInfectionTestResult();
                         //update buttons if there was a current infection
@@ -392,18 +386,28 @@ public class MainActivity extends AppCompatActivity {
                             //update buttons
                             initButtons();
                         }
+                        Log.d(TAG, "ID verified");
+                        // set last response state
+                        ResponseState.setLastResponseState(ResponseState.State.ID_VERIFIED);
                         // pop up dialog to thank the user for reporting
                         startThankYouDiaglog();
                     }
                 } else if (response.code() == 400) {
+                    Log.d(TAG, "ID doesn't exist in the database");
+                    // set last response state
+                    ResponseState.setLastResponseState(ResponseState.State.ID_NOT_IN_DATABASE);
                     startWrongCodeDialog();
                 } else if (response.code() == 404) {
+                    Log.w(TAG, "verifyID: UNDEFINED_REQUEST_BODY_VALUE");
+                    // set last response state
+                    ResponseState.setLastResponseState(ResponseState.State.UNDEFINED_REQUEST_BODY_VALUE);
                     startWrongCodeDialog();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                Log.w(TAG, Objects.requireNonNull(t.getMessage()));
                 startNoConnectionDialog();
             }
         });

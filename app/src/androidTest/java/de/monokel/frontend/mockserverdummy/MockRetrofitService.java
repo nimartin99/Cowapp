@@ -12,7 +12,7 @@ import retrofit2.mock.BehaviorDelegate;
  * Mock class which uses example response values to test the API.
  *
  * @author Philipp Alessandrini
- * @version 2020-12-01
+ * @version 2020-12-16
  */
 public class MockRetrofitService implements RetrofitService {
     private final BehaviorDelegate<RetrofitService> delegate;
@@ -43,5 +43,10 @@ public class MockRetrofitService implements RetrofitService {
         ResponseState.setLastResponseState(ResponseState.State.DIRECT_CONTACT);
 
         return delegate.returningResponse(requestedObject).requestInfectionStatus(ownUserKeysMap);
+    }
+
+    @Override
+    public Call<Void> verifyId(HashMap<String, String> idMap) {
+        return null;
     }
 }
