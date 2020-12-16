@@ -53,6 +53,13 @@
     <string name="head_report_negative">Report Negative Test Result</string>
     <string name="text_report_infection">Do you really want to report yourself infected? \n(Only with positive PCR test result.)</string>
     <string name="text_report_negative">Do you really want to report yourself negative? \n(Only with negative PCR test result.)</string>
+    <string name="input">Please enter Test-ID!</string>
+    <string name="wrong">The Test ID you entered is incorrect. \n(Maybe the ID has been entered incorrectly or it is older than 3 days and has therefore expired.)</string>
+    <string name="wronghead">Wrong Test ID</string>
+    <string name="wait">Transmission is in progress.</string>
+    <string name="waithead">Please wait ...</string>
+    <string name="problem">A connection to the server could not be established. Please try again later!</string>
+    <string name="problemhead">No Connection!</string>
     <string name="head_thank_you">Thank you for the report!</string>
     <string name="text_thank_you">The app warns your surroundings. Please inform your local health department and immediately go into 14-day quarantine.</string>
     <string name="head_report_successful">Report successful</string>
@@ -169,11 +176,4 @@
     <string name="answer12">The authorization to use the location is technically necessary to use the Bluetooth technology. The location of a user is never read out or used in any way.</string>
     <string name="answer13">Your personal data are safe all the time. You are anonymous when you use the App. To use the App, you do not have to register. All data – for example an encounter with other people, which are using this app – are saved anonymous and just for a short period of time. There are short-lived random-ID-codes from other smartphones saved, when you encounter them. In case of an infection you can voluntarily share your collected random-ID-codes and provide them to the server. With this data the server can determine encounters and warn people which had contact to someone, who later was tested Corona-positive. There is no data saved or read, which can be used to identify a user. It is sure that: A person tested Corona-positive will not know, who was warned because of a contact to him. The contact persons will not know who the person with Corona was. </string>
     <string name="faq">FAQ</string>
-    <string name="input">Please enter Test-ID!</string>
-    <string name="wrong">The Test ID you entered is incorrect.</string>
-    <string name="wronghead">Wrong Test ID</string>
-    <string name="wait">Transmission is in progress.</string>
-    <string name="waithead">Please wait ...</string>
-    <string name="problem">A connection to the server could not be established. Please try again later!</string>
-    <string name="problemhead">No Connection!</string>
 </resources>
