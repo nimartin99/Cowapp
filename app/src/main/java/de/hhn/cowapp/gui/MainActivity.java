@@ -173,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
      * client requests his first key and the alarm is set.
      */
     public void firstInit() {
-        //TODO get best place to save first app start date
         if (LocalSafer.getFirstStartDate(null) == null || LocalSafer.getFirstStartDate(null).isEmpty()) {
             LocalSafer.safeFirstStartDate(DateHelper.getCurrentDateString(), this);
         }
