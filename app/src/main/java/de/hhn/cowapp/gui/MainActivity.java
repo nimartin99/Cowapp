@@ -247,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 final EditText input = new EditText(this);
                 input.setBackgroundColor(Color.rgb(233, 246, 248));
                 input.setHint(getString(R.string.input));
+                input.setPaddingRelative(50, 30, 50, 30);
                 input.setInputType(TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 
                 builder.setView(input);
@@ -435,6 +436,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText input = new EditText(this);
         input.setBackgroundColor(Color.rgb(233, 246, 248));
         input.setHint(getString(R.string.input));
+        input.setPaddingRelative(50, 30, 50, 30);
         input.setInputType(TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 
         builder.setView(input);
