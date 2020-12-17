@@ -206,8 +206,9 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_items, menu);
 
         if (!Constants.DEBUG_MODE) {
-            MenuItem it = menu.getItem(2);
-            menu.removeItem(it.getItemId()); //ID of the test menu button because of its place in the dropdown menu
+            MenuItem it = menu.getItem(0);
+            Menu subMenu = it.getSubMenu();
+            subMenu.removeItem(R.id.item3); //ID of the test menu button because of its place in the dropdown menu
         }
         return true;
     }
@@ -246,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
                 final EditText input = new EditText(this);
                 input.setBackgroundColor(Color.rgb(233, 246, 248));
                 input.setHint(getString(R.string.input));
+                input.setPaddingRelative(50, 30, 50, 30);
                 input.setInputType(TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 
                 builder.setView(input);
@@ -434,6 +436,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText input = new EditText(this);
         input.setBackgroundColor(Color.rgb(233, 246, 248));
         input.setHint(getString(R.string.input));
+        input.setPaddingRelative(50, 30, 50, 30);
         input.setInputType(TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
 
         builder.setView(input);

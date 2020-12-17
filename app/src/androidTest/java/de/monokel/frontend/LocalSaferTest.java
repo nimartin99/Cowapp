@@ -121,6 +121,8 @@ public class LocalSaferTest {
         assertTrue(LocalSafer.getFirstStartDate(appContext).equals("test"));
         LocalSafer.safeFirstStartDate("test2", appContext);
         assertTrue(LocalSafer.getFirstStartDate(appContext).equals("test2"));
+        LocalSafer.safeStringAtDatafile("cowappfirstdate.txt", "", appContext);
+        LocalSafer.safeFirstStartDate(new Date().toString(), appContext);
     }
 
     @Test
