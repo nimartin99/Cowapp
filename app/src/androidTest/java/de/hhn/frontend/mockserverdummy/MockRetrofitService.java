@@ -1,4 +1,4 @@
-package de.monokel.frontend.mockserverdummy;
+package de.hhn.frontend.mockserverdummy;
 
 import java.util.HashMap;
 

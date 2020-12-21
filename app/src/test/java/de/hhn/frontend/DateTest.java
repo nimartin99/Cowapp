@@ -1,4 +1,4 @@
-package de.monokel.frontend;
+package de.hhn.frontend;
 import org.junit.Test;
 import java.util.Date;
 

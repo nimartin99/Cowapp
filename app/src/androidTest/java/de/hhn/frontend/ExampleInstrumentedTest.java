@@ -1,4 +1,4 @@
-package de.monokel.frontend;
+package de.hhn.frontend;
 
 import android.content.Context;
 

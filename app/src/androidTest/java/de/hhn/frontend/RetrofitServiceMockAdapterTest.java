@@ -1,4 +1,4 @@
-package de.monokel.frontend;
+package de.hhn.frontend;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import de.hhn.cowapp.network.RequestedObject;
 import de.hhn.cowapp.network.RetrofitService;
 import de.hhn.cowapp.network.ResponseState;
-import de.monokel.frontend.mockserverdummy.MockRetrofitService;
+import de.hhn.frontend.mockserverdummy.MockRetrofitService;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
