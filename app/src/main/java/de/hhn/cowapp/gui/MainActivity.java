@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
      * adds on click listeners to the dropdown menu
      *
      * @param item the item on which the user has clicked
-     * @return
+     * @return the selected menu items
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -479,7 +479,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method checks if the Input has the right syntax.
      * @param toString
-     * @return
+     * @return if the Code has the correct, fitting syntax
      */
     private boolean idCodeHasGoodSyntax(String toString) {
         if (toString == null) {

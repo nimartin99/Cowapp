@@ -115,7 +115,7 @@ public class LocalSafer {
      * Returns true if the date is older than 2 weeks.
      *
      * @param date
-     * @return
+     * @return boolean if the date is older than 2 weeks
      */
     public static boolean dateIsOld(Date date) {
         Log.d(TAG, "dateIsOld() was called");
@@ -634,7 +634,7 @@ public class LocalSafer {
     /**
      * Getter for the date of the last reported infection.
      *
-     * @return
+     * @return the date of the last reported infection
      */
     public static String getDateOfLastReportedInfection(Context context) {
         Log.d(TAG, "getDateOfLastReportedInfection() was called.");
@@ -703,10 +703,10 @@ public class LocalSafer {
     }
 
     /**
-     * Returns true if the date is older than 5 Minutes
+     * Returns true if the date is older than 5 minutes
      *
      * @param date
-     * @return
+     * @return boolean if the date is older than 5 minutes
      */
     public static boolean lastRingOlderThenFifteenMinutes(Date date) {
         Log.d(TAG, "dateIsOld() was called");
